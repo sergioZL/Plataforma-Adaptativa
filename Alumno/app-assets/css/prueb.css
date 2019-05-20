@@ -1,0 +1,74 @@
+.ContenedorCursos 
+{ 
+    display: flex; 
+    overflow-x: auto; 
+    padding-block-start: 10px;
+    padding-block-end: 10px;
+}
+h3
+{
+    border-bottom: 2px solid #293B47;
+    color: #293B47;
+    padding-bottom: 5px;
+}
+
+.ContenedorCursos .Curso 
+{
+    margin-right: 15px;
+    padding: 1px;
+    background-color: aqua;
+}
+
+/*
+.ContenedorCursos::-webkit-scrollbar 
+{
+    display: none;
+}*/
+
+#IMGCurso
+{
+    height: 100%;
+    width: 100%;
+    overflow:hidden;
+    margin-block-end: 5px;
+}
+
+.ContenedorCursos .Curso .Img
+{
+    width: 250px;
+    height:170px;
+    line-height: 50px;   
+    text-align: center;
+    color:white;
+    font-size: 10px;
+}
+
+.ContenedorCursos 
+{
+    padding: 0px;
+    margin: 0px;
+}
+
+.ContenedorCursos .Curso .NombreCurso
+{
+    width: 250px;
+    height:50px;
+    line-height: 50px;
+    background: transparent;    
+    text-align: center;
+    color:black;
+    font-size: 18px;
+}
+
+.ContenedorCursos .Curso .DescriProducto
+{
+    width: 250px;
+    height:85px;
+    line-height: 50px;
+    background: white;  
+    color:black;
+    font-size: 18px;
+    line-height:15px;
+    overflow: hidden;
+    word-wrap: break-word;
+}

@@ -1,0 +1,222 @@
+/**
+    patron de colores
+*/
+/*----------------------------------------
+    Header
+*/
+.navbar{
+  background-color: rgba(250, 245, 245, 0.1);
+}
+.buscar{
+  
+  border: none;
+  background-color: rgb(212, 248, 233);
+}
+.bustcar{
+  border: none;
+  background-color: rgb(212, 248, 233);
+}
+.bustcar:hover{
+  border: none;
+  background-color: rgb(130, 247, 198);
+}
+.fa-folder{
+  font-size:30px;
+  color:   rgb(130, 247, 198);
+}
+.fa-bell{
+  font-size:30px;
+  color:   rgb(130, 247, 198);
+}
+.fa-user{
+  font-size:30px;
+  color:   rgb(130, 247, 198);
+}
+.fa-folder:hover{
+  font-size:30px;
+  color: rgb(207, 239, 250);
+}
+.fa-bell:hover{
+  font-size:30px;
+  color:  rgb(207, 239, 250);
+}
+.fa-user:hover{
+  font-size:30px;
+  color: rgb(207, 239, 250);
+}
+/*----------------------------------------
+    Para el menu desplegable
+*/
+.card-header .fa {
+  -webkit-transition: .3s transform ease-in-out;
+  transition: .3s transform ease-in-out; }
+
+.card-header .collapsed .fa {
+  -webkit-transform: rotate(180deg);
+          transform: rotate(180deg); }
+
+.leccion {
+  background:#128024; }
+
+.leccion > h5 > a {
+  color: white;
+  text-decoration: none; }
+
+.leccion > div > .card {
+  background: #f2f9ff; }
+
+.card-body {
+  background: #e0e0e0; }
+  
+
+
+/*--------------------------------------------------------
+ Para el menu desplegable lateral 
+*/
+.elsidenav {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  color: #49afe2;
+  top: 0;
+  left: 0;
+  background-image: linear-gradient( #e6f7ff 5%,#128024 95%);
+  /*background-color:#66ccff;*/
+  overflow-x: hidden;
+  -webkit-transition: 0.5s;
+  transition: 0.5s;
+  padding-top: 60px; }
+.elsidenav button {
+  background-color: rgba(253, 251, 251, 0.4); 
+  border-style: none;
+  color: #1381b8;
+}
+.elsidenav a {
+
+  text-decoration: none;
+ }
+
+.elsidenav a:hover {
+  color: #c9e7f5; }
+
+.elsidenav .closebtn {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 36px;
+  margin-left: 50px; }
+
+#main {
+  -webkit-transition: margin-left .5s;
+  transition: margin-left .5s; }
+/*--------------------------------------------------------
+ Para el menu desplegable lateral de la visualizacion del material 
+*/
+body {
+  font-family: "Lato", sans-serif; }
+
+.sidenav {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-image: linear-gradient( #e6f7ff 5%,#0044cc 95%);
+  overflow-x: hidden;
+  -webkit-transition: 0.5s;
+  transition: 0.5s;
+  padding-top: 60px; }
+
+  .sidenav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #66ccff;
+    display: block;
+    -webkit-transition: 0.3s;
+    transition: 0.3s; }
+  
+  .sidenav a:hover {
+    color: #c9e7f5; }
+  
+  .sidenav .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px; }
+  
+  #main {
+    -webkit-transition: margin-left .5s;
+    transition: margin-left .5s; }
+
+  /*--------------------------
+  ESTILOS PARA LA PAGINA DE PREVIEW DE CURSOS
+---------------------------*/
+.seccion-superior {
+  background-image: linear-gradient( to left,#e6f7ff 5%,#0044cc 95%); }
+
+.btn-superior {
+  background-color: #128024 !important; }
+
+.card:hover {
+  -webkit-box-shadow: 0 0 10px #0c0c0c3b;
+  box-shadow: 0 0 10px #0c0c0c3b; }
+
+/*--------------------------
+  ESTILOS PARA LA PAGINA DE PREGUNTA SOBRE SI SE DECEA HACER EL 
+  EXAMEN DIAGNOSTICO
+---------------------------*/
+.question > div > div > div > img {
+  height: 192px;
+  width: 192px; }
+
+.botonBlanco {
+  border-color: white;
+  border-radius: 30px;
+  text-align: center; }
+
+.botonBlanco:hover {
+  background-color: rgba(251, 249, 249, 0.5);
+  color: white;
+  border-color: white; }
+
+.botonBlanco:active {
+  background-color: rgba(251, 249, 249, 0.7);
+  color: white;
+  border-color: white; }
+
+.question {
+  background-color: #00ccff; }
+
+.columna1 {
+  border-right: 3px solid white; }
+
+@media screen and (max-width: 992px) {
+  .question {
+    background-color: #00ffff; }
+
+  .columna1 {
+    border-right: none;
+    border-bottom: 3px solid white;
+    padding: 30px; } }
+@media screen and (max-width: 768px) {
+  .question {
+    background-color: #66ffcc; }
+
+  .columna1 {
+    border-right: none;
+    border-bottom: 3px solid white;
+    padding: 30px; } }
+@media screen and (max-width: 576px) {
+  .question {
+    background-color: #66ff99; }
+
+  .columna1 {
+    border-right: none;
+    border-bottom: 3px solid white;
+    padding: 30px; } }
+
+/*# sourceMappingURL=estilos.css.map */
