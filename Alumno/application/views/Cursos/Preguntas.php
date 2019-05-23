@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -27,7 +27,7 @@
             <div class="col-lg-6 text-center">
                 <img src="<?php echo base_url();?>app-assets/imagenes/apple.png" class="py-4" alt="">
                 <br>
-                <a href="Temario"> <button type="button" class="btn  botonBlanco text-white font-weight-bold "><h4>Tomar examen diagnostico </h4> </button></a>
+                <a href="Temario?curso=<?php echo $curso =$_GET['curso']; ?>"> <button type="button" class="btn  botonBlanco text-white font-weight-bold "><h4>Tomar examen diagnostico </h4> </button></a>
             </div>
         </div>
     </div>

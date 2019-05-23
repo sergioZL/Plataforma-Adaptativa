@@ -4,8 +4,8 @@
      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>Material</title>
     
-    <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>app-assets/css/bootstrap.css">
-    <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>app-assets/css/diseñoAudio.css">
+    <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>app-assets/css/bootstrap.css"><!--
+    <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>app-assets/css/diseñoAudio.css">-->
     <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>app-assets/css/diseñoVideo.css">
     <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>app-assets/css/diseñoPDF.css">
     <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>app-assets/css/estilo.css">
@@ -276,7 +276,7 @@
 
 
 
-    <div class="container_Audio" id="Audio" style="display:block;">
+    <div class="container_Audio" id="Audio" style="display:none;">
         <div class="containerAudio">    
             <audio class="audio">
                 <source src="<?php echo  base_url(); ?>Material/audio/Alan Walker - Faded (Instrumental Version).mp3"> 
@@ -324,7 +324,7 @@
  
 
 
-    <div class="container_PDF" id="PDF" style="display:block;"> 
+    <div class="container_PDF" id="PDF" style="display:none;"> 
         <div class="container">
 
             <div class="submenu">

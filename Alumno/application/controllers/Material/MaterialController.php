@@ -7,8 +7,8 @@ class MaterialController extends CI_Controller {
         $this->load->helper('url_helper');
     }
 
-        public function load_Material()
+    public function load_Material()
 	{
-                $this->load->view('Material/Material');
+        $this->load->view('Material/Material');
 	}
 }

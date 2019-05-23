@@ -1,12 +1,7 @@
-*
-{
-    margin: 0;
-    padding: 0;
-}
 
 .container_Audio .containerAudio
 {
-    /*background-image: url("wallhaven-6742.jpg");*/
+
     background-size: cover;
     background-color: #030729;
     position: relative;
@@ -159,7 +154,7 @@ input[type=range]::-webkit-slider-thumb
 
 
 /*Diseño del centro*/
-.loading
+/*.loading
 {
     position:absolute;
     top:50%;
@@ -168,7 +163,7 @@ input[type=range]::-webkit-slider-thumb
     height:40px;
     display:flex;
     align-items:center
-}
+}*/
 
 .obj
 {
