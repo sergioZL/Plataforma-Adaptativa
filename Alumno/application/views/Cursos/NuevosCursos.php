@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="<?php echo base_url();?>app-assets/css/diseño.css"/>
     <link rel="stylesheet" href="<?php echo base_url();?>app-assets/css/bootstrap.css"/>
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">    
+    <script src="<?php echo base_url();?>app-assets/js/jquery-3.3.1.min.js"></script>
     <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.6.3/css/all.css' integrity='sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/' crossorigin='anonymous'>       
     <style>
         a:link {
@@ -87,37 +88,28 @@
 
 <h3>Cursos Recomendados</h3>
 
-    <div class="ContenedorCursos">
-        <?php
-      
-        $Con = mysqli_connect('localhost','root','','plataforma');
-    	$consulta = "SELECT * FROM `Cursos`;";
-    
-    	$rs = $Con->query($consulta);
-        while($row = $rs ->fetch_assoc())
-        {
+    <div id="ContenedorCursos" class="ContenedorCursos">
         
-        ?>
-
-        <a href="Preview?curso=<?php echo $row['clave'] ?>">
-        <div class="card" style="width: 250px; height:400px; margin-left: 20px;">
-            <div class="Img">
-                <img class="card-img-top" style="width: 250px; height:250px;" id="IMGCurso" src="data:image/jpg;base64,<?php echo ($row['foto']); ?>" alt="Card image cap">
-            </div>
-            <div class="card-body ">
-                <h5 class="card-title text-center"><?php echo $row['nombre']?></h5>
-                <p class="card-text text-center"><?php echo $row['descripcion']?></p>
-            </div>
-        </div>
-        </a>
-
-        <?php
-        }
-	
-        ?>
     </div>
 
-    <script src="<?php echo base_url();?>app-assets/js/jquery-3.3.1.min.js"></script>
+    <script>
+        CargarCursos();
+
+        function CargarCursos()
+        {
+            $.ajax
+            ({
+                type:'post',
+                url:'<?php echo site_url();?>/Cursos/NuevoCursosController/ConsultarCursosUsuarios',    
+                success:function(resp)
+                {
+                    $("#ContenedorCursos").append(resp);
+                }
+            });
+        }
+    </script>
+
+    
     <script src="<?php echo base_url();?>app-assets/js/popper.min.js"></script>
     <script src="<?php echo base_url();?>app-assets/js/bootstrap.min.js"></script>
     <script src="<?php echo base_url();?>app-assets/js/myjs.js"></script>

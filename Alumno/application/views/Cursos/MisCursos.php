@@ -1,3 +1,13 @@
+<?php
+    error_reporting(0);
+    session_start();
+    $varsesion = $_SESSION['usuario'];
+    if($varsesion == null|| $varsesion == '')
+    {
+        header("location:index.php");
+    }
+?> 
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -7,7 +17,9 @@
     <title>Mi Cursos</title>
     <link rel="stylesheet" href="<?php echo base_url();?>app-assets/css/diseñoMicurso.css"/>
     <link rel="stylesheet" href="<?php echo base_url();?>app-assets/css/bootstrap.css"/>
-    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">    
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    
+    <script src="<?php echo base_url();?>app-assets/js/jquery-3.3.1.min.js"></script>    
     <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.6.3/css/all.css' integrity='sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/' crossorigin='anonymous'>       
 
     <style>
@@ -185,10 +197,10 @@
                     <div class="dropdown text-left">
                         <button type="button" class="btn btn-primary dropdown-toggle btnDrop" data-toggle="dropdown">Ordenar por</button>
                         <div class="dropdown-menu">
-                            <a class="dropdown-item" href="#">Titulo: de A a Z</a>
-                            <a class="dropdown-item" href="#">Titulo: de Z a A</a>
-                            <a class="dropdown-item" href="#">Completado: del 0% a 100%</a>
-                            <a class="dropdown-item" href="#">Completado: del 100% a 0%</a>
+                            <a class="dropdown-item" id="ordenarAZ" href="#">Titulo: de A a Z</a>
+                            <a class="dropdown-item" id="ordenarZA" href="#">Titulo: de Z a A</a>
+                            <a class="dropdown-item" id="ordenarMen" href="#">Completado: del 0% a 100%</a>
+                            <a class="dropdown-item" id="ordenarMay" href="#">Completado: del 100% a 0%</a>
                         </div>
                     </div>
                 </div>
@@ -220,55 +232,8 @@
     </div>
 
     <h3>Mis Cursos</h3>
-    <div id="ContenedorCursos" class="ContenedorCursos" style="margin-top: 20px; left: 25px;">
-
-        
-        <?php
-        error_reporting(0);
-        session_start();
-        $varsesion = $_SESSION['usuario'];
-        if($varsesion == null|| $varsesion == '')
-        {
-            header("location:index.php");
-        }
-        $Con = mysqli_connect('localhost','root','','plataforma');
-        
-    	$consulta = "SELECT *
-        FROM `Inscrito`
-        RIGHT JOIN `Cursos`
-        ON Inscrito.clave_curso = Cursos.clave
-        WHERE Inscrito.clave_alumno = '$varsesion';";
-        
-        $rs = $Con->query($consulta);
-        while($row = $rs ->fetch_assoc())
-        {
-            
-            if($row['avance'] > 99){$avance = "Completos";}
-            if($row['avance'] >= 1 && $row['avance'] <=99){$avance = "EnCurso";}
-            if($row['avance'] < 1){$avance = "SinEmpezar";}
-            
-            ?>
-            <div class="card-deck" style="margin-left: 20px;">
-                <div class="filterDiv <?php echo $avance; ?>">
-                <a href="<?php echo site_url();?>/Material?curso=<?php echo $row['clave']?>" style="text-decoration:none ">
-                    <div class="card" style="width: 250px; min-height: 450px; max-height: 450px; ">
-                        <img class="card-img-top" style="max-height: 250px;"  src="data:image/jpg;base64,<?php echo ($row['foto']); ?>" alt="Card image cap">
-                        <div class="card-body">
-                        <ul class="list-group list-group-flush" style="margin-top: -15px;">
-                            <li class="list-group-item"><?php echo $row['nombre']?></li>
-                        </ul>
-                        <div class="Porcentaje" style="margin-top: 10px;"><?php echo $row['avance']?>%<div class="progress"><div class="bar" style="width: <?php echo $row['avance']?>%"></div></div> </div> 
-                            
-                            <p class="card-text" style="margin-top: 10px;"><?php echo $row['descripcion']?></p>
-                        </div>
-                    </div>
-                </a>
-            </div>
-
-
-        <?php
-            }
-        ?>        
+    <div id="ContenedorCursos" class="ContenedorCursos" style="margin-top: 20px; left: 25px;">       
+              
         </div>            
     </div>
 
@@ -277,22 +242,46 @@
 
     <script>        
 
-        /*CargarCursos();
+        CargarCursos(1);
 
-        function CargarCursos()
+        function CargarCursos(tipo)
         {
-            alert("asfas");
             $.ajax
             ({
                 type:'post',
-                url:'<?php echo site_url();?>/Cursos/MisCursosController/ConsultarCursosUsuarios',    
+                url:'<?php echo site_url();?>/Cursos/MisCursosController/ConsultarCursosUsuarios?tipo='+tipo,    
                 success:function(resp)
                 {
-                    $("#ContenedorCursos").html(resp);
+                    $("#ContenedorCursos").append(resp);
                     filterSelection("todos"); 
                 }
             });
-        }*/
+        }
+
+        $('#ordenarAZ').click(function()
+        {
+            $("#ContenedorCursos").children().remove();
+            CargarCursos(2);    
+        });
+
+        $('#ordenarZA').click(function()
+        {
+            
+            $("#ContenedorCursos").children().remove();
+            CargarCursos(3);     
+        });
+
+        $('#ordenarMay').click(function()
+        {
+            $("#ContenedorCursos").children().remove();
+            CargarCursos(4);    
+        });
+
+        $('#ordenarMen').click(function()
+        {
+            $("#ContenedorCursos").children().remove();
+            CargarCursos(5);     
+        });
 
         filterSelection("todos"); 
 

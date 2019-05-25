@@ -17,10 +17,28 @@ class MisCursosController extends CI_Controller {
 	public function ConsultarCursosUsuarios()
 	{		
 		session_start();
-        $varsesion = $_SESSION['usuario'];
-        //$id = $this->input->post('IdUsuario');
-		$Inscrito = $this->Inscrito_modal->ConsultarCursosUsuarios($varsesion);
-        
+		$varsesion = $_SESSION['usuario'];
+		$tipo = $this->input->get('tipo');
+
+		/*
+			1 - todos
+			2 - AZ
+			3 - ZA
+			4 - Mayor
+			5 - Menor
+		*/
+		
+		if($tipo == 1)
+			$Inscrito = $this->Inscrito_modal->ConsultarCursosUsuarios($varsesion);
+		else if($tipo == 2)
+			$Inscrito = $this->Inscrito_modal->ConsultarCursosAlfaMayor($varsesion);
+		else if($tipo == 3)
+			$Inscrito = $this->Inscrito_modal->ConsultarCursosAlfaMenor($varsesion);
+		else if($tipo == 4)
+			$Inscrito = $this->Inscrito_modal->ConsultarCursosMayor($varsesion);
+		else if($tipo == 5)
+			$Inscrito = $this->Inscrito_modal->ConsultarCursosMenor($varsesion);
+		        
 		foreach ($Inscrito as $inclito) {
 			
 			if($inclito['avance'] > 99){$avance = "Completos";}

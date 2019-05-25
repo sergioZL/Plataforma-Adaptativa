@@ -1,6 +1,3 @@
-<?php
-    $curso = $_GET['curso'];
-?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -14,6 +11,8 @@
     <!--Iconos-->
     <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.7.0/css/all.css' integrity='sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ' crossorigin='anonymous'> 
     <title>preview</title>
+    
+    <script src="<?php echo base_url();?>app-assets/js/jquery-3.3.1.min.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">    
     <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.6.3/css/all.css' integrity='sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/' crossorigin='anonymous'>          
@@ -82,7 +81,9 @@
     </div>
   </div>
 </nav>
+
       <?php
+       $curso = $_GET['curso'];
       $Con = mysqli_connect('localhost','root','','plataforma');
       $consulta = "SELECT * FROM `Cursos` WHERE clave = '$curso'";
       $rs = $Con->query($consulta);
@@ -93,7 +94,9 @@
           <div class="row">
             <div class="col-12 col-md-6">
                 <div class="card">
-                    <img class="card-img-top h-100" style="min-height: 250px;"  src="data:image/jpg;base64,<?php echo $row['foto']; ?>" alt="Proyecto 1" style="width: 100%; /*252px; height: 447px;*/">
+                    <div id="imagen">
+                    
+                    </div>
                     <div class="card-body">
                       <h5 class="card-title  text-center">Este curso contiene</h5>
                       <p class="card-text">
@@ -392,12 +395,28 @@
 
 
 
-
-
         </div>
       </div>
 
-    <script src="<?php echo base_url();?>app-assets/js/jquery-3.3.1.min.js"></script>
+    <script>
+        CargarCursos();
+
+        function CargarCursos()
+        {
+            $.ajax
+            ({
+                type:'post',
+                url:'<?php echo site_url();?>/Cursos/PreviewController/ConsultarPorIDCursos?IdCurso=<?php echo $curso = $_GET['curso'];?>',    
+                dataType:"json",
+                success:function(resp)
+                {
+                    $("#imagen").append(
+                        '<img class="card-img-top h-100" style="min-height: 250px; width: 100%;"  src="data:image/jpg;base64,'+ resp[0].foto+'" alt="Proyecto 1"  ">'                        
+                    );
+                }
+            });
+        }
+    </script>
     <script src="<?php echo base_url();?>app-assets/js/popper.min.js"></script>
     <script src="<?php echo base_url();?>app-assets/js/bootstrap.min.js"></script>
     <script src="<?php echo base_url();?>app-assets/js/myjs.js"></script>

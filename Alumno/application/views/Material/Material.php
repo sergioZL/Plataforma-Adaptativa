@@ -10,6 +10,8 @@
     <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>app-assets/css/diseñoPDF.css">
     <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>app-assets/css/estilo.css">
     
+    <script src="<?php echo base_url();?>app-assets/js/myjs.js"></script>
+    <script src="<?php echo base_url();?>app-assets/js/jquery-3.3.1.min.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
         .bloqueo
@@ -344,6 +346,7 @@
     <script>
         function filterSelection(idButton)
         {
+
             var Video = document.getElementById('Video');
             var Audio = document.getElementById('Audio');
             var PDF = document.getElementById('PDF');
@@ -369,11 +372,9 @@
         }
     </script>
 
-    <script src="<?php echo base_url();?>app-assets/js/jquery-3.3.1.min.js"></script>
     <script src="<?php echo base_url();?>app-assets/js/popper.min.js"></script>
     <script src="<?php echo base_url();?>app-assets/js/bootstrap.min.js"></script>
 
     <script src="<?php echo base_url();?>app-assets/js/jquery-3.3.1.min.js"></script>
     <script src="<?php echo base_url();?>app-assets/js/video.js"></script>
     <script src="<?php echo base_url();?>app-assets/js/audio.js"></script>
-    <script src="<?php echo base_url();?>app-assets/js/myjs.js"></script>
