@@ -14,6 +14,18 @@ class MisCursosController extends CI_Controller {
 		$this->load->view('Cursos/MisCursos');
 	}
 
+	public function ConsultarCursosTodosTemasUsuarios()
+	{
+			session_start();
+			$varsesion = $_SESSION['usuario'];
+					
+			$Inscrito = $this->Inscrito_modal->ConsultarCursosTodosTemasUsuarios($varsesion);
+
+			foreach ($Inscrito as $inclito) {
+				echo '<a id="Temas" class="dropdown-item" href="#">'.$inclito['tema'].'</a>';
+			}
+	}
+
 	public function ConsultarCursosUsuarios()
 	{		
 		session_start();
@@ -26,6 +38,7 @@ class MisCursosController extends CI_Controller {
 			3 - ZA
 			4 - Mayor
 			5 - Menor
+			6 - Tema
 		*/
 		
 		if($tipo == 1)
@@ -38,6 +51,8 @@ class MisCursosController extends CI_Controller {
 			$Inscrito = $this->Inscrito_modal->ConsultarCursosMayor($varsesion);
 		else if($tipo == 5)
 			$Inscrito = $this->Inscrito_modal->ConsultarCursosMenor($varsesion);
+		else if($tipo == 6)
+			$Inscrito = $this->Inscrito_modal->ConsultarCursosTemasUsuario($varsesion);
 		        
 		foreach ($Inscrito as $inclito) {
 			

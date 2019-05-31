@@ -7,33 +7,22 @@
         header("location:../../../index.php");
     }
 ?> 
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Nuevos Cursos</title>
-    <link rel="stylesheet" href="<?php echo base_url();?>app-assets/css/diseño.css"/>
+    <title>Buscar</title>
+    <link rel="stylesheet" href="<?php echo base_url();?>app-assets/css/diseñoMicurso.css"/>
     <link rel="stylesheet" href="<?php echo base_url();?>app-assets/css/bootstrap.css"/>
-    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">    
-    <script src="<?php echo base_url();?>app-assets/js/jquery-3.3.1.min.js"></script>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    
+    <script src="<?php echo base_url();?>app-assets/js/jquery-3.3.1.min.js"></script>    
     <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.6.3/css/all.css' integrity='sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/' crossorigin='anonymous'>       
-    <style>
-        a:link {
-            text-decoration: none;
-        }
-
-        a {
-           color: black;
-        }
-    </style>
-
 </head>
-<body>
-
-
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<body><nav class="navbar navbar-expand-lg navbar-light bg-light">
   <a class="navbar-brand text-left" href="<?php echo site_url();?>/alumno/MisCursos">
     <img class="login-img text-left" src="<?php echo base_url();?>app-assets/imagenes/logo.png" style="width: 50%; margin: 0;">
   </a>
@@ -54,9 +43,6 @@
         </div>    
     </form>
         <ul class="navbar-nav offset-lg-1 offset-xl-3">
-            <!--<li class="nav-item">
-                <a class="nav-link" style="color: #07ad90;" href="<?php echo site_url();?>/Cursos/NuevosCursos">Nuevos cursos</a>
-            </li>-->
                <li class="dropdown">
                 <a href="" class="btn" data-toggle="dropdown" >
                     <span class="far fa-bell fa-2x" style="color: #07ad90;" title="Notificaciones"></span>
@@ -94,23 +80,26 @@
     </div>
   </div>
 </nav>
+<br>
+    
+    <h3>Resultados de "<?php echo $this->input->get('nombre');?>"</h3>
+    <div id="ContenedorCursos" class="card-deck ContenedorCursos">
 
-    <h3>Cursos Recomendados</h3>
-    <div id="ContenedorCursos" class="ContenedorCursos">
-        
     </div>
-    <br>
-    <br>
+    
 
-    <script>
-        CargarCursos();
 
+    <script>        
+
+
+        CargarCursos();        
+        
         function CargarCursos()
         {
             $.ajax
             ({
                 type:'post',
-                url:'<?php echo site_url();?>/Cursos/NuevoCursosController/ConsultarCursosUsuarios',    
+                url:'<?php echo site_url();?>/Cursos/BuscarController/ConsultarBuscarCursos?nombre=<?php echo $this->input->get('nombre');?>',    
                 success:function(resp)
                 {
                     $("#ContenedorCursos").append(resp);
@@ -118,16 +107,22 @@
             });
         }
 
+
         $('#buscar').click(function()
         {
             if( $("#textBuscar").val() != "")
                 window.location.href="<?php echo site_url();?>/Cursos/Buscar?nombre="+ $("#textBuscar").val();
         });
+
     </script>
 
-    
-    <script src="<?php echo base_url();?>app-assets/js/popper.min.js"></script>
-    <script src="<?php echo base_url();?>app-assets/js/bootstrap.min.js"></script>
-    <script src="<?php echo base_url();?>app-assets/js/myjs.js"></script>
-</body>
+
+<script src="<?php echo base_url();?>app-assets/js/jquery-3.3.1.min.js"></script>
+<script src="<?php echo base_url();?>app-assets/js/popper.min.js"></script>
+<script src="<?php echo base_url();?>app-assets/js/bootstrap.min.js"></script>
+<script src="<?php echo base_url();?>app-assets/js/myjs.js"></script>  
+
+
+
+</body>      
 </html>

@@ -20,8 +20,9 @@ class NuevoCursosController extends CI_Controller {
         
 		foreach ($Curso as $row) {
 
-		echo $Cursos = '<a href="Preview?curso='.$row['clave'].'">
-				<div class="card" style="width: 250px; height:400px; margin-left: 20px;">
+			echo $Cursos = '
+			<div class="card" style="width: 250px; height:400px; margin-left: 20px;">
+				<a href="Preview?curso='.$row['clave'].'">	
 					<div class="Img">
 						<img class="card-img-top" style="width: 250px; height:250px;" id="IMGCurso" src="data:image/jpg;base64,'.$row['foto'].'" alt="Card image cap">
 					</div>
@@ -29,8 +30,9 @@ class NuevoCursosController extends CI_Controller {
 						<h5 class="card-title text-center">'.$row['nombre'].'</h5>
 						<p class="card-text text-center">'.$row['descripcion'].'</p>
 					</div>
-				</div>
-			</a>';
+				</a>
+			</div>';
+	
 		}
 	}
 }

@@ -4,7 +4,7 @@
     $varsesion = $_SESSION['usuario'];
     if($varsesion == null|| $varsesion == '')
     {
-        header("location:index.php");
+        header("location:../../../index.php");
     }
 ?> 
 
@@ -52,9 +52,9 @@
 
     <form class="form-inline my-2 my-lg-0">
         <div class="input-group">
-           <input type="search" class="buscar form-control" placeholder="Buscar">
+           <input id="textBuscar" type="search" class="buscar form-control" placeholder="Buscar">
            <div class="input-group-append">
-                <button class="bustcar btn btn-outline-info" type="button">
+                <button id="buscar" class="bustcar btn btn-outline-info" type="button">
                     <span class="fa fa-search form-control-feedback"></span>
                 </button>
            </div>
@@ -93,7 +93,7 @@
                         <button class="btn btn-light col-12 text-left"> <a href=""><span class="fas  fa-info-circle  pull-left" style="color: #07ad90;"></span><pre>  Ayuda</pre>  </a></button>
                     </li>
                     <li>
-                        <button class="btn btn-light col-12 text-left"> <a href="CerrarSesion.php"><span class=" fas fa-sign-out-alt  pull-left" style="color: #07ad90;"></span><pre>  Salir</pre>  </a></button>
+                        <button class="btn btn-light col-12 text-left"> <a href="../../../CerrarSesion.php"><span class=" fas fa-sign-out-alt  pull-left" style="color: #07ad90;"></span><pre>  Salir</pre>  </a></button>
                     </li>
                 </ul>
             </li>
@@ -209,10 +209,10 @@
                 <h6>Filtrar por</h6>
                 <div class=" dropdown text-left">                
                     <button type="button" class="btn btn-primary dropdown-toggle btnDrop" data-toggle="dropdown">Categoria</button>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" href="#">Redes</a>
+                    <div id="TemasCursos" class="dropdown-menu">
+                        <!--<a class="dropdown-item" href="#">Redes</a>
                         <a class="dropdown-item" href="#">Programacion</a>
-                        <a class="dropdown-item" href="#">Base de datos</a>
+                        <a class="dropdown-item" href="#">Base de datos</a>-->
                     </div>
                 </div>
             </div>
@@ -237,12 +237,26 @@
         </div>            
     </div>
 
-    
+    <br><br>
 
 
     <script>        
 
         CargarCursos(1);
+        CargarTemas();
+
+        function CargarTemas()
+        {
+            $.ajax
+            ({
+                type:'post',
+                url:'<?php echo site_url();?>/Cursos/MisCursosController/ConsultarCursosTodosTemasUsuarios',    
+                success:function(resp)
+                {
+                    $("#TemasCursos").append(resp);
+                }
+            });
+        }
 
         function CargarCursos(tipo)
         {
@@ -257,6 +271,18 @@
                 }
             });
         }
+
+        $('#buscar').click(function()
+        {
+            if( $("#textBuscar").val() != "")
+                window.location.href="<?php echo site_url();?>/Cursos/Buscar?nombre="+ $("#textBuscar").val();
+        });
+
+        $('#Temas').click(function()
+        {
+            $("#ContenedorCursos").children().remove();
+            CargarCursos(6);    
+        });
 
         $('#ordenarAZ').click(function()
         {

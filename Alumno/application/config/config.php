@@ -24,6 +24,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |
 */
 $config['base_url'] = 'http://127.0.0.1/Plataforma-Adaptativa/Alumno/';
+//$config['base_url'] = 'http://web.utags.edu.mx/ti/Alumno/';
 
 /*
 |--------------------------------------------------------------------------

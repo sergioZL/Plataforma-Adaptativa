@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="<?php echo base_url();?>app-assets/css/bootstrap.min.css">
     <!--Estilos personalizados-->
     <link rel="stylesheet" href="<?php echo base_url();?>app-assets/css/estilos.css">
+    <script src="<?php echo base_url();?>app-assets/js/jquery-3.3.1.min.js"></script>
+
     <title>Desear realizar el examen diagnostico</title>
 </head>
 <body class="question">
@@ -22,14 +24,52 @@
             <div class="columna1 col-lg-6 text-center">
                 <img src="<?php echo base_url();?>app-assets/imagenes/rocket .png" class="py-4" alt="">
                 <br>
-                <a href="AgregarAlCurso.php?curso=<?php echo $curso =$_GET['curso']; ?>"><button type="button" class="btn  botonBlanco text-white font-weight-bold" > <h4> Comenzar desde el principio</h4></button></a>
+                <button id='incribir' type="button" class="btn  botonBlanco text-white font-weight-bold" ><h4> Comenzar desde el principio</h4></button>
             </div>
             <div class="col-lg-6 text-center">
                 <img src="<?php echo base_url();?>app-assets/imagenes/apple.png" class="py-4" alt="">
                 <br>
-                <a href="Temario?curso=<?php echo $curso =$_GET['curso']; ?>"> <button type="button" class="btn  botonBlanco text-white font-weight-bold "><h4>Tomar examen diagnostico </h4> </button></a>
+                <button id='incribirExamen' type="button" class="btn  botonBlanco text-white font-weight-bold "><h4>Tomar examen diagnostico </h4> </button>
             </div>
         </div>
     </div>
+
+    <script>
+        /*
+            1 - Incribir inicio
+            2 - tomar Examen
+        */
+        var tipo = 0;
+        
+        $('#incribir').click(function()
+        {
+            tipo = 1;
+            IncribirCurso();    
+        });
+
+        $('#incribirExamen').click(function()
+        {
+            tipo = 2;
+            IncribirCurso();
+        });
+
+        function IncribirCurso()
+        {
+            $.ajax
+            ({
+                type:'post',
+                url:'<?php echo site_url();?>/Cursos/PreguntasController/IncribirAlumno?IdCurso=<?php echo $_GET['curso']; ?>&idUsuario=<?php session_start(); echo $_SESSION['usuario']?>',    
+                success:function(resp)
+                {
+                    alert(resp);
+                    if(tipo == 1)
+                        window.location.href="Preview?curso=<?php echo $_GET['curso']; ?>";
+                    else
+                        window.location.href="Preview?curso=<?php echo $_GET['curso']; ?>";
+                }
+            });
+        }
+
+    </script>
 </body>
 </html>

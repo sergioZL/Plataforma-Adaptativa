@@ -1,3 +1,12 @@
+<?php
+    error_reporting(0);
+    session_start();
+    $varsesion = $_SESSION['usuario'];
+    if($varsesion == null|| $varsesion == '')
+    {
+        header("location:../../../index.php");
+    }
+?> 
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -32,9 +41,9 @@
 
     <form class="form-inline my-2 my-lg-0">
         <div class="input-group">
-           <input type="search" class="buscar form-control" placeholder="Buscar">
+           <input id="textBuscar" type="search" class="buscar form-control" placeholder="Buscar">
            <div class="input-group-append">
-                <button class="bustcar btn btn-outline-info" type="button">
+                <button id="buscar" class="bustcar btn btn-outline-info" type="button">
                     <span class="fa fa-search form-control-feedback"></span>
                 </button>
            </div>
@@ -73,7 +82,7 @@
                         <button class="btn btn-light col-12 text-left"> <a href=""><span class="fas  fa-info-circle  pull-left" style="color: #07ad90;"></span><pre>  Ayuda</pre>  </a></button>
                     </li>
                     <li>
-                        <button class="btn btn-light col-12 text-left"> <a href="CerrarSesion.php"><span class=" fas fa-sign-out-alt  pull-left" style="color: #07ad90;"></span><pre>  Salir</pre>  </a></button>
+                        <button class="btn btn-light col-12 text-left"> <a href="../../../CerrarSesion.php"><span class=" fas fa-sign-out-alt  pull-left" style="color: #07ad90;"></span><pre>  Salir</pre>  </a></button>
                     </li>
                 </ul>
             </li>
@@ -470,6 +479,14 @@
                 </div>     
     </div>
 </div>
+
+    <script>
+        $('#buscar').click(function()
+        {
+            if( $("#textBuscar").val() != "")
+                window.location.href="<?php echo site_url();?>/Cursos/Buscar?nombre="+ $("#textBuscar").val();
+        });
+    </script>   
     <script src="<?php echo base_url();?>app-assets/js/jquery-3.3.1.min.js"></script>
     <script src="<?php echo base_url();?>app-assets/js/popper.min.js"></script>
     <script src="<?php echo base_url();?>app-assets/js/bootstrap.min.js"></script>

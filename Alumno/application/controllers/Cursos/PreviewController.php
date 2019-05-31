@@ -7,6 +7,8 @@ class PreviewController extends CI_Controller {
 		$this->load->helper('url_helper');
         $this->load->helper('form');       
 		$this->load->model('Cursos_modal');
+		$this->load->model('Inscrito_modal');
+		$this->load->model('Lecciones_modal');
 		
     }
 
@@ -21,5 +23,21 @@ class PreviewController extends CI_Controller {
 		$Curso = $this->Cursos_modal->ConsultarPorIDCursos($id);
         
         echo json_encode($Curso);
+	}
+
+	public function ConsultarTodosLeccionPorIDCursos()
+	{	
+		$id = $this->input->get('IdCurso');
+		$leccion = $this->Lecciones_modal->ConsultarTodosLeccionesCursos($id);
+        
+        echo json_encode($leccion);
+	}
+	
+	public function ConsultarLeccionPorIDCursos()
+	{	
+		$id = $this->input->get('IdCurso');
+		$leccion = $this->Lecciones_modal->ConsultarLeccionesCursos($id);
+        
+        echo json_encode($leccion);
 	}
 }

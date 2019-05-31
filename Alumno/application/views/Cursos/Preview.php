@@ -1,3 +1,13 @@
+<?php 
+     $curso = $_GET['curso'];
+    error_reporting(0);
+    session_start();
+    $varsesion = $_SESSION['usuario'];
+    if($varsesion == null|| $varsesion == '')
+    {
+        header("location:../../../index.php");
+    }
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -10,7 +20,7 @@
     <link rel="stylesheet" href="<?php echo base_url();?>app-assets/css/estilos.css">   
     <!--Iconos-->
     <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.7.0/css/all.css' integrity='sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ' crossorigin='anonymous'> 
-    <title>preview</title>
+    <title>Preview del Curso</title>
     
     <script src="<?php echo base_url();?>app-assets/js/jquery-3.3.1.min.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -32,9 +42,9 @@
 
     <form class="form-inline my-2 my-lg-0">
         <div class="input-group">
-           <input type="search" class="buscar form-control" placeholder="Buscar">
+           <input id="textBuscar" type="search" class="buscar form-control" placeholder="Buscar">
            <div class="input-group-append">
-                <button class="bustcar btn btn-outline-info" type="button">
+                <button id="buscar" class="bustcar btn btn-outline-info" type="button">
                     <span class="fa fa-search form-control-feedback"></span>
                 </button>
            </div>
@@ -73,7 +83,7 @@
                         <button class="btn btn-light col-12 text-left"> <a href=""><span class="fas  fa-info-circle  pull-left" style="color: #07ad90;"></span><pre>  Ayuda</pre>  </a></button>
                     </li>
                     <li>
-                        <button class="btn btn-light col-12 text-left"> <a href="CerrarSesion.php"><span class=" fas fa-sign-out-alt  pull-left" style="color: #07ad90;"></span><pre>  Salir</pre>  </a></button>
+                        <button class="btn btn-light col-12 text-left"> <a href="../../../CerrarSesion.php"><span class=" fas fa-sign-out-alt  pull-left" style="color: #07ad90;"></span><pre>  Salir</pre>  </a></button>
                     </li>
                 </ul>
             </li>
@@ -81,14 +91,6 @@
     </div>
   </div>
 </nav>
-
-      <?php
-       $curso = $_GET['curso'];
-      $Con = mysqli_connect('localhost','root','','plataforma');
-      $consulta = "SELECT * FROM `Cursos` WHERE clave = '$curso'";
-      $rs = $Con->query($consulta);
-      if($row = $rs ->fetch_assoc())
-      ?>
     <section class="seccion-superior py-4 mt-5 ">     
         <div class="container">
           <div class="row">
@@ -109,11 +111,11 @@
                     </div>
                   </div>
             </div>
-            <div class="col-12 col-md-6 text-center text-md-left align-self-md-center text-white ">
-              <h1 class="display-4 font-weight-bold text-primary"><?php echo $row['nombre']; ?></h1> 
-              <p><?php echo $row['descripcion']; ?></p> 
-              <p>Creado por: Autor del curso <br> fecha de ultima actualización dom: 10 de febrero</p>
-              <a href="#descripciones" class="btn btn-primary btn-lg btn-superior">Leér más</a> 
+            <div id="info" class="col-12 col-md-6 text-center text-md-left align-self-md-center text-white ">
+
+              
+
+
             </div>
           </div>
         </div>
@@ -168,79 +170,14 @@
                 <!--Menu desplegable-->
                 <div id="accordion" role="tablist" aria-multiselectable="true" class="container t-2 pt-5 col-md-11">
                     <!--Leccion uno-->
-                    <div class="card leccion shadow-sm mb-3 rounded-0">
-                        <h5 class="card-header">
-                            <!--Cabecera del menu desplegable-->
-                            <a data-toggle="collapse" href="#contenidoUno" aria-expanded="true" aria-controls="contenidoUno"
-                                id="leccionUno" class="d-block">
-                                <i class="fa fa-chevron-down pull-right"></i>
-                                Leccion #1
-                            </a>
-                        </h5>
-                        <div id="contenidoUno" class="collapse" aria-labelledby="leccionUno">
-                            <!--Contenido del menu desplegable-->
-                            <div class="card-body">
-                                <h6>Este es el contenido de la leccion</h6>
-                                <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Enim nesciunt
-                                    debitis labore quae vero. Labore deleniti, maiores veritatis sapiente reiciendis
-                                    possimus.Ratione enim dignissimos facilis. Magnam id molestias aspernatur dolor.</p>
-                            </div>
-                            <!--Tema-->
-                            <div class="card rounded-0">
-                                <h5 class="card-header">
-                                    <a data-toggle="collapse" href="#contenidoUno-temaUno" aria-expanded="true"
-                                        aria-controls="contenidoUno-temaUno" id="leccionUno-temaUno" class="d-block">
-                                        <i class="fa fa-chevron-down pull-right"></i>
-                                        Tema #1
-                                    </a>
-                                </h5>
-                                <div id="contenidoUno-temaUno" class="collapse" aria-labelledby="leccionUno-temaUno">
-                                    <div class="card-body">
-                                        <h6>Este es el contenido del Tema</h6>
-                                        <a href=""><span class="fas fa-play-circle"></span> video sobre algun tema</a><br>
-                                        <a href=""><span class="fas as fa-file-audio"></span> video sobre algun tema</a><br>
-                                        <a href=""><span class="fas far fa-file-pdf"></span> video sobre algun tema</a><br>
-                                    </div>
-                                </div>
-                            </div>
-                            <!--Tema-->
-                            <div class="card rounded-0">
-                                <h5 class="card-header">
-                                    <a data-toggle="collapse" href="#contenidoUno-temaDos" aria-expanded="true"
-                                        aria-controls="contenidoUno-temaDos" id="leccionUno-temaDos" class="d-block">
-                                        <i class="fa fa-chevron-down pull-right"></i>
-                                        Tema #2
-                                    </a>
-                                </h5>
-                                <div id="contenidoUno-temaDos" class="collapse" aria-labelledby="leccionUno-temaDos">
-                                <div class="card-body">
-                                        <h6>Este es el contenido del Tema</h6>
-                                        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Enim nesciunt
-                                            debitis labore quae vero. Labore deleniti, maiores veritatis sapiente reiciendis
-                                            possimus.Ratione enim dignissimos facilis. Magnam id molestias aspernatur dolor.</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <!--Tema-->
-                            <div class="card rounded-0">
-                                <h5 class="card-header">
-                                    <a data-toggle="collapse" href="#contenidoUno-temaTres" aria-expanded="true"
-                                        aria-controls="contenidoUno-temaTres" id="leccionUno-temaTres" class="d-block">
-                                        <i class="fa fa-chevron-down pull-right"></i>
-                                        Tema #3
-                                    </a>
-                                </h5>
-                                <div id="contenidoUno-temaTres" class="collapse" aria-labelledby="leccionUno-temaTres">
-                                    <div class="card-body">
-                                        <h6>Este es el contenido del Tema</h6>
-                                        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Enim nesciunt
-                                            debitis labore quae vero. Labore deleniti, maiores veritatis sapiente reiciendis
-                                            possimus.Ratione enim dignissimos facilis. Magnam id molestias aspernatur dolor.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    <div  id="Leccion">
+                        
+                        <!--<div id="Temas">
+                            !--Tema--
+                        </div>-->
+                            
                     </div>
+
                     <!--Leccion Dos-->
                     <div class="card leccion shadow-sm mb-3 rounded-0">
                         <h5 class="card-header">
@@ -400,6 +337,7 @@
 
     <script>
         CargarCursos();
+        CargarLecciones();
 
         function CargarCursos()
         {
@@ -413,9 +351,115 @@
                     $("#imagen").append(
                         '<img class="card-img-top h-100" style="min-height: 250px; width: 100%;"  src="data:image/jpg;base64,'+ resp[0].foto+'" alt="Proyecto 1"  ">'                        
                     );
+
+                    $("#info").append(
+                        '<h1 class="display-4 font-weight-bold text-primary"> ' + resp[0].nombre +'</h1>' +
+                        '<p>'+ resp[0].descripcion +'</p>' +
+                        '<p>Creado por: Autor del curso <br> fecha de ultima actualización dom: 10 de febrero</p>'+
+                        '<a href="#descripciones" class="btn btn-primary btn-lg btn-superior">Leér más</a>'
+                    );                    
                 }
             });
         }
+
+        function CargarLecciones2()
+        {
+
+            $.ajax
+            ({
+                type:'post',
+                url:'<?php echo site_url();?>/Cursos/PreviewController/ConsultarLeccionPorIDCursos?IdCurso=<?php echo $curso = $_GET['curso'];?>',    
+                dataType:"json",
+                success:function(resp)
+                {
+                    var n = resp.length;
+
+                    for(var i = 0; i < n; i++)
+                    {
+                        $("#Leccion").append(
+                            '<div class="card leccion shadow-sm mb-3 rounded-0">'+
+                                '<h5 class="card-header">'+
+                                    '<!--Cabecera del menu desplegable-->'+
+                                    '<a data-toggle="collapse" href="#contenido' + resp[i].secuencia+ '" aria-expanded="true" aria-controls="contenidoUno"'+
+                                        'id="leccion' + resp[i].secuencia+ '" class="d-block">'+
+                                        '<i class="fa fa-chevron-down pull-right"></i>'+
+                                        + resp[i].nombre +' #'+ resp[i].secuencia +
+                                    '</a>'+
+                                '</h5>'+
+                            '<div id="contenido' + resp[i].secuencia+ '" class="collapse" aria-labelledby="leccionUno">'+
+                            '<!--Contenido del menu desplegable-->'+
+                            '<div class="card-body">'+
+                                '<h6>Este es el contenido de la leccion</h6>'+
+                                '<p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Enim nesciunt'+
+                                    'debitis labore quae vero. Labore deleniti, maiores veritatis sapiente reiciendis possimus.Ratione enim dignissimos facilis. Magnam id molestias aspernatur dolor.</p>'+
+                            '</div>'+
+                            '<div class="card rounded-0">'+
+                                '<h5 class="card-header">'+
+                                    '<a data-toggle="collapse" href="#contenidoUno-temaUno" aria-expanded="true"'+
+                                        'aria-controls="contenidoUno-temaUno" id="leccionUno-temaUno" class="d-block">'+
+                                        '<i class="fa fa-chevron-down pull-right"></i>'+
+                                        + resp[i].nombreTema+ ' # ' + resp[i].secuenciaTema+ 
+                                    '</a>'+
+                                '</h5>'+
+                                '<div id="contenidoUno-temaUno" class="collapse" aria-labelledby="leccionUno-temaUno">'+
+                                    '<div class="card-body">'+
+                                        '<h6>Este es el contenido del Tema</h6>'+
+                                        '<a href=""><span class="fas fa-play-circle"></span> video sobre algun tema</a><br>'+
+                                        '<a href=""><span class="fas as fa-file-audio"></span> video sobre algun tema</a><br>'+
+                                        '<a href=""><span class="fas far fa-file-pdf"></span> video sobre algun tema</a><br>'+
+                                    '</div>'+
+                                '</div>'+
+                            '</div>'
+                        );
+                    }
+                }
+            });
+        }
+
+        function CargarLecciones()
+        {
+
+            $.ajax
+            ({
+                type:'post',
+                url:'<?php echo site_url();?>/Cursos/PreviewController/ConsultarTodosLeccionPorIDCursos?IdCurso=<?php echo $curso = $_GET['curso'];?>',    
+                dataType:"json",
+                success:function(resp)
+                {
+                    var n = resp.length;
+//alert(resp[0].nombre);
+                    for(var i = 0; i < n; i++)
+                    {
+                        $("#Leccion").append(
+                            '<div class="card leccion shadow-sm mb-3 rounded-0">'+
+                                '<h5 class="card-header">'+
+                                    '<!--Cabecera del menu desplegable-->'+
+                                    '<a data-toggle="collapse" href="#contenido' + resp[i].secuencia+ '" aria-expanded="true" aria-controls="contenidoUno"'+
+                                        'id="leccion' + resp[i].secuencia+ '" class="d-block">'+
+                                        '<i class="fa fa-chevron-down pull-right"></i>'+
+                                        + resp[i].nombre +' #'+ resp[i].secuencia +
+                                    '</a>'+
+                                '</h5>'+
+                            '<div id="contenido' + resp[i].secuencia+ '" class="collapse" aria-labelledby="leccionUno">'+
+                                '<!--Contenido del menu desplegable-->'+
+                                '<div class="card-body">'+
+                                    '<h6>Este es el contenido de la leccion</h6>'+
+                                    '<p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Enim nesciunt'+
+                                        'debitis labore quae vero. Labore deleniti, maiores veritatis sapiente reiciendis possimus.Ratione enim dignissimos facilis. Magnam id molestias aspernatur dolor.</p>'+
+                                '</div>'
+                        );
+                    }
+                }
+            });
+        }
+
+
+        $('#buscar').click(function()
+        {
+            if( $("#textBuscar").val() != "")
+                window.location.href="<?php echo site_url();?>/Cursos/Buscar?nombre="+ $("#textBuscar").val();
+        });
+        
     </script>
     <script src="<?php echo base_url();?>app-assets/js/popper.min.js"></script>
     <script src="<?php echo base_url();?>app-assets/js/bootstrap.min.js"></script>
