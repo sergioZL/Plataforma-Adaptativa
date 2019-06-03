@@ -9,7 +9,7 @@ class PreviewController extends CI_Controller {
 		$this->load->model('Cursos_modal');
 		$this->load->model('Inscrito_modal');
 		$this->load->model('Lecciones_modal');
-		
+		$this->load->model('Aprendizaje_modal');		
     }
 
 	public function load_Preview()
@@ -40,4 +40,22 @@ class PreviewController extends CI_Controller {
         
         echo json_encode($leccion);
 	}
+
+
+	public function ConsultarAprendizajeIDCursos()
+	{	
+		session_start();
+		$idUsuario = $_SESSION['usuario'];
+		$idCurso = $this->input->get('IdCurso');
+		
+		$Aprendizaje = $this->Aprendizaje_modal->ConsultarAprendizajeCurso($idUsuario,$idCurso);
+		
+		foreach($Aprendizaje as $row)
+		{
+			echo '<div class="col-md-6">
+				<i class="fas fa-check"></i> <span>'. $row['aprendizaje'] .'</span><br><br>
+			</div>';
+		}
+	}
+	
 }

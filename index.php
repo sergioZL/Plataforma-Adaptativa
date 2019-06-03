@@ -50,9 +50,5 @@
         }
     </script>
 
-    <script src="sitio/js/jquery-3.3.1.min.js"></script>
-    <script src="sitio/js/popper.min.js"></script>
-    <script src="sitio/js/bootstrap.min.js"></script>
-
 </body>
 </html>

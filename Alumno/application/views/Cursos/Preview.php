@@ -124,31 +124,10 @@
       <div class="container">
           <!--Esta seccion servira para agregar descripciones hacerca del conosimiento que el usuario obtendra-->
             <div class="card py-4 ">
-              <div id="descripciones" class="card-body row" >
+              <div class="card-body row" >
                   <h4 class="card-title col-12">Lo que aprenderas</h4>
-                  <div class="col-md-6">
-                        <i class='fas fa-check'></i> <span> Lorem ipsum dolor sit, amet consectetur adipisicing elit. Vitae saepe dolorem dolorum ratione nobis distinctio, nisi cupiditate,</span><br><br>
-                  </div>
-                  <div class="col-md-6">
-                        <i class='fas fa-check'></i> Lorem ipsum dolor sit, amet consectetur adipisicing elit. Vitae saepe dolorem dolorum ratione nobis distinctio, nisi cupiditate,<br><br>
-                  </div>
-                  <div class="col-md-6">
-                        <i class='fas fa-check'></i> <span> Lorem ipsum dolor sit, amet consectetur adipisicing elit. Vitae saepe dolorem dolorum ratione nobis distinctio, nisi cupiditate,</span><br><br>
-                  </div>
-                  <div class="col-md-6">
-                        <i class='fas fa-check'></i> Lorem ipsum dolor sit, amet consectetur adipisicing elit. Vitae saepe dolorem dolorum ratione nobis distinctio, nisi cupiditate, Lorem ipsum dolor sit, amet consectetur adipisicing elit. Numquam esse odio vitae, soluta repellat voluptas maiores odit corrupti ullam labore accusamus eaque ipsa cumque quasi eveniet error officia aspernatur omnis! <br><br>
-                  </div>
-                  <div class="col-md-6">
-                        <i class='fas fa-check'></i> <span> Lorem ipsum dolor sit, amet consectetur adipisicing elit. Vitae saepe dolorem dolorum ratione nobis distinctio, nisi cupiditate,</span><br><br>
-                  </div>
-                  <div class="col-md-6">
-                        <i class='fas fa-check'></i> Lorem ipsum dolor sit, amet consectetur adipisicing elit. Vitae saepe dolorem dolorum ratione nobis distinctio, nisi cupiditate,<br><br>
-                  </div>
-                  <div class="col-md-6">
-                        <i class='fas fa-check'></i> <span> Lorem ipsum dolor sit, amet consectetur adipisicing elit. Vitae saepe dolorem dolorum ratione nobis distinctio, nisi cupiditate,</span><br><br>
-                  </div>
-                  <div class="col-md-6">
-                        <i class='fas fa-check'></i> Lorem ipsum dolor sit, amet consectetur adipisicing elit. Vitae saepe dolorem dolorum ratione nobis distinctio, nisi cupiditate,<br><br>
+                  <div id="descripciones" class="card-body row">
+                  
                   </div>
               </div>
             </div>
@@ -338,6 +317,7 @@
     <script>
         CargarCursos();
         CargarLecciones();
+        aprendizaje();
 
         function CargarCursos()
         {
@@ -355,11 +335,25 @@
                     $("#info").append(
                         '<h1 class="display-4 font-weight-bold text-primary"> ' + resp[0].nombre +'</h1>' +
                         '<p>'+ resp[0].descripcion +'</p>' +
-                        '<p>Creado por: Autor del curso <br> fecha de ultima actualización dom: 10 de febrero</p>'+
+                        '<p>Fecha de ultima actualización: ' + resp[0].fechaActualizado + ' </p>'+
                         '<a href="#descripciones" class="btn btn-primary btn-lg btn-superior">Leér más</a>'
                     );                    
                 }
             });
+        }
+
+        function aprendizaje()
+        {
+
+            $.ajax
+            ({
+                type:'post',
+                url:'<?php echo site_url();?>/Cursos/PreviewController/ConsultarAprendizajeIDCursos?IdCurso=<?php echo $curso = $_GET['curso'];?>',    
+                success:function(resp)
+                {
+                    $('#descripciones').append(resp);
+                }
+            });            
         }
 
         function CargarLecciones2()

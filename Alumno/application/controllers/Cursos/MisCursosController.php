@@ -7,6 +7,7 @@ class MisCursosController extends CI_Controller {
         $this->load->helper('form');       
 		$this->load->helper('url_helper');
 		$this->load->model('Inscrito_modal');
+		$this->load->model('Categoria_modal');
     }
 
 	public function load_MisCursos()
@@ -19,10 +20,10 @@ class MisCursosController extends CI_Controller {
 			session_start();
 			$varsesion = $_SESSION['usuario'];
 					
-			$Inscrito = $this->Inscrito_modal->ConsultarCursosTodosTemasUsuarios($varsesion);
+			$Inscrito = $this->Categoria_modal->ConsultarCursosTodosTemasUsuarios($varsesion);
 
 			foreach ($Inscrito as $inclito) {
-				echo '<a id="Temas" class="dropdown-item" href="#">'.$inclito['tema'].'</a>';
+				echo '<a id="Temas"  onclick="filtrarTemas('.$inclito['categoria'].')" class="dropdown-item">'.$inclito['descripcion'].'</a>';
 			}
 	}
 

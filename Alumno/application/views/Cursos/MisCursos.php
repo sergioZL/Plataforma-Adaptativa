@@ -277,12 +277,29 @@
             if( $("#textBuscar").val() != "")
                 window.location.href="<?php echo site_url();?>/Cursos/Buscar?nombre="+ $("#textBuscar").val();
         });
-
+/*
         $('#Temas').click(function()
         {
             $("#ContenedorCursos").children().remove();
             CargarCursos(6);    
-        });
+        });*/
+
+        function filtrarTemas(categoria)
+        {
+            alert(categoria);
+            /*
+            $.ajax
+            ({
+                type:'post',
+                url:'<?php echo site_url();?>/Cursos/MisCursosController/ConsultarCursosUsuarios?tipo='+tipo,    
+                success:function(resp)
+                {
+                    $("#ContenedorCursos").append(resp);
+                    filterSelection("todos"); 
+                }
+            });
+*/
+        }
 
         $('#ordenarAZ').click(function()
         {

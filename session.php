@@ -8,7 +8,7 @@ $_SESSION['usuario'] = $username;
 
 header("location:Alumno/index.php/alumno/MisCursos");
 
-/*require("Plataforma/connect_db.php");
+require("Plataforma/connect_db.php");
 $sql2=mysql_query("SELECT * FROM Usuario WHERE clave ='$username'");
 
 if ($sql2 == false) {
@@ -56,4 +56,4 @@ if ($regreso == 0) {
 
 if ($regreso > 0) {
 	echo "<script>location.href='index.php'</script>";
-}*/
+}

@@ -78,7 +78,7 @@ class Inscrito_Modal extends CI_Model{
         return $query->result_array();
     } 
 
-    public function ConsultarCursosTemasUsuario($Tema)
+    /*public function ConsultarCursosTemasUsuario($Tema)
     {
         $this->db->select('*');
         $this->db->from($this->table);
@@ -91,12 +91,13 @@ class Inscrito_Modal extends CI_Model{
 
     public function ConsultarCursosTodosTemasUsuarios($id)
     {
-        $this->db->select('tema');
-        $this->db->from($this->table);
-        $this->db->join('cursos', $this->table.'.clave_curso = cursos.clave','RIGHT');
-        $this->db->where($this->table.'.clave_alumno',$id);
+        $this->db->select('DISTINCT categoria.descripcion');
+        $this->db->from('categoria');
+        $this->db->join('cursos', $this->table.'.clave_curso = cursos.clave','INNER');
+        $this->db->join('inscrito','inscrito.clave_curso = cursos.clave','INNER');
+        $this->db->where('inscrito.clave_alumno',$id);
         $query = $this->db->get();
 
         return $query->result_array();
-    }  
+    }  */
 }
