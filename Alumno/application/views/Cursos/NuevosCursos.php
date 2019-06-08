@@ -73,7 +73,9 @@
                     <li>
                         <a href="#">
                             <span class="fas fa-user-circle fa-2x" style="color: #07ad90;" title="Perfil"></span>
-                             Nombre de usuario
+                            <?php 
+                                echo $varsesion;
+                            ?>
                         </a>
                     </li>
                     <li>

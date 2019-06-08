@@ -70,7 +70,9 @@
                     <li>
                         <a href="#">
                             <span class="fas fa-user-circle fa-2x" style="color: #07ad90;" title="Perfil"></span>
-                             Nombre de usuario
+                            <?php 
+                                echo $varsesion;
+                            ?>
                         </a>
                     </li>
                     <li>
@@ -151,160 +153,15 @@
                     <!--Leccion uno-->
                     <div  id="Leccion">
                         
-                        <!--<div id="Temas">
-                            !--Tema--
-                        </div>-->
+                        <div id="Temas">
+                            <!--Tema-->
+                        </div>
                             
-                    </div>
-
-                    <!--Leccion Dos-->
-                    <div class="card leccion shadow-sm mb-3 rounded-0">
-                        <h5 class="card-header">
-                            <!--Cabecera del menu desplegable-->
-                            <a data-toggle="collapse" href="#contenidoDos" aria-expanded="true" aria-controls="contenidoDos"
-                            id="leccionDos" class="d-block">
-                                <i class="fa fa-chevron-down pull-right"></i>
-                                Leccion #2
-                            </a>
-                        </h5>
-                        <div id="contenidoDos" class="collapse" aria-labelledby="leccionDos">
-                            <!--Contenido del menu desplegable-->
-                            <div class="card-body">
-                                <h6>Este es el contenido de la leccion</h6>
-                                <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Enim nesciunt
-                                    debitis labore quae vero. Labore deleniti, maiores veritatis sapiente reiciendis
-                                    possimus.Ratione enim dignissimos facilis. Magnam id molestias aspernatur dolor.</p>
-                            </div>
-                            <!--Tema-->
-                            <div class="card rounded-0">
-                            <h5 class="card-header">
-                                    <a data-toggle="collapse" href="#contenidoDos-temaUno" aria-expanded="true"
-                                        aria-controls="contenidoDos-temaUno" id="leccionDos-temaUno" class="d-block">
-                                        <i class="fa fa-chevron-down pull-right"></i>
-                                        Tema #1
-                                    </a>
-                                </h5>
-                                <div id="contenidoDos-temaUno" class="collapse" aria-labelledby="leccionDos-temaUno">
-                                    <div class="card-body">
-                                        <h6>Este es el contenido del Tema</h6>
-                                        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Enim nesciunt
-                                            debitis labore quae vero. Labore deleniti, maiores veritatis sapiente reiciendis
-                                            possimus.Ratione enim dignissimos facilis. Magnam id molestias aspernatur dolor.</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card rounded-0">
-                                <h5 class="card-header">
-                                    <a data-toggle="collapse" href="#contenidoTres-temaDos" aria-expanded="true"
-                                        aria-controls="contenidoTres-temaDos" id="leccionTres-temaDos" class="d-block">
-                                        <i class="fa fa-chevron-down pull-right"></i>
-                                        Tema #2
-                                    </a>
-                                </h5>
-                                <div id="contenidoTres-temaDos" class="collapse" aria-labelledby="leccionTres-temaDos">
-                                    <div class="card-body">
-                                        <h6>Este es el contenido del Tema</h6>
-                                        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Enim nesciunt
-                                            debitis labore quae vero. Labore deleniti, maiores veritatis sapiente reiciendis
-                                            possimus.Ratione enim dignissimos facilis. Magnam id molestias aspernatur dolor.</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card rounded-0">
-                                <h5 class="card-header">
-                                    <a data-toggle="collapse" href="#contenidoDos-temaTres" aria-expanded="true"
-                                        aria-controls="contenidoDos-temaTres" id="leccionDos-temaTres" class="d-block">
-                                        <i class="fa fa-chevron-down pull-right"></i>
-                                        Tema #3
-                                    </a>
-                                </h5>
-                                <div id="contenidoDos-temaTres" class="collapse" aria-labelledby="leccionDos-temaTres">
-                                    <div class="card-body">
-                                        <h6>Este es el contenido del Tema</h6>
-                                        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Enim nesciunt
-                                            debitis labore quae vero. Labore deleniti, maiores veritatis sapiente reiciendis
-                                            possimus.Ratione enim dignissimos facilis. Magnam id molestias aspernatur dolor.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!--Leccion tres-->
-                    <div class="card leccion shadow-lg mb-3 rounded-0">
-                        <h5 class="card-header">
-                            <!--Cabecera del menu desplegable-->
-                            <a data-toggle="collapse" href="#contenidoTres" aria-expanded="true" aria-controls="contenidoTres"
-                                id="leccionTres" class="d-block">
-                                <i class="fa fa-chevron-down pull-right"></i>
-                                Leccion #3
-                            </a>
-                        </h5>
-                        <div id="contenidoTres" class="collapse" aria-labelledby="leccionTres">
-                            <!--Contenido del menu desplegable-->
-                            <div class="card-body">
-                                <h6>Este es el contenido de la leccion</h6>
-                                <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Enim nesciunt
-                                    debitis labore quae vero. Labore deleniti, maiores veritatis sapiente reiciendis
-                                    possimus.Ratione enim dignissimos facilis. Magnam id molestias aspernatur dolor.</p>
-                            </div>
-                            <!--Tema-->
-                            <div class="card rounded-0">
-                                <h5 class="card-header">
-                                    <a data-toggle="collapse" href="#contenidoTres-temaUno" aria-expanded="true"
-                                        aria-controls="contenidoTres-temaUno" id="leccionTres-temaUno" class="d-block">
-                                        <i class="fa fa-chevron-down pull-right"></i>
-                                        Tema #1
-                                    </a>
-                                </h5>
-                                <div id="contenidoTres-temaUno" class="collapse" aria-labelledby="leccionTres-temaUno">
-                                    <div class="card-body">
-                                        <h6>Este es el contenido del Tema</h6>
-                                        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Enim nesciunt
-                                            debitis labore quae vero. Labore deleniti, maiores veritatis sapiente reiciendis
-                                            possimus.Ratione enim dignissimos facilis. Magnam id molestias aspernatur dolor.</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <!--Tema-->
-                            <div class="card rounded-0">
-                                <h5 class="card-header">
-                                    <a data-toggle="collapse" href="#contenidoTres-temaDos" aria-expanded="true"
-                                        aria-controls="contenidoTres-temaDos" id="leccionTres-temaDos" class="d-block">
-                                        <i class="fa fa-chevron-down pull-right"></i>
-                                        Tema #2
-                                    </a>
-                                </h5>
-                                <div id="contenidoTres-temaDos" class="collapse" aria-labelledby="leccionTres-temaDos">
-                                    <div class="card-body">
-                                        <h6>Este es el contenido del Tema</h6>
-                                        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Enim nesciunt
-                                            debitis labore quae vero. Labore deleniti, maiores veritatis sapiente reiciendis
-                                            possimus.Ratione enim dignissimos facilis. Magnam id molestias aspernatur dolor.</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <!--Tema-->
-                            <div class="card rounded-0">
-                                <h5 class="card-header">
-                                    <a data-toggle="collapse" href="#contenidoTres-temaTres" aria-expanded="true"
-                                        aria-controls="contenidoTres-temaTres" id="leccionTres-temaTres" class="d-block">
-                                        <i class="fa fa-chevron-down pull-right"></i>
-                                        Tema #3
-                                    </a>
-                                </h5>
-                                <div id="contenidoTres-temaTres" class="collapse" aria-labelledby="leccionTres-temaTres">
-                                    <div class="card-body">
-                                        <h6>Este es el contenido del Tema</h6>
-                                        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Enim nesciunt
-                                            debitis labore quae vero. Labore deleniti, maiores veritatis sapiente reiciendis
-                                            possimus.Ratione enim dignissimos facilis. Magnam id molestias aspernatur dolor.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
+
+            <br><br><br><br><br>
 
 
 
@@ -377,7 +234,7 @@
                                     '<a data-toggle="collapse" href="#contenido' + resp[i].secuencia+ '" aria-expanded="true" aria-controls="contenidoUno"'+
                                         'id="leccion' + resp[i].secuencia+ '" class="d-block">'+
                                         '<i class="fa fa-chevron-down pull-right"></i>'+
-                                        + resp[i].nombre +' #'+ resp[i].secuencia +
+                                         resp[i].nombre +' #'+ resp[i].secuencia +
                                     '</a>'+
                                 '</h5>'+
                             '<div id="contenido' + resp[i].secuencia+ '" class="collapse" aria-labelledby="leccionUno">'+
@@ -421,27 +278,57 @@
                 success:function(resp)
                 {
                     var n = resp.length;
-//alert(resp[0].nombre);
+                    //var Tema;
                     for(var i = 0; i < n; i++)
                     {
-                        $("#Leccion").append(
-                            '<div class="card leccion shadow-sm mb-3 rounded-0">'+
-                                '<h5 class="card-header">'+
-                                    '<!--Cabecera del menu desplegable-->'+
-                                    '<a data-toggle="collapse" href="#contenido' + resp[i].secuencia+ '" aria-expanded="true" aria-controls="contenidoUno"'+
-                                        'id="leccion' + resp[i].secuencia+ '" class="d-block">'+
-                                        '<i class="fa fa-chevron-down pull-right"></i>'+
-                                        + resp[i].nombre +' #'+ resp[i].secuencia +
-                                    '</a>'+
-                                '</h5>'+
-                            '<div id="contenido' + resp[i].secuencia+ '" class="collapse" aria-labelledby="leccionUno">'+
-                                '<!--Contenido del menu desplegable-->'+
-                                '<div class="card-body">'+
-                                    '<h6>Este es el contenido de la leccion</h6>'+
-                                    '<p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Enim nesciunt'+
-                                        'debitis labore quae vero. Labore deleniti, maiores veritatis sapiente reiciendis possimus.Ratione enim dignissimos facilis. Magnam id molestias aspernatur dolor.</p>'+
-                                '</div>'
-                        );
+                        $.ajax
+                        ({
+                            type:'post',
+                            url:'<?php echo site_url();?>/Cursos/PreviewController/ConsultarTemasCursos?IdLeccion='+resp[i].clave,
+                            success:function(resp)
+                            {
+                                $("#Leccion").append(
+                                    '<div class="card leccion shadow-sm mb-3 rounded-0">'+
+                                        '<h5 class="card-header">'+
+                                            '<!--Cabecera del menu desplegable-->'+
+                                            '<a data-toggle="collapse" href="#contenido' + resp[i].secuencia+ '" aria-expanded="true" aria-controls="contenidoUno"'+
+                                                'id="leccion' + resp[i].secuencia+ '" class="d-block">'+
+                                                '<i class="fa fa-chevron-down pull-right"></i>'
+                                                + resp[i].nombre +' #'+ resp[i].secuencia +
+                                            '</a>'+
+                                        '</h5>'+
+                                    '<div id="contenido' + resp[i].secuencia+ '" class="collapse" aria-labelledby="leccionUno">'+
+                                        '<!--Contenido del menu desplegable-->'+
+                                        '<div class="card-body">'+
+                                            '<h6>Este es el contenido de la leccion</h6>'+
+                                            '<p>' + resp[i].descripcion+ '</p>'+
+                                        '</div>'+resp
+                                );
+                                
+                            },error: function()
+                            {
+                                alert(nose);
+                                $("#Leccion").append(
+                                    '<div class="card leccion shadow-sm mb-3 rounded-0">'+
+                                        '<h5 class="card-header">'+
+                                            '<!--Cabecera del menu desplegable-->'+
+                                            '<a data-toggle="collapse" href="#contenido' + resp[i].secuencia+ '" aria-expanded="true" aria-controls="contenidoUno"'+
+                                                'id="leccion' + resp[i].secuencia+ '" class="d-block">'+
+                                                '<i class="fa fa-chevron-down pull-right"></i>'
+                                                + resp[i].nombre +' #'+ resp[i].secuencia +
+                                            '</a>'+
+                                        '</h5>'+
+                                    '<div id="contenido' + resp[i].secuencia+ '" class="collapse" aria-labelledby="leccionUno">'+
+                                        '<!--Contenido del menu desplegable-->'+
+                                        '<div class="card-body">'+
+                                            '<h6>Este es el contenido de la leccion</h6>'+
+                                            '<p>' + resp[i].descripcion+ '</p>'+
+                                        '</div>'
+                                );
+                            }
+                        });
+                        //alert(Tema);
+
                     }
                 }
             });

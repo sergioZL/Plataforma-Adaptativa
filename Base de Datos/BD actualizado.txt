@@ -110,6 +110,7 @@ CREATE TABLE `temas` (
   `nombre` varchar(40) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `secuencia` int(11) NOT NULL DEFAULT '1',
   `id_leccion` int(10) NOT NULL,
+  `descripcionTema` varchar(150) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   KEY `Lecciones_Temas_pbfk` (`id_leccion`) 
 );
@@ -149,10 +150,12 @@ INSERT INTO aprendizaje(aprendizaje,clave_curso) values('Select','MySQL'),('Dele
 INSERT INTO aprendizaje(aprendizaje,clave_curso) values('Estrucutura','TICS'),('Condiciones -if','TICS'),('Ciclo -for','TICS'),('Ciclo -Do','TICS'),('Ciclo -While','TICS');
 INSERT INTO `inscrito` VALUES ('1','MySQL',0),('alumno','MySQL',0),('alumno','TICS',0);
 INSERT INTO `inscrito` VALUES ('alumno','TICPascal',80);
-INSERT INTO `lecciones` VALUES (1,'Select',1,'MySQL'),(2,'INSERT',2,'MySQL'),(3,'INSERT',2,'MySQL'),(4,'introducción',1,'TICS'),(5,'narracion',1,'oratoria'),(6,'redaccion',2,'oratoria'),(7,'Abierta',1,'EDC'),(8,'cerrada',2,'EDC');
-INSERT INTO temas(nombre,secuencia,id_leccion) value('tema 1', 1,1),('tema 2', 2,1);
+INSERT INTO `lecciones` VALUES (1,'Select',1,'MySQL','Lorem, ipsum dolor sit amet consectetur adipisicing elit. Enim nesciunt debitis labore quae vero. Labore deleniti, maiores veritatis sapiente reiciendis possimus.Ratione enim dignissimos facilis. Magnam id molestias aspernatur dolor.')
+,(2,'INSERT',2,'MySQL','Lorem, ipsum dolor sit amet consectetur adipisicing elit. Enim nesciunt debitis labore quae vero. Labore deleniti, maiores veritatis sapiente reiciendis possimus.Ratione enim dignissimos facilis. Magnam id molestias aspernatur dolor.'),
+(3,'INSERT',2,'MySQL','Lorem, ipsum dolor sit amet consectetur adipisicing elit. Enim nesciunt debitis labore quae vero. Labore deleniti, maiores veritatis sapiente reiciendis possimus.Ratione enim dignissimos facilis. Magnam id molestias aspernatur dolor.'),
+(4,'introducción',1,'TICS','Lorem, ipsum dolor sit amet consectetur adipisicing elit. Enim nesciunt debitis labore quae vero. Labore deleniti, maiores veritatis sapiente reiciendis possimus.Ratione enim dignissimos facilis. Magnam id molestias aspernatur dolor.');
+INSERT INTO temas(nombre,secuencia,id_leccion,descripcionTema) value('tema 1', 3,1,'Tema 1 no se que mas'),('tema 2', 3,4,'Tema 2 no se que mas');
 
-select * from lecciones;
 select * from inscrito;
 select * from cursos;
 select * from configuracion;
@@ -163,27 +166,7 @@ select * from material;
 select * from preguntas;
 select * from recursos;
 select * from respuestas;
+select * from lecciones;
 select * from temas;
 select * from usuario;
 select * from categoria;
-
-
--- id,cursos.descripcion as descripcioncursos, categoria.descripcion as descripcioncategoria,cursos.clave,nombre,foto,clave_carrera 
-SELECT DISTINCT categoria.descripcion,categoria  FROM `categoria` 
-INNER JOIN `cursos` ON `categoria`.`id` = `cursos`.`categoria`
-INNER JOIN `inscrito` ON `inscrito`.`clave_curso` = `cursos`.`clave`
-WHERE `inscrito`.`clave_alumno` = 'alumno';
- 
- 
- 
-SELECT `aprendizaje` FROM `aprendizaje` 
-INNER JOIN `cursos` ON `aprendizaje`.`clave_curso` = `cursos`.`clave` 
-INNER JOIN `inscrito` ON `inscrito`.`clave_curso` = `cursos`.`clave`
-WHERE `inscrito`.`clave_alumno` = 'alumno' AND `cursos`.`clave` = 'MySQL';
-
-select * from inscrito inner join cursos on inscrito.clave_curso = Cursos.clave WHERE `inscrito`.`clave_alumno` = 'alumno' order by nombre DESC ;
-select * from lecciones right join temas on temas.id_leccion = lecciones.clave where clave_curso = 'MySQL' order by lecciones.secuencia asc; 
-select * from lecciones left join temas on temas.id_leccion = lecciones.clave where clave_curso = 'MySQL' order by lecciones.secuencia asc;
-select * from temas right join lecciones on temas.id_leccion = lecciones.clave where clave_curso = 'MySQL' order by lecciones.secuencia asc; 
-select * from temas left join lecciones on temas.id_leccion = lecciones.clave where clave_curso = 'MySQL' order by lecciones.secuencia asc;
-select * from inscrito inner join cursos on inscrito.clave_curso = Cursos.clave WHERE `inscrito`.`clave_alumno` = 'alumno' ;
