@@ -29,6 +29,81 @@
             left: 42.5%;
             transform: translate(-50%, -50%);
         }
+        body {
+
+font-family: "Lato", sans-serif; }
+
+
+
+.sidenav {
+
+height: 100%;
+
+width: 0;
+
+position: fixed;
+
+z-index: 1;
+
+top: 0;
+
+left: 0;
+
+background-image: linear-gradient( #e6f7ff 5%,#0044cc 95%);
+
+overflow-x: hidden;
+
+-webkit-transition: 0.5s;
+
+transition: 0.5s;
+
+padding-top: 60px; }
+
+
+
+.sidenav a {
+
+  padding: 8px 8px 8px 32px;
+
+  text-decoration: none;
+
+  font-size: 25px;
+
+  color: #66ccff;
+
+  display: block;
+
+  -webkit-transition: 0.3s;
+
+  transition: 0.3s; }
+
+
+
+.sidenav a:hover {
+
+  color: #c9e7f5; }
+
+
+
+.sidenav .closebtn {
+
+  position: absolute;
+
+  top: 0;
+
+  right: 25px;
+
+  font-size: 36px;
+
+  margin-left: 50px; }
+
+
+
+#main {
+
+  -webkit-transition: margin-left .5s;
+
+  transition: margin-left .5s; }
     </style>
   </head>
   <body>
