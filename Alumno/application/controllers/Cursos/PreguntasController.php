@@ -20,7 +20,7 @@ class PreguntasController extends CI_Controller {
 		
 		$Curso = $this->Inscrito_modal->IncribirAlumno($id,$idUsuario);
 		
-		if($Curso != 0)
+		if($Curso)
 			echo 'Se inscribio al curso';
 		else
 			echo 'No inscribio al curso';

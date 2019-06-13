@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="Alumno/app-assets/css/diseño.css">    
     <link rel="stylesheet" href="Alumno/app-assets/css/bootstrap.min.css">
-    <script src="sitio/js/jquery.min.js" charset="utf-8"></script>
     <title>Login</title>
 </head>
 <body>

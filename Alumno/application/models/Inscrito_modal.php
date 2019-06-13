@@ -78,6 +78,18 @@ class Inscrito_Modal extends CI_Model{
         return $query->result_array();
     } 
 
+    public function ConsultarCursosTemario($id,$curso)
+    {
+        $this->db->select('*');
+        $this->db->from($this->table);
+        $this->db->join('cursos', $this->table.'.clave_curso = cursos.clave','RIGHT');
+        $this->db->where($this->table.'.clave_alumno',$id);
+        $this->db->where($this->table.'.clave_curso',$curso);
+        $query = $this->db->get();
+
+        return $query->result_array();
+    } 
+
     /*public function ConsultarCursosTemasUsuario($Tema)
     {
         $this->db->select('*');

@@ -1,18 +1,115 @@
+<?php
+    error_reporting(0);
+    session_start();
+    $curso = $_GET['curso'];
+    $varsesion = $_SESSION['usuario'];
+    if($varsesion == null|| $varsesion == '')
+    {
+        header("location:../../../index.php");
+    }
+?> 
 <!DOCTYPE html>
 <html lang="es" data-textdirection="ltr" class="loading">
   <head>
      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>Material</title>
     
-    <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>app-assets/css/bootstrap.css"><!--
-    <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>app-assets/css/diseñoAudio.css">-->
+    <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>app-assets/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>app-assets/css/diseñoAudio.css">
     <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>app-assets/css/diseñoVideo.css">
     <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>app-assets/css/diseñoPDF.css">
-    <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>app-assets/css/estilo.css">
-    
     <script src="<?php echo base_url();?>app-assets/js/myjs.js"></script>
     <script src="<?php echo base_url();?>app-assets/js/jquery-3.3.1.min.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script>
+        $(document).ready(function(){
+            CargarLecciones();
+        });
+
+        function filterSelection(idButton)
+        {
+            alert(idButton);
+
+            var Video = document.getElementById('Video');
+            var Audio = document.getElementById('Audio');
+            var PDF = document.getElementById('PDF');
+
+
+            switch(idButton) {
+            case 1:
+                Video.style.display = 'block';
+                Audio.style.display = 'none';
+                PDF.style.display = 'none';
+                break;
+
+            case 2:
+                Video.style.display = 'none';
+                Audio.style.display = 'block';
+                PDF.style.display = 'none';
+                break;
+
+            case 3:
+                Video.style.display = 'none';
+                Audio.style.display = 'none';
+                PDF.style.display = 'block';
+                break;
+        }
+
+        function CargarLecciones()
+        {
+
+            $.ajax
+            ({
+                type:'post',
+                url:'<?php echo site_url();?>/Cursos/PreviewController/ConsultarTodosLeccionPorIDCursos?IdCurso=<?php echo $curso = $_GET['curso'];?>',    
+                dataType:"json",
+                success:function(resp)
+                {
+                    var n = resp.length;
+                    //var data = JSON.parse(resp);
+
+                    alert(n);
+                    for(var i = 0; i < n; i++)
+                    {
+                        temas(resp,i);
+                    }
+                }
+            });
+        }
+
+
+        function temas(data,i)
+        {
+            $.ajax
+            ({
+                type:'post',
+                url:'<?php echo site_url();?>/Cursos/PreviewController/ConsultarTemasCursos?IdLeccion='+data[i].clave,
+                success :function(resp)
+                {
+                    $("#Leccion").append(
+                        '<div class="card leccion shadow-sm mb-3 rounded-0">'+
+                            '<h5 class="card-header">'+
+                                '<!--Cabecera del menu desplegable-->'+
+                                '<a data-toggle="collapse" href="#contenido' + data[i].secuencia+ '" aria-expanded="true" aria-controls="contenidoUno"'+
+                                    'id="leccion' + data[i].secuencia+ '" class="d-block">'+
+                                    '<i class="fa fa-chevron-down pull-right"></i>'
+                                    + data[i].nombre +' #'+ data[i].secuencia +
+                                '</a>'+
+                            '</h5>'+
+                        '<div id="contenido' + data[i].secuencia+ '" class="collapse" aria-labelledby="leccionUno">'+
+                            '<!--Contenido del menu desplegable-->'+
+                            '<div class="card-body">'+
+                                '<h6>Este es el contenido de la leccion</h6>'+
+                                '<p>' + data[i].descripcion+ '</p>'+
+                            '</div>'+resp
+                    );
+                }                    
+            });
+        }
+
+
+    </script>
+
     <style>
         .bloqueo
         {
@@ -29,6 +126,81 @@
             left: 42.5%;
             transform: translate(-50%, -50%);
         }
+        body {
+
+font-family: "Lato", sans-serif; }
+
+
+
+.sidenav {
+
+height: 100%;
+
+width: 0;
+
+position: fixed;
+
+z-index: 1;
+
+top: 0;
+
+left: 0;
+
+background-image: linear-gradient( #e6f7ff 5%,#0044cc 95%);
+
+overflow-x: hidden;
+
+-webkit-transition: 0.5s;
+
+transition: 0.5s;
+
+padding-top: 60px; }
+
+
+
+.sidenav a {
+
+  padding: 8px 8px 8px 32px;
+
+  text-decoration: none;
+
+  font-size: 25px;
+
+  color: #66ccff;
+
+  display: block;
+
+  -webkit-transition: 0.3s;
+
+  transition: 0.3s; }
+
+
+
+.sidenav a:hover {
+
+  color: #c9e7f5; }
+
+
+
+.sidenav .closebtn {
+
+  position: absolute;
+
+  top: 0;
+
+  right: 25px;
+
+  font-size: 36px;
+
+  margin-left: 50px; }
+
+
+
+#main {
+
+  -webkit-transition: margin-left .5s;
+
+  transition: margin-left .5s; }
     </style>
   </head>
   <body>
@@ -37,16 +209,22 @@
         <div id="mySidenav" class="sidenav">
             <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
             <div class="row">
-            <div class="btn-group btn-group-lg offset-4" role="group" aria-label="Basic example">
+            <div class="btn-group btn-group-lg offset-4" role="group" aria-label="Basic example">                    
                     <button type="button" class="btn btn-outline-secondary" onclick="filterSelection(1)"><span class="fa fa-file-video-o "></span></button>
                     <button type="button" class="btn btn-outline-secondary" onclick="filterSelection(2)"><span class="fa fa-file-audio-o "></span></button>
                     <button type="button" class="btn btn-outline-secondary" onclick="filterSelection(3)"><span class="fa fa-file-pdf-o "></span></button>
             </div>
             </div>
     <!--nuevos elementos del menu desplegable-->                
-    <div  class="row">
+    <div  class="row">   
             <!--Menu desplegable-->
         <div id="accordion" role="tablist" aria-multiselectable="true" class="container t-2 pt-5 col-md-11">
+            
+            <div  id="Leccion">
+
+
+            </div>
+            
             <!--Leccion uno-->
             <div class="card leccion shadow-sm mb-3 rounded-0">
                 <h5 class="card-header"><!--Cabecera del menu desplegable-->
@@ -232,8 +410,8 @@
                        </div>
                     </div>
                 </div>     
-        </div>
-    </div>                          
+            </div>
+        </div>                          
         </div>
 
 
@@ -249,7 +427,7 @@
                     <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776;</span>
                 </div>         
             </div>
-            <div class="pull-right pt-5"><a href="Temario.php" style="text-decoration: none; color:rgba(255, 255, 255, 0.63);">ir al temario</a></div>
+            <div class="pull-right pt-5"><a href="<?php echo site_url();?>/Cursos/Temario?curso=<?php echo  $curso?>" style="text-decoration: none; color:rgba(255, 255, 255, 0.63);">ir al temario</a></div>
             <div class="controlsVideo">
                 <div class="progressVideo pointer">
                     <div class="barVideo">
@@ -284,7 +462,7 @@
                 <source src="<?php echo  base_url(); ?>Material/audio/Alan Walker - Faded (Instrumental Version).mp3"> 
             </audio>
             
-            <div class="loading">
+            <!--<div class="loading">
                 <div class="obj"></div>
                 <div class="obj"></div>
                 <div class="obj"></div>
@@ -293,13 +471,14 @@
                 <div class="obj"></div>
                 <div class="obj"></div>
                 <div class="obj"></div>
-            </div>
+            </div>-->
             
             <div class="submenu">
                 <div class="menu pointer col-md-1 pt-5 icon_white submenuAudio">
                     <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776;</span>
                 </div>         
             </div>
+            <div class="pull-right pt-5"><a href="<?php echo site_url();?>/Cursos/Temario?curso=<?php echo  $curso?>" style="text-decoration: none; color:rgba(255, 255, 255, 0.63);">ir al temario</a></div>
 
             <div class="controlsAudio">
                 <div class="progressAudio pointer">
@@ -333,6 +512,8 @@
                 <div class="menu pointer col-md-1 pt-5 icon_white">
                     <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776;</span>
                     <div class="bloqueo">
+                    <div class="pull-right pt-5"><a href="<?php echo site_url();?>/Cursos/Temario?curso=<?php echo  $curso?>" style="text-decoration: none; color:rgba(255, 255, 255, 0.63);">ir al temario</a></div>
+
         </div>
                 </div>         
             </div>
@@ -343,38 +524,8 @@
 
 
 
-    <script>
-        function filterSelection(idButton)
-        {
-
-            var Video = document.getElementById('Video');
-            var Audio = document.getElementById('Audio');
-            var PDF = document.getElementById('PDF');
-
-            switch(idButton) {
-            case 1:
-                Video.style.display = 'block';
-                Audio.style.display = 'none';
-                PDF.style.display = 'none';
-                break;
-
-            case 2:
-                Video.style.display = 'none';
-                Audio.style.display = 'block';
-                PDF.style.display = 'none';
-                break;
-
-            case 3:
-                Video.style.display = 'none';
-                Audio.style.display = 'none';
-                PDF.style.display = 'block';
-                break;
-        }
-    </script>
-
+    
     <script src="<?php echo base_url();?>app-assets/js/popper.min.js"></script>
     <script src="<?php echo base_url();?>app-assets/js/bootstrap.min.js"></script>
-
-    <script src="<?php echo base_url();?>app-assets/js/jquery-3.3.1.min.js"></script>
     <script src="<?php echo base_url();?>app-assets/js/video.js"></script>
     <script src="<?php echo base_url();?>app-assets/js/audio.js"></script>

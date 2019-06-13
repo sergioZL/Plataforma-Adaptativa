@@ -278,62 +278,46 @@
                 success:function(resp)
                 {
                     var n = resp.length;
-                    //var Tema;
+                    //var data = JSON.parse(resp);
+
+                    alert(n);
                     for(var i = 0; i < n; i++)
                     {
-                        $.ajax
-                        ({
-                            type:'post',
-                            url:'<?php echo site_url();?>/Cursos/PreviewController/ConsultarTemasCursos?IdLeccion='+resp[i].clave,
-                            success:function(resp)
-                            {
-                                $("#Leccion").append(
-                                    '<div class="card leccion shadow-sm mb-3 rounded-0">'+
-                                        '<h5 class="card-header">'+
-                                            '<!--Cabecera del menu desplegable-->'+
-                                            '<a data-toggle="collapse" href="#contenido' + resp[i].secuencia+ '" aria-expanded="true" aria-controls="contenidoUno"'+
-                                                'id="leccion' + resp[i].secuencia+ '" class="d-block">'+
-                                                '<i class="fa fa-chevron-down pull-right"></i>'
-                                                + resp[i].nombre +' #'+ resp[i].secuencia +
-                                            '</a>'+
-                                        '</h5>'+
-                                    '<div id="contenido' + resp[i].secuencia+ '" class="collapse" aria-labelledby="leccionUno">'+
-                                        '<!--Contenido del menu desplegable-->'+
-                                        '<div class="card-body">'+
-                                            '<h6>Este es el contenido de la leccion</h6>'+
-                                            '<p>' + resp[i].descripcion+ '</p>'+
-                                        '</div>'+resp
-                                );
-                                
-                            },error: function()
-                            {
-                                alert(nose);
-                                $("#Leccion").append(
-                                    '<div class="card leccion shadow-sm mb-3 rounded-0">'+
-                                        '<h5 class="card-header">'+
-                                            '<!--Cabecera del menu desplegable-->'+
-                                            '<a data-toggle="collapse" href="#contenido' + resp[i].secuencia+ '" aria-expanded="true" aria-controls="contenidoUno"'+
-                                                'id="leccion' + resp[i].secuencia+ '" class="d-block">'+
-                                                '<i class="fa fa-chevron-down pull-right"></i>'
-                                                + resp[i].nombre +' #'+ resp[i].secuencia +
-                                            '</a>'+
-                                        '</h5>'+
-                                    '<div id="contenido' + resp[i].secuencia+ '" class="collapse" aria-labelledby="leccionUno">'+
-                                        '<!--Contenido del menu desplegable-->'+
-                                        '<div class="card-body">'+
-                                            '<h6>Este es el contenido de la leccion</h6>'+
-                                            '<p>' + resp[i].descripcion+ '</p>'+
-                                        '</div>'
-                                );
-                            }
-                        });
-                        //alert(Tema);
-
+                        temas(resp,i);
                     }
                 }
             });
         }
 
+
+        function temas(data,i)
+        {
+            $.ajax
+            ({
+                type:'post',
+                url:'<?php echo site_url();?>/Cursos/PreviewController/ConsultarTemasCursos?IdLeccion='+data[i].clave,
+                success :function(resp)
+                {
+                    $("#Leccion").append(
+                        '<div class="card leccion shadow-sm mb-3 rounded-0">'+
+                            '<h5 class="card-header">'+
+                                '<!--Cabecera del menu desplegable-->'+
+                                '<a data-toggle="collapse" href="#contenido' + data[i].secuencia+ '" aria-expanded="true" aria-controls="contenidoUno"'+
+                                    'id="leccion' + data[i].secuencia+ '" class="d-block">'+
+                                    '<i class="fa fa-chevron-down pull-right"></i>'
+                                    + data[i].nombre +' #'+ data[i].secuencia +
+                                '</a>'+
+                            '</h5>'+
+                        '<div id="contenido' + data[i].secuencia+ '" class="collapse" aria-labelledby="leccionUno">'+
+                            '<!--Contenido del menu desplegable-->'+
+                            '<div class="card-body">'+
+                                '<h6>Este es el contenido de la leccion</h6>'+
+                                '<p>' + data[i].descripcion+ '</p>'+
+                            '</div>'+resp
+                    );
+                }                    
+            });
+        }
 
         $('#buscar').click(function()
         {

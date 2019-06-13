@@ -13,6 +13,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contenido del curso</title>
+    
+    <script src="<?php echo base_url();?>app-assets/js/jquery-3.3.1.min.js"></script>
     <!--estilos bootstrap-->
     <link rel="stylesheet" href="<?php echo base_url();?>app-assets/css/bootstrap.css">
     <!--Estilos personalizados-->
@@ -99,25 +101,19 @@
 <section class="seccion-superior"><!--Esta es la parte superior del temario-->
     <div class="row pt-4 py-4 offset-1">
         <div class="panelImagen col-lg-4 ">
-            <img class="card-img-top h-100" src="<?php echo base_url();?>app-assets/imagenes/wallhaven-6742.jpg" alt="Proyecto 1">
+            <div id="imagen">
+
+
+            </div>
         </div>
         <div class="row col-lg-8 ">
             <div class="offset-1">
-                <h2 class="text-white">Este es el titulo del curso</h2>
-                <br>
-                <h4 class="text-white">has completado: 1 leccion de 5</h4>
-                <div class="popup" onclick="myFunction()">
-                    <div class="progress">
-                        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40"
-                        aria-valuemin="0" aria-valuemax="100" style="width:20%">
-                          20% de progreso
-                        </div>
-                      </div>
-                    <span class="popuptext" id="myPopup"> Segun el examen diagnostico este es el progreso que tienes del curso</span>
+                
+                <div id="info">
+                
                 </div>
-                <br>
-                <br>
-                <a href="video.html"> <button type="button" class="btn btn-success"> <h2>Continuar desde: tema-2.2</h2></button></a>
+
+                        
             </div>
         </div>
     </div>
@@ -483,13 +479,51 @@
 </div>
 
     <script>
+    CargarInfoCursos();
         $('#buscar').click(function()
         {
             if( $("#textBuscar").val() != "")
                 window.location.href="<?php echo site_url();?>/Cursos/Buscar?nombre="+ $("#textBuscar").val();
         });
-    </script>   
-    <script src="<?php echo base_url();?>app-assets/js/jquery-3.3.1.min.js"></script>
+
+        function CargarInfoCursos()
+        {
+            $.ajax
+            ({
+                type:'post',
+                url:'<?php echo site_url();?>/Cursos/TemarioController/ConsultarPorIDCursos?IdCurso=<?php echo $curso = $_GET['curso'];?>',    
+                dataType:"json",
+                success:function(resp)
+                {
+                    $("#imagen").append(
+                        '<img class="card-img-top h-100" src="data:image/jpg;base64,'+ resp[0].foto+'" alt="Proyecto 1">'
+                    );
+
+                    $("#info").append(
+
+                        '<h2 class="text-white">' + resp[0].nombre +'</h2>'+
+                        '<br>'+
+                        '<h4 class="text-white">has completado: 1 leccion de 5</h4>'+
+                        '<div class="popup" onclick="myFunction()">'+
+                            '<div class="progress">'+
+                                '<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40"'+
+                                'aria-valuemin="0" aria-valuemax="100" style="width:' + resp[0].avance +'%">'+
+                                    resp[0].avance +'% de progreso'+
+                                '</div>'+
+                            '</div>'+
+                            '<span class="popuptext" id="myPopup"> Segun el examen diagnostico este es el progreso que tienes del curso</span>'+
+                        '</div>'+
+                        '<br>'+
+                        '<br>'+
+                        '<a href="video.html"> <button type="button" class="btn btn-success"> <h2>Continuar desde: tema-2.2</h2></button></a>'
+                        
+                    );                    
+                }
+            });
+        }
+    </script>  
+
+     
     <script src="<?php echo base_url();?>app-assets/js/popper.min.js"></script>
     <script src="<?php echo base_url();?>app-assets/js/bootstrap.min.js"></script>
     <script src="<?php echo base_url();?>app-assets/js/myjs.js"></script>
