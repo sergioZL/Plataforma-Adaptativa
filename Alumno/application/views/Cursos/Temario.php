@@ -5,7 +5,7 @@
     if($varsesion == null|| $varsesion == '')
     {
         header("location:../../../index.php");
-    }
+    }/*.site_url('alumno/MisCursos') */
 ?> 
 <!DOCTYPE html>
 <html lang="es">
@@ -28,7 +28,6 @@
 <body>  
 
 
-
 <!-- nav -->
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -43,7 +42,7 @@
 
     <form class="form-inline my-2 my-lg-0">
         <div class="input-group">
-           <input id="textBuscar" type="search" class="buscar form-control" placeholder="Buscar">
+           <input id="textBuscar" type="text" class="buscar form-control" placeholder="Buscar">
            <div class="input-group-append">
                 <button id="buscar" class="bustcar btn btn-outline-info" type="button">
                     <span class="fa fa-search form-control-feedback"></span>
@@ -77,16 +76,16 @@
                         </a>
                     </li>
                     <li>
-                        <button class="btn btn-light col-12 text-left"> <a href="<?php echo site_url();?>/alumno/MisCursos"> <span class="far fa-folder pull-left " style="color: #07ad90;font-size: 16px;"></span><pre>  Mis cursos</pre></a></button>
+                        <a href="<?php echo site_url();?>/alumno/MisCursos"> <button class="btn btn-light col-12 text-left"> <span class="far fa-folder pull-left " style="color: #07ad90;font-size: 16px;"></span><pre>  Mis cursos</pre></button></a>
                     </li>
                     <li>
-                         <button class="btn btn-light col-12 text-left"> <a href="<?php echo site_url();?>/Cursos/NuevosCursos"><span class="fas fa-folder-plus pull-left " style="color: #07ad90;"></span> <pre>  Nuevo curso</pre>   </a> </button>
+                        <a href="<?php echo site_url();?>/Cursos/NuevosCursos"><button class="btn btn-light col-12 text-left"><span class="fas fa-folder-plus pull-left " style="color: #07ad90;"></span> <pre>  Nuevo curso</pre></button></a>
                     </li>
                     <li>
-                        <button class="btn btn-light col-12 text-left"> <a href=""><span class="fas  fa-info-circle  pull-left" style="color: #07ad90;"></span><pre>  Ayuda</pre>  </a></button>
+                        <a href=""><button class="btn btn-light col-12 text-left"><span class="fas  fa-info-circle  pull-left" style="color: #07ad90;"></span><pre>  Ayuda</pre>  </button></a>
                     </li>
                     <li>
-                        <button class="btn btn-light col-12 text-left"> <a href="../../../CerrarSesion.php"><span class=" fas fa-sign-out-alt  pull-left" style="color: #07ad90;"></span><pre>  Salir</pre>  </a></button>
+                        <a href="../../../CerrarSesion.php"><button class="btn btn-light col-12 text-left"> <span class=" fas fa-sign-out-alt  pull-left" style="color: #07ad90;"></span><pre>  Salir</pre></button> </a>
                     </li>
                 </ul>
             </li>
@@ -118,373 +117,79 @@
         </div>
     </div>
 </section>
-    <div id="main" class="row">        <!--Menu desplegable-->
-    <div id="accordion" role="tablist" aria-multiselectable="true" class="container t-2 pt-5 col-md-11">
-        <!--Leccion uno-->
-        <div class="card leccion shadow-sm mb-3 rounded-0">
-            <h5 class="card-header"><!--Cabecera del menu desplegable-->
-                <a data-toggle="collapse" href="#contenidoUno" aria-expanded="true" aria-controls="contenidoUno" id="leccionUno" class="d-block">                  
-                    <i class="fa fa-chevron-down pull-right"></i>
-                    Leccion #1
-                    <i class='fas fa-check' style='color:green'></i>
-                </a>
-            </h5>
-            <div id="contenidoUno" class="collapse" aria-labelledby="leccionUno"><!--Contenido del menu desplegable-->
-                <div class="card-body">
-                    <h6>Este es el contenido de la leccion</h6>
-                    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Enim nesciunt
-                     debitis labore quae vero. Labore deleniti, maiores veritatis sapiente reiciendis
-                     possimus.Ratione enim dignissimos facilis. Magnam id molestias aspernatur dolor.</p>                   
-                </div>
+    <div id="main" class="row">
+        <!--Menu desplegable-->
+        <div id="accordion" role="tablist" aria-multiselectable="true" class="container t-2 pt-5 col-md-11">
+            <!--Leccion uno-->
+            <div  id="Leccion">
+                        
+                <div id="Temas">
                             <!--Tema-->
-                <div class="card rounded-0">
-                        <h5 class="card-header">
-                            <a data-toggle="collapse" href="#contenidoUno-temaUno" aria-expanded="true" aria-controls="contenidoUno-temaUno" id="leccionUno-temaUno" class="d-block">
-                                <i class="fa fa-chevron-down pull-right"></i>
-                                <i class='fas fa-check-circle' style='color:green'></i>
-                                Tema #1                           
-                            </a>
-                        </h5>
-                        <div id="contenidoUno-temaUno" class="collapse" aria-labelledby="leccionUno-temaUno">
-                            <div class="card-body">
-                                <h6>Este es el contenido del Tema</h6>
-                                <a href=""><span class="fas fa-play-circle"></span> video sobre algun tema</a><br>
-                                <a href=""><span class="fas as fa-file-audio"></span> video sobre algun tema</a><br>
-                                <a href=""><span class="fas far fa-file-pdf"></span> video sobre algun tema</a><br>
-                            </div>
-                        </div>
                 </div>
-                                 <!--Tema-->
-                <div class="card rounded-0">
-                        <h5 class="card-header">
-                            <a data-toggle="collapse" href="#contenidoUno-temaDos" aria-expanded="true" aria-controls="contenidoUno-temaDos" id="leccionUno-temaDos" class="d-block">
-                                <i class="fa fa-chevron-down pull-right"></i>
-                                <i class='fas fa-check-circle' style='color:green'></i>
-                                Tema #2
-                            </a>
-                        </h5>
-                        <div id="contenidoUno-temaDos" class="collapse" aria-labelledby="leccionUno-temaDos">
-                            <div class="card-body">
-                                <h6>Este es el contenido del Tema</h6>
-                                <a href=""><span class="fas fa-play-circle"></span> video sobre algun tema</a><br>
-                                <a href=""><span class="fas as fa-file-audio"></span> video sobre algun tema</a><br>
-                                <a href=""><span class="fas far fa-file-pdf"></span> video sobre algun tema</a><br>
-                            </div>                          
-                        </div>
-                </div>
-                            <!--Tema-->
-                <div class="card rounded-0">
-                       <h5 class="card-header">
-                           <a data-toggle="collapse" href="#contenidoUno-temaTres" aria-expanded="true" aria-controls="contenidoUno-temaTres" id="leccionUno-temaTres" class="d-block">
-                               <i class="fa fa-chevron-down pull-right"></i>
-                               <i class='fas fa-check-circle' style='color:green'></i>
-                               Tema #3
-                           </a>
-                       </h5>
-                       <div id="contenidoUno-temaTres" class="collapse" aria-labelledby="leccionUno-temaTres">
-                        <div class="card-body">
-                            <h6>Este es el contenido del Tema</h6>
-                            <a href=""><span class="fas fa-play-circle"></span> video sobre algun tema</a><br>
-                            <a href=""><span class="fas as fa-file-audio"></span> video sobre algun tema</a><br>
-                            <a href=""><span class="fas far fa-file-pdf"></span> video sobre algun tema</a><br>
-                        </div>
-                    </div>
-               </div>
+                            
             </div>
         </div>
-        <!--Leccion Dos-->
-        <div class="card leccion shadow-sm mb-3 rounded-0">
-                <h5 class="card-header"><!--Cabecera del menu desplegable-->
-                    <a data-toggle="collapse" href="#contenidoDos" aria-expanded="true" aria-controls="contenidoDos" id="leccionDos" class="d-block">
-                        <i class="fa fa-chevron-down pull-right"></i>
-                        Leccion #2
-                    </a>
-                </h5>
-                <div id="contenidoDos" class="collapse show" aria-labelledby="leccionDos"><!--Contenido del menu desplegable-->
-                    <div class="card-body">
-                        <h6>Este es el contenido de la leccion</h6>
-                        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Enim nesciunt
-                         debitis labore quae vero. Labore deleniti, maiores veritatis sapiente reiciendis
-                         possimus.Ratione enim dignissimos facilis. Magnam id molestias aspernatur dolor.</p>                      
-                    </div>
-                               <!--Tema-->
-                    <div class="card rounded-0">
-                            <h5 class="card-header">
-                                <a data-toggle="collapse" href="#contenidoDos-temaUno" aria-expanded="true" aria-controls="contenidoDos-temaUno" id="leccionDos-temaUno" class="d-block">
-                                    <i class="fa fa-chevron-down pull-right"></i>
-                                    <i class='fas fa-check-circle' style='color:green'></i>
-                                    Tema #1
-                                </a>
-                            </h5>
-                            <div id="contenidoDos-temaUno" class="collapse" aria-labelledby="leccionDos-temaUno">
-                                <div class="card-body">
-                                    <h6>Este es el contenido del Tema</h6>
-                                    <a href="video.html"><span class="fas fa-play-circle"></span> video sobre algun tema</a><br>
-                                    <a href="video.html"><span class="fas as fa-file-audio"></span> video sobre algun tema</a><br>
-                                    <a href="video.html"><span class="fas far fa-file-pdf"></span> video sobre algun tema</a><br>
-                                </div>                                
-                            </div>
-                    </div>
-                    <div class="card rounded-0">
-                            <h5 class="card-header">
-                                <a data-toggle="collapse" href="#contenidoTres-temaDos" aria-expanded="true" aria-controls="contenidoTres-temaDos" id="leccionTres-temaDos" class="d-block">
-                                    <i class="fa fa-chevron-down pull-right"></i>
-                                    Tema #2
-                                </a>
-                            </h5>
-                            <div id="contenidoTres-temaDos" class="collapse show" aria-labelledby="leccionTres-temaDos">
-                                <div class="card-body">
-                                    <h6>Este es el contenido del Tema</h6>
-                                    <a href="video.html"><span class="fas fa-play-circle"></span> video sobre algun tema</a><br>
-                                    <a href="video.html"><span class="fas as fa-file-audio"></span> video sobre algun tema</a><br>
-                                    <a href="video.html"><span class="fas far fa-file-pdf"></span> video sobre algun tema</a><br>
-                                </div>                              
-                            </div>
-                    </div>
-                    <div class="card rounded-0">
-                           <h5 class="card-header">
-                               <a data-toggle="collapse" href="#contenidoDos-temaTres" aria-expanded="true" aria-controls="contenidoDos-temaTres" id="leccionDos-temaTres" class="d-block">
-                                   <i class="fa fa-chevron-down pull-right"></i>
-                                   Tema #3
-                               </a>
-                           </h5>
-                           <div id="contenidoDos-temaTres" class="collapse" aria-labelledby="leccionDos-temaTres">
-                            <div class="card-body">
-                                <h6>Este es el contenido del Tema</h6>
-                                <a href=""><span class="fas fa-play-circle"></span> video sobre algun tema</a><br>
-                                <a href=""><span class="fas as fa-file-audio"></span> video sobre algun tema</a><br>
-                                <a href=""><span class="fas far fa-file-pdf"></span> video sobre algun tema</a><br>
-                            </div>
-                        </div>
-                   </div>
-            </div>
-        </div>   
-        <!--Leccion tres-->
-        <div class="card leccion shadow-lg mb-3 rounded-0">
-                <h5 class="card-header"><!--Cabecera del menu desplegable-->
-                    <a data-toggle="collapse" href="#contenidoTres" aria-expanded="true" aria-controls="contenidoTres" id="leccionTres" class="d-block">
-                        <i class="fa fa-chevron-down pull-right"></i>
-                        Leccion #3
-                    </a>
-                </h5>
-                <div id="contenidoTres" class="collapse" aria-labelledby="leccionTres"><!--Contenido del menu desplegable-->
-                    <div class="card-body">
-                        <h6>Este es el contenido del Tema</h6>
-                        <a href=""><span class="fas fa-play-circle"></span> video sobre algun tema</a><br>
-                        <a href=""><span class="fas as fa-file-audio"></span> video sobre algun tema</a><br>
-                        <a href=""><span class="fas far fa-file-pdf"></span> video sobre algun tema</a><br>
-                    </div>
-                                <!--Tema-->
-                    <div class="card rounded-0">
-                            <h5 class="card-header">
-                                <a data-toggle="collapse" href="#contenidoTres-temaUno" aria-expanded="true" aria-controls="contenidoTres-temaUno" id="leccionTres-temaUno" class="d-block">
-                                    <i class="fa fa-chevron-down pull-right"></i>
-                                    Tema #1
-                                </a>
-                            </h5>
-                            <div id="contenidoTres-temaUno" class="collapse" aria-labelledby="leccionTres-temaUno">
-                                <div class="card-body">
-                                    <h6>Este es el contenido del Tema</h6>
-                                    <a href=""><span class="fas fa-play-circle"></span> video sobre algun tema</a><br>
-                                    <a href=""><span class="fas as fa-file-audio"></span> video sobre algun tema</a><br>
-                                    <a href=""><span class="fas far fa-file-pdf"></span> video sobre algun tema</a><br>
-                                </div>                              
-                            </div>
-                    </div>
-                                     <!--Tema-->
-                    <div class="card rounded-0">
-                            <h5 class="card-header">
-                                <a data-toggle="collapse" href="#contenidoTres-temaDos" aria-expanded="true" aria-controls="contenidoTres-temaDos" id="leccionTres-temaDos" class="d-block">
-                                    <i class="fa fa-chevron-down pull-right"></i>
-                                    Tema #2
-                                </a>
-                            </h5>
-                            <div id="contenidoTres-temaDos" class="collapse" aria-labelledby="leccionTres-temaDos">
-                                <div class="card-body">
-                                    <h6>Este es el contenido del Tema</h6>
-                                    <a href=""><span class="fas fa-play-circle"></span> video sobre algun tema</a><br>
-                                    <a href=""><span class="fas as fa-file-audio"></span> video sobre algun tema</a><br>
-                                    <a href=""><span class="fas far fa-file-pdf"></span> video sobre algun tema</a><br>
-                                </div>
-                            </div>
-                    </div>
-                                <!--Tema-->
-                    <div class="card rounded-0">
-                           <h5 class="card-header">
-                               <a data-toggle="collapse" href="#contenidoTres-temaTres" aria-expanded="true" aria-controls="contenidoTres-temaTres" id="leccionTres-temaTres" class="d-block">
-                                   <i class="fa fa-chevron-down pull-right"></i>
-                                   Tema #3
-                               </a>
-                           </h5>
-                           <div id="contenidoTres-temaTres" class="collapse" aria-labelledby="leccionTres-temaTres">
-                            <div class="card-body">
-                                <h6>Este es el contenido del Tema</h6>
-                                <a href=""><span class="fas fa-play-circle"></span> video sobre algun tema</a><br>
-                                <a href=""><span class="fas as fa-file-audio"></span> video sobre algun tema</a><br>
-                                <a href=""><span class="fas far fa-file-pdf"></span> video sobre algun tema</a><br>
-                            </div>                             
-                           </div>
-                   </div>
-                </div>
-        </div>     
-        <!--Leccion cuatro-->
-        <div class="card leccion shadow-lg mb-3 rounded-0">
-            <h5 class="card-header"><!--Cabecera del menu desplegable-->
-                <a data-toggle="collapse" href="#contenidoCuatro" aria-expanded="true" aria-controls="contenidoCuatro" id="leccionCuatro" class="d-block">
-                    <i class="fa fa-chevron-down pull-right"></i>
-                    Leccion #4
-                </a>
-            </h5>
-            <div id="contenidoCuatro" class="collapse" aria-labelledby="leccionCuatro"><!--Contenido del menu desplegable-->
-                <div class="card-body">
-                    <h6>Este es el contenido de la leccion</h6>
-                    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Enim nesciunt
-                     debitis labore quae vero. Labore deleniti, maiores veritatis sapiente reiciendis
-                     possimus.Ratione enim dignissimos facilis. Magnam id molestias aspernatur dolor.</p>                     
-                </div>
-                           <!--Tema-->
-                <div class="card rounded-0">
-                        <h5 class="card-header">
-                            <a data-toggle="collapse" href="#contenidoCuatro-temaUno" aria-expanded="true" aria-controls="contenidoCuatro-temaUno" id="leccionCuatro-temaUno" class="d-block">
-                                <i class="fa fa-chevron-down pull-right"></i>
-                                Tema #1
-                            </a>
-                        </h5>
-                        <div id="contenidoCuatro-temaUno" class="collapse" aria-labelledby="leccionCuatro-temaUno">
-                            <div class="card-body">
-                                <h6>Este es el contenido del Tema</h6>
-                                <a href=""><span class="fas fa-play-circle"></span> video sobre algun tema</a><br>
-                                <a href=""><span class="fas as fa-file-audio"></span> video sobre algun tema</a><br>
-                                <a href=""><span class="fas far fa-file-pdf"></span> video sobre algun tema</a><br>
-                            </div>                          
-                        </div>
-                </div>
-                                <!--Tema-->
-                <div class="card rounded-0">
-                        <h5 class="card-header">
-                            <a data-toggle="collapse" href="#contenidoCuatro-temaDos" aria-expanded="true" aria-controls="contenidoCuatro-temaDos" id="leccionCuatro-temaDos" class="d-block">
-                                <i class="fa fa-chevron-down pull-right"></i>
-                                Tema #2
-                            </a>
-                        </h5>
-                        <div id="contenidoCuatro-temaDos" class="collapse" aria-labelledby="leccionCuatro-temaDos">
-                            <div class="card-body">
-                                <h6>Este es el contenido del Tema</h6>
-                                <a href=""><span class="fas fa-play-circle"></span> video sobre algun tema</a><br>
-                                <a href=""><span class="fas as fa-file-audio"></span> video sobre algun tema</a><br>
-                                <a href=""><span class="fas far fa-file-pdf"></span> video sobre algun tema</a><br>
-                            </div>                         
-                        </div>
-                </div>
-                            <!--Tema-->
-                <div class="card rounded-0">
-
-
-                       <h5 class="card-header">
-
-
-                           <a data-toggle="collapse" href="#contenidoCuatro-temaTres" aria-expanded="true" aria-controls="contenidoCuatro-temaTres" id="leccionCuatro-temaTres" class="d-block">
-
-
-                               <i class="fa fa-chevron-down pull-right"></i>
-
-
-                               Tema #3
-
-
-                           </a>
-
-
-                       </h5>
-                       <div id="contenidoCuatro-temaTres" class="collapse" aria-labelledby="leccionCuatro-temaTres">
-                        <div class="card-body">
-                            <h6>Este es el contenido del Tema</h6>
-                            <a href=""><span class="fas fa-play-circle"></span> video sobre algun tema</a><br>
-                            <a href=""><span class="fas as fa-file-audio"></span> video sobre algun tema</a><br>
-                            <a href=""><span class="fas far fa-file-pdf"></span> video sobre algun tema</a><br>
-                        </div>
-                       </div>
-               </div>
-            </div>
-        </div>     
-                <!--Leccion Cinco-->
-                <div class="card leccion shadow-lg mb-3 rounded-0">
-                    <h5 class="card-header"><!--Cabecera del menu desplegable-->
-                        <a data-toggle="collapse" href="#contenidoCinco" aria-expanded="true" aria-controls="contenidoCinco" id="leccionCinco" class="d-block">
-                            <i class="fa fa-chevron-down pull-right"></i>
-                            Leccion #5
-                        </a>
-                    </h5>
-                    <div id="contenidoCinco" class="collapse" aria-labelledby="leccionCinco"><!--Contenido del menu desplegable-->
-                        <div class="card-body">
-                            <h6>Este es el contenido de la leccion</h6>
-                            <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Enim nesciunt
-                             debitis labore quae vero. Labore deleniti, maiores veritatis sapiente reiciendis
-                             possimus.Ratione enim dignissimos facilis. Magnam id molestias aspernatur dolor.</p>                           
-                        </div>
-                                    <!--Tema-->
-                        <div class="card rounded-0">
-                                <h5 class="card-header">
-                                    <a data-toggle="collapse" href="#contenidoCinco-temaUno" aria-expanded="true" aria-controls="contenidoCinco-temaUno" id="leccionCinco-temaUno" class="d-block">
-                                        <i class="fa fa-chevron-down pull-right"></i>
-                                        Tema #1
-                                    </a>
-                                </h5>
-                                <div id="contenidoCinco-temaUno" class="collapse" aria-labelledby="leccionCinco-temaUno">
-                                    <div class="card-body">
-                                        <h6>Este es el contenido del Tema</h6>
-                                        <a href=""><span class="fas fa-play-circle"></span> video sobre algun tema</a><br>
-                                        <a href=""><span class="fas as fa-file-audio"></span> video sobre algun tema</a><br>
-                                        <a href=""><span class="fas far fa-file-pdf"></span> video sobre algun tema</a><br>
-                                    </div>                                  
-                                </div>
-                        </div>
-                                         <!--Tema-->
-                        <div class="card rounded-0">
-                                <h5 class="card-header">
-                                    <a data-toggle="collapse" href="#contenidoCinco-temaDos" aria-expanded="true" aria-controls="contenidoCinco-temaDos" id="leccionTres-temaDos" class="d-block">
-                                        <i class="fa fa-chevron-down pull-right"></i>
-                                        Tema #2
-                                    </a>
-                                </h5>
-                                <div id="contenidoCinco-temaDos" class="collapse" aria-labelledby="leccionCinco-temaDos">
-                                    <div class="card-body">
-                                        <h6>Este es el contenido del Tema</h6>
-                                        <a href=""><span class="fas fa-play-circle"></span> video sobre algun tema</a><br>
-                                        <a href=""><span class="fas as fa-file-audio"></span> video sobre algun tema</a><br>
-                                        <a href=""><span class="fas far fa-file-pdf"></span> video sobre algun tema</a><br>
-                                    </div>
-                            </div>
-                        </div>
-                                    <!--Tema-->
-                        <div class="card rounded-0">
-                               <h5 class="card-header">
-                                   <a data-toggle="collapse" href="#contenidoCinco-temaTres" aria-expanded="true" aria-controls="contenidoCinco-temaTres" id="leccionCinco-temaTres" class="d-block">
-                                       <i class="fa fa-chevron-down pull-right"></i>
-                                       Tema #3
-                                   </a>
-                               </h5>
-                               <div id="contenidoCinco-temaTres" class="collapse" aria-labelledby="leccionCinco-temaTres">
-                                <div class="card-body">
-                                    <h6>Este es el contenido del Tema</h6>
-                                    <a href=""><span class="fas fa-play-circle"></span> video sobre algun tema</a><br>
-                                    <a href=""><span class="fas as fa-file-audio"></span> video sobre algun tema</a><br>
-                                    <a href=""><span class="fas far fa-file-pdf"></span> video sobre algun tema</a><br>
-                                </div>                                
-                               </div>
-                       </div>
-                    </div>
-                </div>     
     </div>
 </div>
 
     <script>
     CargarInfoCursos();
+    CargarLecciones();
         $('#buscar').click(function()
         {
             if( $("#textBuscar").val() != "")
                 window.location.href="<?php echo site_url();?>/Cursos/Buscar?nombre="+ $("#textBuscar").val();
         });
+
+        function CargarLecciones()
+        {
+            $.ajax
+            ({
+                type:'post',
+                url:'<?php echo site_url();?>/Cursos/PreviewController/ConsultarTodosLeccionPorIDCursos?IdCurso=<?php echo $curso = $_GET['curso'];?>',    
+                dataType:"json",
+                success:function(resp)
+                {
+                    var n = resp.length;
+                    //var data = JSON.parse(resp);
+
+                    for(var i = 0; i < n; i++)
+                    {
+                        temas(resp,i);
+                    }
+                }
+            });
+        }
+
+        function temas(data,i)
+        {
+            $.ajax
+            ({
+                type:'post',
+                url:'<?php echo site_url();?>/Cursos/PreviewController/ConsultarTemasCursos?IdLeccion='+data[i].clave,
+                success :function(resp)
+                {
+                    $("#Leccion").append(
+                        '<div class="card leccion shadow-sm mb-3 rounded-0">'+
+                            '<h5 class="card-header">'+
+                                '<!--Cabecera del menu desplegable-->'+
+                                '<a data-toggle="collapse" href="#contenido' + data[i].secuencia+ '" aria-expanded="true" aria-controls="contenidoUno"'+
+                                    'id="leccion' + data[i].secuencia+ '" class="d-block">'+
+                                    '<i class="fa fa-chevron-down pull-right"></i>'
+                                    + data[i].nombre +' #'+ data[i].secuencia +
+                                '</a>'+
+                            '</h5>'+
+                        '<div id="contenido' + data[i].secuencia+ '" class="collapse" aria-labelledby="leccionUno">'+
+                            '<!--Contenido del menu desplegable-->'+
+                            '<div class="card-body">'+
+                                '<h6>Este es el contenido de la leccion</h6>'+
+                                '<p>' + data[i].descripcion+ '</p>'+
+                            '</div>'+resp
+                    );
+                }                    
+            });
+        }
+
 
         function CargarInfoCursos()
         {
@@ -515,7 +220,7 @@
                         '</div>'+
                         '<br>'+
                         '<br>'+
-                        '<a href="video.html"> <button type="button" class="btn btn-success"> <h2>Continuar desde: tema-2.2</h2></button></a>'
+                        '<a href="<?php echo site_url('Material?curso='.$curso)?>"> <button type="button" class="btn btn-success"> <h2>Continuar desde: tema-2.2</h2></button></a>'
                         
                     );                    
                 }

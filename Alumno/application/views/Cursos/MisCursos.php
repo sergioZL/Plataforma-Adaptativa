@@ -16,7 +16,8 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Mi Cursos</title>
     <link rel="stylesheet" href="<?php echo base_url();?>app-assets/css/diseñoMicurso.css"/>
-    <link rel="stylesheet" href="<?php echo base_url();?>app-assets/css/bootstrap.css"/>
+    <link rel="stylesheet" href="<?php echo base_url();?>app-assets/css/bootstrap.css"/><!--
+    <link rel="stylesheet" href="<?php echo base_url();?>app-assets/css/estilos.css"/>-->
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
     
     <script src="<?php echo base_url();?>app-assets/js/jquery-3.3.1.min.js"></script>    
@@ -52,7 +53,7 @@
 
     <form class="form-inline my-2 my-lg-0">
         <div class="input-group">
-           <input id="textBuscar" type="search" class="buscar form-control" placeholder="Buscar">
+           <input id="textBuscar" type="text" class="buscar form-control" placeholder="Buscar">
            <div class="input-group-append">
                 <button id="buscar" class="bustcar btn btn-outline-info" type="button">
                     <span class="fa fa-search form-control-feedback"></span>
@@ -86,16 +87,16 @@
                         </a>
                     </li>
                     <li>
-                        <button class="btn btn-light col-12 text-left"> <a href="<?php echo site_url();?>/alumno/MisCursos"> <span class="far fa-folder pull-left " style="color: #07ad90;font-size: 16px;"></span><pre>  Mis cursos</pre></a></button>
+                        <a href="<?php echo site_url();?>/alumno/MisCursos"> <button class="btn btn-light col-12 text-left"> <span class="far fa-folder pull-left " style="color: #07ad90;font-size: 16px;"></span><pre>  Mis cursos</pre></button></a>
                     </li>
                     <li>
-                         <button class="btn btn-light col-12 text-left"> <a href="<?php echo site_url();?>/Cursos/NuevosCursos"><span class="fas fa-folder-plus pull-left " style="color: #07ad90;"></span> <pre>  Nuevo curso</pre>   </a> </button>
+                        <a href="<?php echo site_url();?>/Cursos/NuevosCursos"><button class="btn btn-light col-12 text-left"><span class="fas fa-folder-plus pull-left " style="color: #07ad90;"></span> <pre>  Nuevo curso</pre></button></a>
                     </li>
                     <li>
-                        <button class="btn btn-light col-12 text-left"> <a href=""><span class="fas  fa-info-circle  pull-left" style="color: #07ad90;"></span><pre>  Ayuda</pre>  </a></button>
+                        <a href=""><button class="btn btn-light col-12 text-left"><span class="fas  fa-info-circle  pull-left" style="color: #07ad90;"></span><pre>  Ayuda</pre>  </button></a>
                     </li>
                     <li>
-                        <button class="btn btn-light col-12 text-left"> <a href="../../../CerrarSesion.php"><span class=" fas fa-sign-out-alt  pull-left" style="color: #07ad90;"></span><pre>  Salir</pre>  </a></button>
+                        <a href="../../../CerrarSesion.php"><button class="btn btn-light col-12 text-left"> <span class=" fas fa-sign-out-alt  pull-left" style="color: #07ad90;"></span><pre>  Salir</pre></button> </a>
                     </li>
                 </ul>
             </li>
@@ -279,28 +280,23 @@
             if( $("#textBuscar").val() != "")
                 window.location.href="<?php echo site_url();?>/Cursos/Buscar?nombre="+ $("#textBuscar").val();
         });
-/*
-        $('#Temas').click(function()
-        {
-            $("#ContenedorCursos").children().remove();
-            CargarCursos(6);    
-        });*/
 
         function filtrarTemas(categoria)
         {
-            alert(categoria);
-            /*
+            //alert(categoria);
+            
+            $("#ContenedorCursos").children().remove();
             $.ajax
             ({
                 type:'post',
-                url:'<?php echo site_url();?>/Cursos/MisCursosController/ConsultarCursosUsuarios?tipo='+tipo,    
+                url:'<?php echo site_url();?>/Cursos/MisCursosController/ConsultarCursosUsuariosCategoria?categoria='+categoria,    
                 success:function(resp)
                 {
                     $("#ContenedorCursos").append(resp);
                     filterSelection("todos"); 
                 }
             });
-*/
+
         }
 
         $('#ordenarAZ').click(function()

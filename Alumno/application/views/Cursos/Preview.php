@@ -42,7 +42,7 @@
 
     <form class="form-inline my-2 my-lg-0">
         <div class="input-group">
-           <input id="textBuscar" type="search" class="buscar form-control" placeholder="Buscar">
+           <input id="textBuscar" type="text" class="buscar form-control" placeholder="Buscar">
            <div class="input-group-append">
                 <button id="buscar" class="bustcar btn btn-outline-info" type="button">
                     <span class="fa fa-search form-control-feedback"></span>
@@ -76,16 +76,16 @@
                         </a>
                     </li>
                     <li>
-                        <button class="btn btn-light col-12 text-left"> <a href="<?php echo site_url();?>/alumno/MisCursos"> <span class="far fa-folder pull-left " style="color: #07ad90;font-size: 16px;"></span><pre>  Mis cursos</pre></a></button>
+                        <a href="<?php echo site_url();?>/alumno/MisCursos"> <button class="btn btn-light col-12 text-left"> <span class="far fa-folder pull-left " style="color: #07ad90;font-size: 16px;"></span><pre>  Mis cursos</pre></button></a>
                     </li>
                     <li>
-                         <button class="btn btn-light col-12 text-left"> <a href="<?php echo site_url();?>/Cursos/NuevosCursos"><span class="fas fa-folder-plus pull-left " style="color: #07ad90;"></span> <pre>  Nuevo curso</pre>   </a> </button>
+                        <a href="<?php echo site_url();?>/Cursos/NuevosCursos"><button class="btn btn-light col-12 text-left"><span class="fas fa-folder-plus pull-left " style="color: #07ad90;"></span> <pre>  Nuevo curso</pre></button></a>
                     </li>
                     <li>
-                        <button class="btn btn-light col-12 text-left"> <a href=""><span class="fas  fa-info-circle  pull-left" style="color: #07ad90;"></span><pre>  Ayuda</pre>  </a></button>
+                        <a href=""><button class="btn btn-light col-12 text-left"><span class="fas  fa-info-circle  pull-left" style="color: #07ad90;"></span><pre>  Ayuda</pre>  </button></a>
                     </li>
                     <li>
-                        <button class="btn btn-light col-12 text-left"> <a href="../../../CerrarSesion.php"><span class=" fas fa-sign-out-alt  pull-left" style="color: #07ad90;"></span><pre>  Salir</pre>  </a></button>
+                        <a href="../../../CerrarSesion.php"><button class="btn btn-light col-12 text-left"> <span class=" fas fa-sign-out-alt  pull-left" style="color: #07ad90;"></span><pre>  Salir</pre></button> </a>
                     </li>
                 </ul>
             </li>
@@ -213,60 +213,6 @@
             });            
         }
 
-        function CargarLecciones2()
-        {
-
-            $.ajax
-            ({
-                type:'post',
-                url:'<?php echo site_url();?>/Cursos/PreviewController/ConsultarLeccionPorIDCursos?IdCurso=<?php echo $curso = $_GET['curso'];?>',    
-                dataType:"json",
-                success:function(resp)
-                {
-                    var n = resp.length;
-
-                    for(var i = 0; i < n; i++)
-                    {
-                        $("#Leccion").append(
-                            '<div class="card leccion shadow-sm mb-3 rounded-0">'+
-                                '<h5 class="card-header">'+
-                                    '<!--Cabecera del menu desplegable-->'+
-                                    '<a data-toggle="collapse" href="#contenido' + resp[i].secuencia+ '" aria-expanded="true" aria-controls="contenidoUno"'+
-                                        'id="leccion' + resp[i].secuencia+ '" class="d-block">'+
-                                        '<i class="fa fa-chevron-down pull-right"></i>'+
-                                         resp[i].nombre +' #'+ resp[i].secuencia +
-                                    '</a>'+
-                                '</h5>'+
-                            '<div id="contenido' + resp[i].secuencia+ '" class="collapse" aria-labelledby="leccionUno">'+
-                            '<!--Contenido del menu desplegable-->'+
-                            '<div class="card-body">'+
-                                '<h6>Este es el contenido de la leccion</h6>'+
-                                '<p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Enim nesciunt'+
-                                    'debitis labore quae vero. Labore deleniti, maiores veritatis sapiente reiciendis possimus.Ratione enim dignissimos facilis. Magnam id molestias aspernatur dolor.</p>'+
-                            '</div>'+
-                            '<div class="card rounded-0">'+
-                                '<h5 class="card-header">'+
-                                    '<a data-toggle="collapse" href="#contenidoUno-temaUno" aria-expanded="true"'+
-                                        'aria-controls="contenidoUno-temaUno" id="leccionUno-temaUno" class="d-block">'+
-                                        '<i class="fa fa-chevron-down pull-right"></i>'+
-                                        + resp[i].nombreTema+ ' # ' + resp[i].secuenciaTema+ 
-                                    '</a>'+
-                                '</h5>'+
-                                '<div id="contenidoUno-temaUno" class="collapse" aria-labelledby="leccionUno-temaUno">'+
-                                    '<div class="card-body">'+
-                                        '<h6>Este es el contenido del Tema</h6>'+
-                                        '<a href=""><span class="fas fa-play-circle"></span> video sobre algun tema</a><br>'+
-                                        '<a href=""><span class="fas as fa-file-audio"></span> video sobre algun tema</a><br>'+
-                                        '<a href=""><span class="fas far fa-file-pdf"></span> video sobre algun tema</a><br>'+
-                                    '</div>'+
-                                '</div>'+
-                            '</div>'
-                        );
-                    }
-                }
-            });
-        }
-
         function CargarLecciones()
         {
 
@@ -280,7 +226,6 @@
                     var n = resp.length;
                     //var data = JSON.parse(resp);
 
-                    alert(n);
                     for(var i = 0; i < n; i++)
                     {
                         temas(resp,i);
