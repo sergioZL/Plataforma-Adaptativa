@@ -68,7 +68,7 @@ class PreviewController extends CI_Controller {
 
 			echo $nose ='<div class="card rounded-0">
                 <h5 class="card-header">
-                    <a data-toggle="collapse" href="#contenido'. $item['id'] .'" aria-expanded="true"
+                    <a data-toggle="collapse" href="#contenido'. $item['secuencia'] .'" aria-expanded="true"
                         aria-controls="contenido'. $item['id'] .'" id="leccion'. $item['id'] .'" class="d-block">
                         <i class="fa fa-chevron-down pull-right"></i>
                         Tema #'. $item['secuencia'] .'

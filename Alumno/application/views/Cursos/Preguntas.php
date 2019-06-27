@@ -63,16 +63,16 @@
                 {
                     alert(resp);
                     if(tipo == 1)
-                        window.location.href="Preview?curso=<?php echo $_GET['curso']; ?>";
-                    else
                         window.location.href="Temario?curso=<?php echo $_GET['curso']; ?>";
+                    else
+                        window.location.href="Evaluacion?curso=<?php echo $_GET['curso']; ?>";
                 },
                 error: function(XMLHttpRequest, textStatus, errorThrown)
                 { 
                     if(tipo == 1)
-                        window.location.href="Preview?curso=<?php echo $_GET['curso']; ?>";
-                    else
                         window.location.href="Temario?curso=<?php echo $_GET['curso']; ?>";
+                    else
+                        window.location.href="Evaluacion?curso=<?php echo $_GET['curso']; ?>";
                     
                 }    
             });

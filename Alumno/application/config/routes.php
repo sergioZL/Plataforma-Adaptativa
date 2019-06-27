@@ -12,6 +12,7 @@ $route['Cursos/Preview'] = 'Cursos/PreviewController/load_Preview';
 $route['Cursos/Pregunta'] = 'Cursos/PreguntasController/load_Preguntas';
 $route['Cursos/Temario'] = 'Cursos/TemarioController/load_Temario';
 $route['Cursos/Buscar']='Cursos/BuscarController/Load_Buscar';
+$route['Cursos/Evaluacion']='Cursos/EvaluacionController/load_Evaluacion';
 
 
 

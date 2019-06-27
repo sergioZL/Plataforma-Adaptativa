@@ -176,7 +176,7 @@
                                 '<a data-toggle="collapse" href="#contenido' + data[i].secuencia+ '" aria-expanded="true" aria-controls="contenidoUno"'+
                                     'id="leccion' + data[i].secuencia+ '" class="d-block">'+
                                     '<i class="fa fa-chevron-down pull-right"></i>'
-                                    + data[i].nombre +' #'+ data[i].secuencia +
+                                    + data[i].nombre +' '+ data[i].secuencia +
                                 '</a>'+
                             '</h5>'+
                         '<div id="contenido' + data[i].secuencia+ '" class="collapse" aria-labelledby="leccionUno">'+
