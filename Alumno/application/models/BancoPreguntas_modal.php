@@ -9,13 +9,14 @@ class BancoPreguntas_modal extends CI_Model{
         $this->load->database();
     }
 
-    public function ConsultarPreguntas($idTema)
+    public function ConsultarPreguntas($idTema,$limit)
     {
         $this->db->select($this->table.'.*');
         $this->db->from( $this->table);
         $this->db->join('temas', $this->table.'.id_tema  = temas.id','INNER');
         $this->db->where('temas.id',$idTema);
         $this->db->order_by('rand()');
+        $this->db->limit($limit);
         $query = $this->db->get();
         
 

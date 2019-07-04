@@ -29,21 +29,24 @@
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">    
     <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.6.3/css/all.css' integrity='sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/' crossorigin='anonymous'>                            
     <style>
-        .pregresp {
-        border: 1px solid #7DA5E0;
-        padding: 10px;
-        margin: 10px;
-        font-family: Arial, Verdana, Helvetica, sans-serif;
-        font-size: 15px;
-        font-weight: bold;
+        .pregresp 
+        {
+            border: 1px solid #7DA5E0;
+            padding: 10px;
+            margin: 10px;
+            font-family: Arial, Verdana, Helvetica, sans-serif;
+            font-size: 15px;
+            font-weight: bold;
         }
 
-        .pregunta {
-        color: #7DA5E0;
+        .pregunta 
+        {
+            color: #7DA5E0;
         }
 
-        .respuestas {
-        color: #000000;
+        .respuestas 
+        {
+            color: #000000;
         }
 
         .fa-times
@@ -56,22 +59,26 @@
             color: greenyellow;
         }
 
-        .checkeable input {
-            display: none;
-        }
-        
-        .checkeable img {
-            width: 150px;
-            border: 1px solid transparent;
-        }
-        
-        .checkeable input {
-            display: none;
+        .imgresp
+        {
+            height: 50px;
+            width:50px;
         }
 
-        .checkeable input:checked  + img {
-            border-color: black;
+        /*[type=radio] { 
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
         }
+
+        [type=radio] + img {
+            cursor: pointer;
+        }
+
+        [type=radio]:checked + img {
+            outline: 2px solid #f00;
+        }*/
     </style>
 </head> 
 <body>  
@@ -89,14 +96,49 @@
         <center><button type="button" id="Evaluar" class="btn btn-primary">Enviar</button></center>
         <br><br>
     </div>
-    <!--<label class="checkeable">
-        <input type="radio" name="cap1"/>
-        <img src="http://www.primeskr.mx/wp-content/uploads/2014/10/cap-1_red.jpg"/>
-    </label>
-    <label class="checkeable">
-        <input type="radio" name="cap2"/>
-        <img src="http://inikweb.com/wp-content/uploads/2015/02/cap-1_red.jpg"/>
-    </label>-->
+
+
+
+  <!-- Modal -->
+  <div class="modal fade" id="ModalImagen" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Imagen</h4>
+        </div>
+        <div id="ContenidoIMG" class="modal-body">
+                        
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  
+
+                    <!--<div class="modal fade" tabindex="-1" role="dialog" id="ModalImagen" aria-hidden="true">
+                        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" id="CancelarModa">&times;</button>
+                                    <h5 class="modal-title">Imagen</h5>
+                                </div>
+                                <div id="ContenidoIMG" class="modal-body">
+                        
+                                </div>
+                                <div class="modal-footer">
+                                    <button id="CerrarModal" onclick="cerrar()" type="button" class="btn btn-primary">Cerrar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>  -->   
+
+
 
 </body>  
 <html>
@@ -115,25 +157,12 @@
         $.ajax
         ({
             type:'post',
-            url:'<?php echo site_url();?>/Cursos/EvaluacionController/ConsultarPregunta?IdTema=1',    
+            url:'<?php echo site_url();?>/Cursos/EvaluacionController/ConsultarPregunta?Curso=<?php echo $_GET['curso'];?>',    
             success:function(resp)
             {
                 $("#contenedroPreguntas").append(resp);
             }
         });
-        /*for(var i = 1; i<=10;i++)
-        {
-            $("#contenedroPreguntas").append(
-                '<div class="pregresp">'+
-                    '<div class="pregunta">'+i+'. ¿Crees que HTML es una buena tecnología?<br/></div>'+
-                    '<div class="respuestas">'+
-                        '<input type="radio" name="preg'+i+'" value="1" /> Sí<br/>'+
-                        '<input type="radio" name="preg'+i+'" value="2" /> No<br/>'+
-                        '<input type="radio" name="preg'+i+'" value="3" /> Ns/Nc<br/>'+
-                    '</div>'+
-                '</div>'
-            );  
-        }*/
     }
 
     function cargarPreguntasCorrectas()
@@ -147,9 +176,9 @@
                     '<div class="pregresp">'+
                         '<div class="pregunta">'+i+'. ¿Crees que es una buena tecnología? <i class="fas fa-check"></i><br/></div>'+
                         '<div class="respuestas">'+
-                            '<input type="radio" name="preg'+i+'" value="1" /> Sí<br/>'+
-                            '<input type="radio" name="preg'+i+'" value="2" /> No<br/>'+
-                            '<input type="radio" name="preg'+i+'" value="3" /> Ns/Nc<br/>'+
+                            '<input disabled="true" type="radio" name="preg'+i+'" value="1" /> Sí<br/>'+
+                            '<input checked disabled="true" type="radio" name="preg'+i+'" value="2" /> No<br/>'+
+                            '<input disabled="true" type="radio" name="preg'+i+'" value="3" /> Ns/Nc<br/>'+
                         '</div>'+
                     '</div>'
                 );  
@@ -160,9 +189,9 @@
                     '<div class="pregresp">'+
                         '<div class="pregunta">'+i+'. ¿Crees que es una buena tecnología? <i class="fas fa-times"></i><br/></div>'+
                         '<div class="respuestas">'+
-                            '<input type="radio" name="preg'+i+'" value="1" /> Sí<br/>'+
-                            '<input type="radio" name="preg'+i+'" value="2" /> No<br/>'+
-                            '<input type="radio" name="preg'+i+'" value="3" /> Ns/Nc<br/>'+
+                            '<input checked disabled="true" type="radio" name="preg'+i+'" value="1" /> Sí<br/>'+
+                            '<input disabled="true" type="radio" name="preg'+i+'" value="2" /> No<br/>'+
+                            '<input  disabled="true" type="radio" name="preg'+i+'" value="3" /> Ns/Nc<br/>'+
                         '</div>'+
                     '</div>'
                 ); 
@@ -173,10 +202,29 @@
 
     $('#Evaluar').click(function()
     {
-        
-        $("#contenedroPreguntas").children().remove();   
-        cargarPreguntasCorrectas();
+        var r =confirm("Desea terminar la evaluacion");
+        if(r==true)
+        {
+            $("#contenedroPreguntas").children().remove();   
+            cargarPreguntasCorrectas();
+        }
     }); 
+
+    function abrir(imagen)
+    {
+        alert("sada");
+        //$("#ModalImagen").modal('show');
+        var codigo ='<img id="img"  width="300px" height="375px" src="data:image/jpg;base64,'+imagen+'">';
+        $("#ContenidoIMG").append();
+        
+    }
+
+    function cerrar()
+    {
+        $('#ModalImagen').modal('hide');
+        $("#ContenidoIMG").children().remove();   
+            
+    }
 
 
 </script>

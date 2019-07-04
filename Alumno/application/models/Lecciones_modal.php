@@ -21,6 +21,17 @@ class Lecciones_modal extends CI_Model{
         return $query->result_array();
     } 
 
+    public function ConsultarLeccionesPorCurso($id)
+    {
+        $this->db->select($this->table.'.*,temas.id, temas.secuencia as secuenciaTema ,temas.id_leccion,temas.nombre as nombreTema');
+        $this->db->from($this->table);
+        $this->db->join('temas', $this->table.'.clave = temas.id_leccion','right');
+        $this->db->where($this->table.'.clave_curso',$id);
+        $query = $this->db->get();
+
+        return $query->result_array();
+    } 
+
     public function ConsultarTodosLeccionesCursos($id)
     {
         $this->db->select($this->table.'.*');
