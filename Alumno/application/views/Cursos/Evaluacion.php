@@ -167,6 +167,18 @@
 
     function cargarPreguntasCorrectas()
     {
+
+
+        $.ajax
+        ({
+            type:'post',
+            url:'<?php echo site_url();?>/Cursos/EvaluacionController/ConsultarRespuestaCorrecta?Curso=<?php echo $_GET['curso'];?>',    
+            success:function(resp)
+            {
+                $("#contenedroPreguntas").append(resp);
+            }
+        });
+/*
         var correcta = 1;
         for(var i = 1; i<=10;i++)
         {
@@ -197,7 +209,7 @@
                 ); 
                 correcta = 1;
             }
-        }
+        }*/
     }
 
     $('#Evaluar').click(function()
@@ -207,15 +219,18 @@
         {
             $("#contenedroPreguntas").children().remove();   
             cargarPreguntasCorrectas();
+            $("#Evaluar").hide();
         }
     }); 
 
     function abrir(imagen)
     {
-        alert("sada");
+        $("#ModalImagen").modal('show');
         //$("#ModalImagen").modal('show');
+        alert("sada");
         var codigo ='<img id="img"  width="300px" height="375px" src="data:image/jpg;base64,'+imagen+'">';
-        $("#ContenidoIMG").append();
+        //$("#ContenidoIMG").append(codigo);
+        alert(codigo);
         
     }
 

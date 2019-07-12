@@ -1,0 +1,60 @@
+if($item['porcentaje'] > 0 && $item['id_opciones'] == $evaluacion['id_opcion'])
+						{
+							if($item['imagen']!=null)
+							{
+								$check=$check.'<div">
+								<label">
+									<input type="checkbox" name="preg'.$i.'" value="'.$item['id_opciones'].'" disabled checked>
+									<img src="data:image/jpg;base64,'.$item['imagen'].'"/>
+								</label>'.$buena.'</div><br>';
+
+								$radio=$radio.'<div>
+								<label>
+									<input type="radio" name="preg'.$i.'" value="'.$item['id_opciones'].'" disabled checked>
+									<img class="imgresp" src="data:image/jpg;base64,'.$item['imagen'].'"/>
+								</label>'.$buena.'</div><br>';
+							}else{
+
+								$radio = $radio.'<input type="radio" name="preg'.$i.'" value="'.$item['id_opciones'].'" disabled checked/> '.$item['enunciado'].$buena.'<br>';
+								$check = $check.'<input type="checkbox" name="preg'.$i.'" value="'.$item['id_opciones'].'" disabled checked/> '.$item['enunciado'].$buena.'<br>';
+							}
+						}else if($item['porcentaje'] == 0 && $item['id_opciones'] == $evaluacion['id_pregunta'])
+						{
+							if($item['imagen']!=null)
+							{
+								$check=$check.'<div">
+								<label">
+									<input type="checkbox" name="preg'.$i.'" value="'.$item['id_opciones'].'" disabled checked>
+									<img src="data:image/jpg;base64,'.$item['imagen'].'"/>
+								</label>'.$mala.'</div><br>';
+
+								$radio=$radio.'<div>
+								<label>
+									<input type="radio" name="preg'.$i.'" value="'.$item['id_opciones'].'" disabled checked> 
+									<img class="imgresp" src="data:image/jpg;base64,'.$item['imagen'].'"/>
+								</label>'.$mala.'</div><br>';
+							}else{
+								$radio = $radio.'<input type="radio" name="preg'.$i.'" value="'.$item['id_opciones'].'" disabled checked/> '.$item['enunciado'].$mala.'<br/>';
+								$check = $check.'<input type="checkbox" name="preg'.$i.'" value="'.$item['id_opciones'].'" disabled checked/> '.$item['enunciado'].$mala.'<br/>';
+							}
+						}else
+						{
+							if($item['imagen']!=null)
+							{
+								$check=$check.'<div">
+								<label">
+									<input type="checkbox" name="preg'.$i.'" value="'.$item['id_opciones'].'" disabled>
+									<img src="data:image/jpg;base64,'.$item['imagen'].'"/>
+								</label></div><br>';
+
+								$radio=$radio.'<div>
+								<label>
+									<input type="radio" name="preg'.$i.'" value="'.$item['id_opciones'].'" disabled>
+									<img class="imgresp" src="data:image/jpg;base64,'.$item['imagen'].'"/>
+								</label></div><br>';
+							}else{
+
+								$radio = $radio.'<input type="radio" name="preg'.$i.'" value="'.$item['id_opciones'].'" disabled/> '.$item['enunciado'].'<br/>';
+								$check = $check.'<input type="checkbox" name="preg'.$i.'" value="'.$item['id_opciones'].'" disabled/> '.$item['enunciado'].'<br/>';
+							}
+						}

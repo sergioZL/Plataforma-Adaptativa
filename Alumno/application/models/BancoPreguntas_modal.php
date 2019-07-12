@@ -22,5 +22,15 @@ class BancoPreguntas_modal extends CI_Model{
 
         return $query->result_array();
     } 
+
+    public function ConsultarPreguntasRespuesta($idpregunta)
+    {
+        $this->db->select($this->table.'.*');
+        $this->db->from( $this->table);
+        $this->db->where( $this->table.'.id',$idpregunta);
+        $query = $this->db->get();
+        
+        return $query->result_array();
+    }
 }
 
