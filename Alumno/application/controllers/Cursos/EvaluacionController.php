@@ -147,119 +147,148 @@ class EvaluacionController extends CI_Controller {
 		$Curso = $this->input->get('Curso');
 		
 		$i = 1;
-		$mala  = '<i class="fas fa-times"></i>';
-		$buena = '<i class="fas fa-check"></i>';
+		$mala  = ' <i class="fas fa-times"></i>';
+		$buena = ' <i class="fas fa-check"></i>';
+		$respuesta= "";
 
 		//$Evaluacion = $this->Respuesta_modal->ConsultarRespuestas($this->$idEvaluacion);
 		$Evaluacion = $this->Respuesta_modal->ConsultarRespuestas(1);
 		
-		foreach ($Evaluacion as $evaluacion)
-		{
-			$Pregunta = $this->BancoPreguntas_modal->ConsultarPreguntasRespuesta($evaluacion['id_pregunta']);
-					
-			foreach ($Pregunta as $pregunta) 
+		//foreach ($Evaluacion as $evaluacion)
+		//{
+//			$NPregunta = $this->Respuesta_modal->ConsultarPreguntasNRespuesta($this->$idEvaluacion);
+
+			$NPregunta = $this->Respuesta_modal->ConsultarPreguntasNRespuesta(1);
+
+			foreach($NPregunta as $npreguntas)
 			{
-				$p='<div class="pregresp">
-					<div class="pregunta">'.$i.'. '.$pregunta['enunciado'].'<br/></div>
-					<div class="respuestas">';
-
-				if($pregunta['imagen']!=null)
-					$p = $p.'<div >
-					<button id="VerImg" type="button" class="btn btn-primary" onclick="abrir()" data-target="#ModalImagen" data-toggle="modal" > Ver Imagen</button>
-					</div><br/>';
-
-					//'.$pregunta['imagen'].'
-					//					<!--<img style="display:none" width="300px" height="375px" src="data:image/jpg;base64,'.$pregunta['imagen'].'" alt="">-->
-
-
-				$PreguntasExamen = $this->Opciones_modal->ConsultarOpcionesRespuesta($pregunta['id']);
-				
-				if($PreguntasExamen != null)
-				{
-					$porcentaje = 1;
-					/*
-					1- solo una pregunta
-					2- mas de una pregunta
-					*/
-					$radio="";
-					$check = "";
-					foreach ($PreguntasExamen as $item) 
-					{	
-						if($item['porcentaje'] > 0 && $item['id_opciones'] == $evaluacion['id_opcion'])
-						{
-							if($item['imagen']!=null)
-							{
-								$check=$check.'<div">
-								<label">
-									<input type="checkbox" name="preg'.$i.'" value="'.$item['id_opciones'].'" disabled checked>
-									<img src="data:image/jpg;base64,'.$item['imagen'].'"/>
-								</label>'.$buena.'</div><br>';
-
-								$radio=$radio.'<div>
-								<label>
-									<input type="radio" name="preg'.$i.'" value="'.$item['id_opciones'].'" disabled checked>
-									<img class="imgresp" src="data:image/jpg;base64,'.$item['imagen'].'"/>
-								</label>'.$buena.'</div><br>';
-							}else{
-
-								$radio = $radio.'<input type="radio" name="preg'.$i.'" value="'.$item['id_opciones'].'" disabled checked/> '.$item['enunciado'].$buena.'<br>';
-								$check = $check.'<input type="checkbox" name="preg'.$i.'" value="'.$item['id_opciones'].'" disabled checked/> '.$item['enunciado'].$buena.'<br>';
-							}
-						}else if($item['porcentaje'] > 0 && $item['id_opciones'] == $evaluacion['id_opcion'])
-						{
-							if($item['imagen']!=null)
-							{
-								$check=$check.'<div">
-								<label">
-									<input type="checkbox" name="preg'.$i.'" value="'.$item['id_opciones'].'" disabled checked>
-									<img src="data:image/jpg;base64,'.$item['imagen'].'"/>
-								</label>'.$mala.'</div><br>';
-
-								$radio=$radio.'<div>
-								<label>
-									<input type="radio" name="preg'.$i.'" value="'.$item['id_opciones'].'" disabled checked> 
-									<img class="imgresp" src="data:image/jpg;base64,'.$item['imagen'].'"/>
-								</label>'.$mala.'</div><br>';
-							}else{
-								$radio = $radio.'<input type="radio" name="preg'.$i.'" value="'.$item['id_opciones'].'" disabled checked/> '.$item['enunciado'].$mala.'<br/>';
-								$check = $check.'<input type="checkbox" name="preg'.$i.'" value="'.$item['id_opciones'].'" disabled checked/> '.$item['enunciado'].$mala.'<br/>';
-							}
-						}else
-						{
-							if($item['imagen']!=null)
-							{
-								$check=$check.'<div">
-								<label">
-									<input type="checkbox" name="preg'.$i.'" value="'.$item['id_opciones'].'" disabled>
-									<img src="data:image/jpg;base64,'.$item['imagen'].'"/>
-								</label></div><br>';
-
-								$radio=$radio.'<div>
-								<label>
-									<input type="radio" name="preg'.$i.'" value="'.$item['id_opciones'].'" disabled>
-									<img class="imgresp" src="data:image/jpg;base64,'.$item['imagen'].'"/>
-								</label></div><br>';
-							}else{
-
-								$radio = $radio.'<input type="radio" name="preg'.$i.'" value="'.$item['id_opciones'].'" disabled/> '.$item['enunciado'].'<br/>';
-								$check = $check.'<input type="checkbox" name="preg'.$i.'" value="'.$item['id_opciones'].'" disabled/> '.$item['enunciado'].'<br/>';
-							}
-						}
-						if($item['porcentaje']<=99 && $porcentaje==1)
-						{
-							if($item['porcentaje']>0)
-								$porcentaje = 0;
-						}
+				$Pregunta = $this->BancoPreguntas_modal->ConsultarPreguntasRespuesta($npreguntas['id_pregunta']);
 						
+				foreach ($Pregunta as $pregunta) 
+				{
+					$p='<div class="pregresp">
+						<div class="pregunta">'.$i.'. '.$pregunta['enunciado'].'<br/></div>
+						<div class="respuestas">';
+
+					if($pregunta['imagen']!=null)
+						$p = $p.'<div >
+						<button id="VerImg" type="button" class="btn btn-primary" onclick="abrir()" data-target="#ModalImagen" data-toggle="modal" > Ver Imagen</button>
+						</div><br/>';
+
+						//'.$pregunta['imagen'].'
+						//					<!--<img style="display:none" width="300px" height="375px" src="data:image/jpg;base64,'.$pregunta['imagen'].'" alt="">-->
+
+
+					//$PreguntasExamen = $this->Opciones_modal->ConsultarOpcionesRespuesta($npreguntas['id_pregunta']);
+					$PreguntasExamen = $this->Opciones_modal->ConsultarOpcionesRespuestas($npreguntas['id_pregunta']);
+					
+					if($PreguntasExamen!=null)
+					{
+						$porcentaje = 1;
+						/*
+						1- solo una pregunta
+						2- mas de una pregunta
+						*/
+						$radio="";
+						$check = "";
+
+						foreach ($PreguntasExamen as $item) 
+						{
+							if($item['porcentaje'] > 0 && $item['id_opciones'] != $item['id_opcion'])
+							{
+								$respuesta = $respuesta.$item['enunciado'];
+
+								if($item['imagen']!=null)
+								{
+									$respuesta = $respuesta.$item['imagen'];
+								}
+							}
+
+							if($item['porcentaje'] > 0 && $item['id_opciones'] == $item['id_opcion'])
+							{
+								if($item['imagen']!=null)
+								{
+									$check=$check.'<div">
+									<label">
+										<input type="checkbox" name="preg'.$i.'" value="'.$item['id_opciones'].'" disabled checked>
+										<img src="data:image/jpg;base64,'.$item['imagen'].'"/>
+									</label>'.$buena.'</div><br>';
+
+									$radio=$radio.'<div>
+									<label>
+										<input type="radio" name="preg'.$i.'" value="'.$item['id_opciones'].'" disabled checked>
+										<img class="imgresp" src="data:image/jpg;base64,'.$item['imagen'].'"/>
+									</label>'.$buena.'</div><br>';
+								}else{
+
+									$radio = $radio.'<input type="radio" name="preg'.$i.'" value="'.$item['id_opciones'].'" disabled checked/> '.$item['enunciado'].$buena.'<br>';
+									$check = $check.'<input type="checkbox" name="preg'.$i.'" value="'.$item['id_opciones'].'" disabled checked/> '.$item['enunciado'].$buena.'<br>';
+								}
+							}else if($item['porcentaje'] == 0 && $item['id_opciones'] == $item['id_opcion'])
+							{
+								if($item['imagen']!=null)
+								{
+									$check=$check.'<div">
+									<label">
+										<input type="checkbox" name="preg'.$i.'" value="'.$item['id_opciones'].'" disabled checked>
+										<img src="data:image/jpg;base64,'.$item['imagen'].'"/>
+									</label>'.$mala.'</div><br>';
+
+									$radio=$radio.'<div>
+									<label>
+										<input type="radio" name="preg'.$i.'" value="'.$item['id_opciones'].'" disabled checked> 
+										<img class="imgresp" src="data:image/jpg;base64,'.$item['imagen'].'"/>
+									</label>'.$mala.'</div><br>';
+								}else{
+									$radio = $radio.'<input type="radio" name="preg'.$i.'" value="'.$item['id_opciones'].'" disabled checked/> '.$item['enunciado'].$mala.'<br/>';
+									$check = $check.'<input type="checkbox" name="preg'.$i.'" value="'.$item['id_opciones'].'" disabled checked/> '.$item['enunciado'].$mala.'<br/>';
+								}
+							}else if($item['id_opciones'] != $item['id_opcion'])
+							{
+								if($item['imagen']!=null)
+								{
+									$check=$check.'<div">
+									<label">
+										<input type="checkbox" name="preg'.$i.'" value="'.$item['id_opciones'].'" disabled>
+										<img src="data:image/jpg;base64,'.$item['imagen'].'"/>
+									</label></div><br>';
+
+									$radio=$radio.'<div>
+									<label>
+										<input type="radio" name="preg'.$i.'" value="'.$item['id_opciones'].'" disabled>
+										<img class="imgresp" src="data:image/jpg;base64,'.$item['imagen'].'"/>
+									</label></div><br>';
+								}else{
+
+									$radio = $radio.'<input type="radio" name="preg'.$i.'" value="'.$item['id_opciones'].'" disabled/> '.$item['enunciado'].'<br/>';
+									$check = $check.'<input type="checkbox" name="preg'.$i.'" value="'.$item['id_opciones'].'" disabled/> '.$item['enunciado'].'<br/>';
+								}
+							}
+							
+							if($item['porcentaje']<=99 && $porcentaje==1)
+							{
+								if($item['porcentaje']>0)
+									$porcentaje = 0;
+							}
+						}
+
+							
 						if($porcentaje==1)
 							$p = $p.$radio;
 						else
-							$p = $p.$check;
+							$p = $p.$check;	
+
 					}
+					$i++;
+					
+					if($respuesta != "")
+						$p = $p.'<br></b>'.$respuesta.'</b>';
+
+					//					$p = $p.'<br><!--<span style="background-color: #7DA5E0; width: 100%;">--></b>'.$respuesta.'</b><!--</span>-->';
+
+					echo $p = $p.'</div></div>';
 				}
-				$i++;
-				echo $p = $p.'</div></div>';
 			}
-		}
+		//}
 	}
 }

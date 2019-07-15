@@ -2,7 +2,7 @@ create database ti;
 -- drop database ti;
 use ti;
 
-CREATE TABLE carrera (
+CREATE TABLE carrera(
   clave varchar(10) NOT NULL,
   nombre varchar(50) NOT NULL,
   PRIMARY KEY (clave)
@@ -227,3 +227,169 @@ INSERT INTO banco_preguntas(enunciado,id_tema) values('Pregunta 1',2),('Pregunta
 INSERT INTO opciones(porcentaje,enunciado,imagen,id_pregunta) values(0,'respuesta 1',null,9),(100,'respuesta 2',null,9),(0,'respuesta 3',null,9),(0,'respuesta 1',null,10),(50,'respuesta 2',null,10),(0,'respuesta 3',null,10),(100,'respuesta 1',null,11),(0,'respuesta 2',null,11),(0,'respuesta 3',null,11);
 insert into evaluacion(tipo,clave_alumno,clave_curso) values ('Evaluacion','alumno','MySQL');
 insert into respuestas(id_pregunta,id_opcion,id_evaluacion) values(1,2,1),(1,1,1),(2,4,1),(2,6,1);
+
+
+
+
+select * from inscrito;
+select * from banco_preguntas;
+select * from opciones;
+select * from cursos;
+select * from configuracion;
+select * from carrera;
+select * from aprendizaje;
+select * from alumnos;
+select * from material;
+select * from preguntas;
+select * from recursos;
+select * from respuestas;
+select * from lecciones;
+select * from temas;
+select * from usuario;
+select * from categoria;
+
+-- id,cursos.descripcion as descripcioncursos, categoria.descripcion as descripcioncategoria,cursos.clave,nombre,foto,clave_carrera 
+SELECT DISTINCT categoria.descripcion,categoria  FROM `categoria` 
+INNER JOIN `cursos` ON `categoria`.`id` = `cursos`.`categoria`
+INNER JOIN `inscrito` ON `inscrito`.`clave_curso` = `cursos`.`clave`
+WHERE `inscrito`.`clave_alumno` = 'alumno';
+ 
+ 
+ 
+SELECT `aprendizaje` FROM `aprendizaje` 
+INNER JOIN `cursos` ON `aprendizaje`.`clave_curso` = `cursos`.`clave` 
+INNER JOIN `inscrito` ON `inscrito`.`clave_curso` = `cursos`.`clave`
+WHERE `inscrito`.`clave_alumno` = 'alumno' AND `cursos`.`clave` = 'MySQL';
+
+select * from inscrito inner join cursos on inscrito.clave_curso = Cursos.clave WHERE `inscrito`.`clave_alumno` = 'alumno' order by nombre DESC ;
+select * from lecciones right join temas on temas.id_leccion = lecciones.clave where clave_curso = 'MySQL' order by lecciones.secuencia asc; 
+select * from lecciones left join temas on temas.id_leccion = lecciones.clave where clave_curso = 'MySQL' order by lecciones.secuencia asc;
+select * from temas right join lecciones on temas.id_leccion = lecciones.clave where clave_curso = 'MySQL' order by lecciones.secuencia asc; 
+select * from temas left join lecciones on temas.id_leccion = lecciones.clave where clave_curso = 'MySQL' order by lecciones.secuencia asc;
+select * from inscrito inner join cursos on inscrito.clave_curso = Cursos.clave WHERE `inscrito`.`clave_alumno` = 'alumno' ;
+
+
+SELECT `*` FROM `temas` inner join lecciones on temas.id_leccion = lecciones.clave WHERE  `lecciones`.`clave_curso` = 'TICS' ORDER BY `temas`.`secuencia` ASC;
+
+use ti;
+
+select banco_preguntas.* from banco_preguntas inner join temas on  temas.id = banco_preguntas.id_tema
+inner join lecciones on id_leccion = clave
+where temas.id = 1 and lecciones.clave_curso = 'MySQL' ;
+
+
+
+
+select banco_preguntas.* from banco_preguntas inner join temas on  temas.id = banco_preguntas.id_tema
+where temas.id = 1 order by rand();
+
+
+
+SELECT `banco_preguntas`.* FROM `banco_preguntas`
+INNER JOIN `temas` ON `banco_preguntas`.`id_tema` = `temas`.`id` 
+WHERE `temas`.`id` = '1' ORDER BY rand() limit 4;
+
+SELECT `opciones`.* FROM `opciones`
+WHERE `opciones`.`id_pregunta` = '1' ORDER BY rand();
+
+
+select * from configuracion;
+
+
+select numpregunta from configuracion;
+
+
+select * from lecciones
+INNER JOIN `temas` ON `temas`.`id_leccion` = `lecciones`.`clave` 
+where lecciones.clave_curso = TICS;
+
+
+select * from evaluacion;
+
+
+
+
+show tables
+
+
+
+
+
+
+CREATE TABLE preguntas(
+	clave_alumno varchar(10) NOT NULL,
+    clave_curso varchar(10) NOT NULL,
+    CONSTRAINT Evaluacion_Alumno_pbfk FOREIGN KEY (clave_alumno) REFERENCES alumnos(clave) ON UPDATE CASCADE,
+	CONSTRAINT Evaluacion_Curso_pbfk FOREIGN KEY (clave_curso) REFERENCES cursos(clave) ON UPDATE CASCADE
+  /*id_pregunta INT(11) NOT NULL,
+  id_evaluacion INT(11) NOT NULL,
+  correcto BOOLEAN NOT NULL,
+  primary key(id_pregunta, id_evaluacion),
+  foreign key(id_pregunta) references banco_preguntas(id)*/ 
+);
+
+
+
+CREATE TABLE respuestas (
+  id_pregunta INT(11) NOT NULL,
+  id_evaluacion INT(11) NOT NULL,
+  correcto BOOLEAN NOT NULL,
+  primary key(id_pregunta, id_evaluacion),
+  foreign key(id_pregunta) references banco_preguntas(id)
+
+  /*id_respuesta int(11) NOT NULL AUTO_INCREMENT primary key,
+  id_opcion INT(11) not null,
+  id_pregunta int(11) NOT NULL,
+  id_evaluacion INT(11) not null,
+  foreign key(id_opcion) references opciones(id_opciones),
+  foreign key(id_pregunta, id_evaluacion) references preguntas(id_pregunta, id_evaluacion)*/
+);
+
+show tables;
+
+
+select * from evaluacion;
+select * from respuestas;
+select * from opciones;
+select * from banco_preguntas;
+
+
+
+-- insert into preguntas (id_pregunta,id_evaluacion,id_alumno) values (1,1,'alumno');
+
+
+
+
+SELECT * FROM `respuestas`
+INNER JOIN `opciones` ON `opciones`.`id_opciones` = `respuestas`.`id_opcion` 
+INNER JOIN `banco_preguntas` ON `banco_preguntas`.`id` = `respuestas`.`id_pregunta` 
+WHERE `respuestas`.`id_evaluacion` = '1' ;
+
+
+select * from evaluacion;
+select * from respuestas;
+select * from opciones;
+select * from banco_preguntas;
+
+select * from opciones where id_pregunta = 2; 
+
+select * from evaluacion
+INNER JOIN `respuestas` ON `evaluacion`.`id` = `respuestas`.`id_evaluacion` 
+INNER JOIN `opciones` ON `opciones`.`id_opciones` = `evaluacion`.`id_opcion` ;
+
+
+select * from respuestas;
+SELECT `opciones`.* FROM `opciones` WHERE `opciones`.`id_pregunta` = '2';
+
+
+select * from respuestas
+left JOIN `opciones` ON `opciones`.`id_opciones` = `respuestas`.`id_opcion` ;
+
+
+select * from opciones
+left JOIN `respuestas` ON `opciones`.`id_opciones` = `respuestas`.`id_opcion` where opciones.id_pregunta = 2;
+
+SELECT * FROM `opciones` LEFT JOIN `respuestas` ON `opciones`.`id_opciones` = `respuestas`.`id_opcion` WHERE `opciones`.`id_pregunta` = '2'
+
+SELECT DISTINCT id_pregunta FROM `respuestas` WHERE `respuestas`.`id_evaluacion` = '1'
+select distinct id_pregunta from respuestas
