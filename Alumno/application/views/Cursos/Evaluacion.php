@@ -168,55 +168,55 @@
     function cargarPreguntasCorrectas()
     {
 
+        var id_evaluacion =$("#idEvaluacion").val();
 
         $.ajax
         ({
             type:'post',
-            url:'<?php echo site_url();?>/Cursos/EvaluacionController/ConsultarRespuestaCorrecta?Curso=<?php echo $_GET['curso'];?>',    
+            url:'<?php echo site_url();?>/Cursos/EvaluacionController/ConsultarRespuestaCorrecta?Curso=<?php echo $_GET['curso'];?>&id_evaluacion='+id_evaluacion,    
             success:function(resp)
             {
                 $("#contenedroPreguntas").append(resp);
             }
         });
-/*
-        var correcta = 1;
-        for(var i = 1; i<=10;i++)
-        {
-            if(correcta ==1)
-            {
-                $("#contenedroPreguntas").append(
-                    '<div class="pregresp">'+
-                        '<div class="pregunta">'+i+'. ¿Crees que es una buena tecnología? <i class="fas fa-check"></i><br/></div>'+
-                        '<div class="respuestas">'+
-                            '<input disabled="true" type="radio" name="preg'+i+'" value="1" /> Sí<br/>'+
-                            '<input checked disabled="true" type="radio" name="preg'+i+'" value="2" /> No<br/>'+
-                            '<input disabled="true" type="radio" name="preg'+i+'" value="3" /> Ns/Nc<br/>'+
-                        '</div>'+
-                    '</div>'
-                );  
-                correcta = 2;
-            }else
-            {
-                $("#contenedroPreguntas").append(
-                    '<div class="pregresp">'+
-                        '<div class="pregunta">'+i+'. ¿Crees que es una buena tecnología? <i class="fas fa-times"></i><br/></div>'+
-                        '<div class="respuestas">'+
-                            '<input checked disabled="true" type="radio" name="preg'+i+'" value="1" /> Sí<br/>'+
-                            '<input disabled="true" type="radio" name="preg'+i+'" value="2" /> No<br/>'+
-                            '<input  disabled="true" type="radio" name="preg'+i+'" value="3" /> Ns/Nc<br/>'+
-                        '</div>'+
-                    '</div>'
-                ); 
-                correcta = 1;
-            }
-        }*/
     }
 
     $('#Evaluar').click(function()
     {
+
         var r =confirm("Desea terminar la evaluacion");
         if(r==true)
         {
+            
+            var id_evaluacion =$("#idEvaluacion").val();
+
+            $("#contenedroPreguntas #pregresp").each(function()
+            {
+                var id_pregunta = $(this).find('#Npregunta').val();
+           
+                $(this).find('#respuestas').each(function()
+                {
+
+                    $(this).find('#resp:checked').each(function()
+                    {
+                        var id_opcion = $(this).val();
+
+                        $.ajax
+                        ({            
+                            url:'<?php echo site_url();?>/Cursos/EvaluacionController/InsertRespuestas?id_pregunta='+ id_pregunta +'&id_opcion='+id_opcion+'&id_evaluacion='+id_evaluacion,
+                            success:function(resp)
+                            {
+
+                            }
+                        });
+
+                    });
+
+                });
+
+            });
+
+
             $("#contenedroPreguntas").children().remove();   
             cargarPreguntasCorrectas();
             $("#Evaluar").hide();
