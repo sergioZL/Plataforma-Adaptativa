@@ -31,14 +31,26 @@ class Opciones_modal extends CI_Model{
     }
 
 
-    public function ConsultarOpcionesRespuestas($idBancoPregunta)
+    public function ConsultarOpcionesRespuestas($idBancoPregunta,$idevaluacion)
     {
         $this->db->select('*');
         $this->db->from( $this->table);
         $this->db->join('respuestas', $this->table.'.id_opciones  = respuestas.id_opcion','LEFT');
         $this->db->where($this->table.'.id_pregunta',$idBancoPregunta);
-        $query = $this->db->get();
+        $this->db->where('id_evaluacion',$idevaluacion);
 
+        $query = $this->db->get();
         return $query->result_array();
     } 
+
+    public function ConsultarResultadoRespuestas($idevaluacion,$npreguntas)
+    {
+        $this->db->select('sum(porcentaje) as cal');
+        $this->db->from( $this->table);
+        $this->db->join('respuestas', $this->table.'.id_opciones  = respuestas.id_opcion','LEFT');
+        $this->db->where('respuestas.id_evaluacion',$idevaluacion);
+        $query = $this->db->get();
+
+        return $query->row();
+    }
 }

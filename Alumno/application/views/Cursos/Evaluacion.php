@@ -87,8 +87,29 @@
     ?>
     <br><br>
 
+
     
     <div class="container">
+
+        <table id="table" class="table  table-bordered">
+            
+            <tbody>
+                <tr>
+                    <td style="width:70px"><b>Evaluacion</b></td>
+                    <td id="tevaluacion" colspan="2">Diagnostica</td>
+                </tr>
+                <tr>
+                    <td  style="width:70px"><b>Alumno</b></td>
+                    <td colspan="2"><?php echo $varsesion ?></td>
+                </tr>
+                <tr>
+                    <td style="width:70px"><b>Puntos</b></td>
+                    <td id="puntos" colspan="2">50</td>
+                </tr>
+            </tbody>
+        </table>
+        <br>
+
         <div id="contenedroPreguntas">
             
         </div>
@@ -214,6 +235,16 @@
 
                 });
 
+            });
+
+
+            $.ajax
+            ({            
+                url:'<?php echo site_url();?>/Cursos/EvaluacionController/Calificacion?id_evaluacion='+id_evaluacion,
+                success:function(resp)
+                {
+                    $("#table tbody").append(resp);
+                }
             });
 
 

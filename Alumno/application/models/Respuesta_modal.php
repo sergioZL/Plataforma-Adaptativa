@@ -40,5 +40,18 @@ class Respuesta_modal extends CI_Model{
 
         return $query->result_array();
     } 
+
+    public function ConsultarResultadoRespuestas($idevaluacion,$npreguntas)
+    {
+        $this->db->select('sum(porcentaje)');
+        $this->db->from( $this->table);
+        $this->db->join('respuestas', $this->table.'.id_pregunta  = respuestas.id_pregunta','LEFT');
+        $this->db->where($this->table.'.id_evaluacion',$idevaluacion);
+        $query = $this->db->get();
+
+        return $query->row();
+    }
+
+
 }
 

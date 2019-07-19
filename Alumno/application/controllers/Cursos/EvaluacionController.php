@@ -3,6 +3,7 @@
 class EvaluacionController extends CI_Controller {
 
 	private $idEvaluacion;
+	private $numpregunta;
 	public function __construct() {
         parent::__construct();
 		$this->load->helper('url_helper');
@@ -72,7 +73,6 @@ class EvaluacionController extends CI_Controller {
 		
 		$i = 1;
 		$limit = $this->Configuracion_modal->Limite();
-
 
 		$Tema = $this->Lecciones_modal->ConsultarLeccionesPorCurso($Curso);
 		foreach ($Tema as $tema)
@@ -156,10 +156,12 @@ class EvaluacionController extends CI_Controller {
 
 		//$Evaluacion = $this->Respuesta_modal->ConsultarRespuestas($this->$idEvaluacion);
 		$Evaluacion = $this->Respuesta_modal->ConsultarRespuestas($id_evaluacion);
+		//$Evaluacion = $this->Respuesta_modal->ConsultarRespuestas(2);
 	
 		//$NPregunta = $this->Respuesta_modal->ConsultarPreguntasNRespuesta($this->$idEvaluacion);
 
 		$NPregunta = $this->Respuesta_modal->ConsultarPreguntasNRespuesta($id_evaluacion);
+		//$NPregunta = $this->Respuesta_modal->ConsultarPreguntasNRespuesta(2);
 
 		foreach($NPregunta as $npreguntas)
 		{
@@ -180,7 +182,7 @@ class EvaluacionController extends CI_Controller {
 					//					<!--<img style="display:none" width="300px" height="375px" src="data:image/jpg;base64,'.$pregunta['imagen'].'" alt="">-->
 
 
-				$PreguntasExamen = $this->Opciones_modal->ConsultarOpcionesRespuestas($npreguntas['id_pregunta']);
+				$PreguntasExamen = $this->Opciones_modal->ConsultarOpcionesRespuestas($npreguntas['id_pregunta'],$id_evaluacion);
 				
 				if($PreguntasExamen!=null)
 				{
@@ -280,10 +282,11 @@ class EvaluacionController extends CI_Controller {
 				}
 				$i++;
 				
-				if($respuesta != "")
+				/*if($respuesta != "")
 					$p = $p.'<br></b>'.$respuesta.'</b>';
 
-				//					$p = $p.'<br><!--<span style="background-color: #7DA5E0; width: 100%;">--></b>'.$respuesta.'</b><!--</span>-->';
+									$p = $p.'<br><!--<span style="background-color: #7DA5E0; width: 100%;">--></b>'.$respuesta.'</b><!--</span>-->';
+				*/
 
 				echo $p = $p.'</div></div>';
 			}
@@ -302,4 +305,20 @@ class EvaluacionController extends CI_Controller {
 		//$respuesta = $this->Respuesta_modal->InsertRespuestas($id_opcion,$id_pregunta,$this->$idEvaluacion);	
 	}
 
+
+	public function Calificacion()
+	{
+		$npreguntas = $this->Configuracion_modal->Limite();
+
+		$idevaluacion = $this->input->get('id_evaluacion');
+
+		$calificacion = $this->Opciones_modal->ConsultarResultadoRespuestas($idevaluacion,$npreguntas);
+
+		$total=$calificacion->cal * 100 / 4;
+		echo '<tr>
+			<td style="width:70px"><b>Calificación</b></td>
+			<td id="puntos" colspan="2">'.$total.'</td>
+		</tr>';
+
+	}
 }
