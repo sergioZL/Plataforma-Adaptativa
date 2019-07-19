@@ -35,7 +35,7 @@ class Opciones_modal extends CI_Model{
     {
         $this->db->select('*');
         $this->db->from( $this->table);
-        $this->db->join('respuestas', $this->table.'.id_opciones  = respuestas.id_opcion','LEFT');
+        $this->db->join('respuestas', $this->table.'.id_pregunta  = respuestas.id_pregunta','LEFT');
         $this->db->where($this->table.'.id_pregunta',$idBancoPregunta);
         $this->db->where('id_evaluacion',$idevaluacion);
 
@@ -53,4 +53,5 @@ class Opciones_modal extends CI_Model{
 
         return $query->row();
     }
+    
 }

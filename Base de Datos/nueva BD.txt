@@ -393,3 +393,72 @@ SELECT * FROM `opciones` LEFT JOIN `respuestas` ON `opciones`.`id_opciones` = `r
 
 SELECT DISTINCT id_pregunta FROM `respuestas` WHERE `respuestas`.`id_evaluacion` = '1'
 select distinct id_pregunta from respuestas
+;
+
+select distinct id_pregunta,count(id_pregunta) from respuestas  WHERE `respuestas`.`id_evaluacion` = '1'
+
+
+SELECT * FROM `opciones` LEFT JOIN `respuestas` ON `opciones`.`id_opciones` = `respuestas`.`id_opcion` where id_evaluacion = 7
+
+
+select * from `opciones` LEFT JOIN `respuestas` ON `opciones`.`id_opciones` = `respuestas`.`id_opcion` where id_evaluacion = 7
+;
+
+
+SELECT sum(porcentaje) FROM `respuestas` LEFT JOIN `respuestas` ON `respuestas`.`id_opciones` = `respuestas`.`id_opcion` WHERE `respuestas`.`id_evaluacion` = '7';
+
+
+
+SELECT * FROM `opciones` LEFT JOIN `respuestas` ON `opciones`.`id_opciones` = `respuestas`.`id_opcion`where id_evaluacion = '31' and `opciones`.`id_pregunta` = '1'
+select * from opciones where id_pregunta = '7'
+
+
+select * from evaluacion;
+select * from respuestas where id_evaluacion = 31;
+
+
+
+
+
+
+
+SELECT * FROM `opciones` right JOIN `respuestas` ON `opciones`.`id_pregunta` = `respuestas`.`id_pregunta`where id_evaluacion = '31' and `opciones`.`id_pregunta` = '1';
+
+
+
+
+SELECT distinct respuestas.id_opcion  FROM `respuestas` right JOIN `opciones` ON `opciones`.`id_pregunta` = `respuestas`.`id_pregunta`where id_evaluacion = '31' and `opciones`.`id_pregunta` = '1';
+
+
+
+
+
+SELECT * FROM `opciones` right JOIN `respuestas` ON `opciones`.`id_pregunta` = `respuestas`.`id_pregunta`where id_evaluacion = '31' and `opciones`.`id_pregunta` = '1';
+
+SELECT distinct id_opciones,porcentaje,enunciado,imagen,respuestas.id_pregunta,id_respuesta,id_opcion FROM `opciones` right JOIN `respuestas` ON `opciones`.`id_pregunta` = `respuestas`.`id_pregunta`where id_evaluacion = '31' and `opciones`.`id_pregunta` = '1';
+
+
+
+
+SELECT distinct id_opciones,porcentaje,enunciado,imagen,respuestas.id_pregunta,id_respuesta,id_opcion
+FROM `opciones` 
+right JOIN `respuestas` ON `opciones`.`id_pregunta` = `respuestas`.`id_pregunta`
+where id_evaluacion = '31' and `opciones`.`id_pregunta` = '1';
+
+
+
+
+
+SELECT distinct id_opciones,porcentaje,enunciado,imagen,id_opcion
+FROM `opciones` 
+left JOIN `respuestas` ON `opciones`.`id_pregunta` = `respuestas`.`id_pregunta`
+where id_evaluacion = '48' and `opciones`.`id_pregunta` = '1';
+
+
+
+
+select * from evaluacion;
+select * from respuestas where id_evaluacion = 48;
+
+
+

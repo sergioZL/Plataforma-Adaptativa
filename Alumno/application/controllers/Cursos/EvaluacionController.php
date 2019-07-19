@@ -288,6 +288,16 @@ class EvaluacionController extends CI_Controller {
 									$p = $p.'<br><!--<span style="background-color: #7DA5E0; width: 100%;">--></b>'.$respuesta.'</b><!--</span>-->';
 				*/
 
+				switch ($variable) {
+					case 'value':
+						# code...
+						break;
+					
+					default:
+						# code...
+						break;
+				}
+
 				echo $p = $p.'</div></div>';
 			}
 		}
