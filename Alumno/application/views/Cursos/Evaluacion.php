@@ -171,6 +171,7 @@
     $(document).ready(function()
     {
         cargarPreguntas();
+        //cargarPreguntasCorrectas();
     });
 
     function cargarPreguntas()
@@ -190,7 +191,7 @@
     {
 
         var id_evaluacion =$("#idEvaluacion").val();
-
+        //var id_evaluacion = 2;
         $.ajax
         ({
             type:'post',
@@ -214,14 +215,14 @@
             $("#contenedroPreguntas #pregresp").each(function()
             {
                 var id_pregunta = $(this).find('#Npregunta').val();
-           
+                var respuesta = 0;
                 $(this).find('#respuestas').each(function()
                 {
-
                     $(this).find('#resp:checked').each(function()
                     {
                         var id_opcion = $(this).val();
-
+                        respuesta = 1;
+                        
                         $.ajax
                         ({            
                             url:'<?php echo site_url();?>/Cursos/EvaluacionController/InsertRespuestas?id_pregunta='+ id_pregunta +'&id_opcion='+id_opcion+'&id_evaluacion='+id_evaluacion,
@@ -232,6 +233,20 @@
                         });
 
                     });
+                    
+                    if(respuesta == 0)
+                    {
+                        $.ajax
+                        ({            
+                            url:'<?php echo site_url();?>/Cursos/EvaluacionController/InsertRespuestas?id_pregunta='+ id_pregunta +'&id_opcion='+null+'&id_evaluacion='+id_evaluacion,
+                            success:function(resp)
+                            {
+
+                            }
+                        });
+
+                        respuesta =0;
+                    }
 
                 });
 
@@ -249,8 +264,8 @@
 
 
             $("#contenedroPreguntas").children().remove();   
-            cargarPreguntasCorrectas();
             $("#Evaluar").hide();
+            cargarPreguntasCorrectas();
         }
     }); 
 

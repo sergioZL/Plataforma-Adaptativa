@@ -142,9 +142,10 @@ class EvaluacionController extends CI_Controller {
 				echo $p = $p.'</div></div>';
 			}
 		}
+			echo '<input id="NPre" type="text" value="'.$i .'/>';
 	}
 
-	public function ConsultarRespuestaCorrecta()
+	/*public function ConsultarRespuestaCorrecta()
 	{
 		$Curso = $this->input->get('Curso');
 		$id_evaluacion = $this->input->get('id_evaluacion');
@@ -190,7 +191,7 @@ class EvaluacionController extends CI_Controller {
 					/*
 					1- solo una pregunta
 					2- mas de una pregunta
-					*/
+					*
 					$radio="";
 					$check = "";
 
@@ -281,23 +282,225 @@ class EvaluacionController extends CI_Controller {
 
 				}
 				$i++;
-				
-				/*if($respuesta != "")
-					$p = $p.'<br></b>'.$respuesta.'</b>';
 
-									$p = $p.'<br><!--<span style="background-color: #7DA5E0; width: 100%;">--></b>'.$respuesta.'</b><!--</span>-->';
-				*/
+				echo $p = $p.'</div></div>';
+			}
+		}
+	}*/
 
-				switch ($variable) {
-					case 'value':
-						# code...
-						break;
+	public function ConsultarRespuestaCorrecta()
+	{
+		$Curso = $this->input->get('Curso');
+		$id_evaluacion = $this->input->get('id_evaluacion');
+		
+		$i = 1;
+		$mala  = ' <i class="fas fa-times"></i>';
+		$buena = ' <i class="fas fa-check"></i>';
+		$respuesta= "";
+
+		$Evaluacion = $this->Respuesta_modal->ConsultarRespuestas($id_evaluacion);
+		$NPregunta = $this->Respuesta_modal->ConsultarPreguntasNRespuesta($id_evaluacion);
+
+
+		foreach($NPregunta as $npreguntas)
+		{
+			$Pregunta = $this->BancoPreguntas_modal->ConsultarPreguntasRespuesta($npreguntas['id_pregunta']);
 					
-					default:
-						# code...
-						break;
+			foreach ($Pregunta as $pregunta) 
+			{
+				$p='<div class="pregresp">
+					<div class="pregunta">'.$i.'. '.$pregunta['enunciado'].'<br/></div>
+					<div class="respuestas">';
+
+				if($pregunta['imagen']!=null)
+					$p = $p.'<div >
+					<button id="VerImg" type="button" class="btn btn-primary" onclick="abrir()" data-target="#ModalImagen" data-toggle="modal" > Ver Imagen</button>
+					</div><br/>';
+
+					//'.$pregunta['imagen'].'
+					//					<!--<img style="display:none" width="300px" height="375px" src="data:image/jpg;base64,'.$pregunta['imagen'].'" alt="">-->
+
+
+				$PreguntasExamen = $this->Opciones_modal->ConsultarResultadoRespuestasBuenas($id_evaluacion,$npreguntas['id_pregunta']);
+				
+				if($PreguntasExamen!=null)
+				{
+					$porcentaje = 1;
+					/*
+					1- solo una pregunta
+					2- mas de una pregunta
+					*/
+					$radio="";
+					$check = "";
+
+					foreach ($PreguntasExamen as $item) 
+					{
+						if($item['porcentaje'] > 0)
+						{
+							if($item['imagen']!=null)
+							{
+								$check=$check.'<div">
+								<label">
+									<input type="checkbox" name="preg'.$i.'" value="'.$item['id_opciones'].'" disabled checked>
+									<img src="data:image/jpg;base64,'.$item['imagen'].'"/>
+								</label>'.$buena.'</div><br>';
+
+								$radio=$radio.'<div>
+								<label>
+									<input type="radio" name="preg'.$i.'" value="'.$item['id_opciones'].'" disabled checked>
+									<img class="imgresp" src="data:image/jpg;base64,'.$item['imagen'].'"/>
+								</label>'.$buena.'</div><br>';
+							}else{
+
+								$radio = $radio.'<input type="radio" name="preg'.$i.'" value="'.$item['id_opciones'].'" disabled checked/> '.$item['enunciado'].$buena.'<br>';
+								$check = $check.'<input type="checkbox" name="preg'.$i.'" value="'.$item['id_opciones'].'" disabled checked/> '.$item['enunciado'].$buena.'<br>';
+							}
+						}else if($item['porcentaje'] == 0)
+						{
+							if($item['imagen']!=null)
+							{
+								$check=$check.'<div">
+								<label">
+									<input type="checkbox" name="preg'.$i.'" value="'.$item['id_opciones'].'" disabled checked>
+									<img src="data:image/jpg;base64,'.$item['imagen'].'"/>
+								</label>'.$mala.'</div><br>';
+
+								$radio=$radio.'<div>
+								<label>
+									<input type="radio" name="preg'.$i.'" value="'.$item['id_opciones'].'" disabled checked> 
+									<img class="imgresp" src="data:image/jpg;base64,'.$item['imagen'].'"/>
+								</label>'.$mala.'</div><br>';
+							}else{
+								$radio = $radio.'<input type="radio" name="preg'.$i.'" value="'.$item['id_opciones'].'" disabled checked/> '.$item['enunciado'].$mala.'<br/>';
+								$check = $check.'<input type="checkbox" name="preg'.$i.'" value="'.$item['id_opciones'].'" disabled checked/> '.$item['enunciado'].$mala.'<br/>';
+							}
+                        }
+                        else
+						{
+							if($item['imagen']!=null)
+							{
+								$check=$check.'<div">
+								<label">
+									<input type="checkbox" name="preg'.$i.'" value="'.$item['id_opciones'].'" disabled>
+									<img src="data:image/jpg;base64,'.$item['imagen'].'"/>
+								</label></div><br>';
+
+								$radio=$radio.'<div>
+								<label>
+									<input type="radio" name="preg'.$i.'" value="'.$item['id_opciones'].'" disabled>
+									<img class="imgresp" src="data:image/jpg;base64,'.$item['imagen'].'"/>
+								</label></div><br>';
+							}else{
+
+								$radio = $radio.'<input type="radio" name="preg'.$i.'" value="'.$item['id_opciones'].'" disabled/> '.$item['enunciado'].'<br/>';
+								$check = $check.'<input type="checkbox" name="preg'.$i.'" value="'.$item['id_opciones'].'" disabled/> '.$item['enunciado'].'<br/>';
+							}
+                        }
+                        
+						if($item['porcentaje']<=99 && $porcentaje==1)
+						{
+							if($item['porcentaje']>0)
+								$porcentaje = 0;
+						}
+					}
+
+					if($porcentaje==1)
+						$p = $p.$radio;
+					else
+						$p = $p.$check;	
+
+                }
+                
+				$PreguntasExamen = $this->Opciones_modal->ConsultarResultadoRespuestasMalas($id_evaluacion,$npreguntas['id_pregunta']);
+
+                if($PreguntasExamen!=null)
+				{
+					$porcentaje = 1;
+					/*
+					1- solo una pregunta
+					2- mas de una pregunta
+					*/
+					$radio="";
+					$check = "";
+
+					foreach ($PreguntasExamen as $item) 
+					{
+						if($item['porcentaje'] > 0)
+						{
+							if($item['imagen']!=null)
+							{
+								$check=$check.'<div">
+								<label">
+									<input type="checkbox" name="preg'.$i.'" value="'.$item['id_opciones'].'" disabled checked>
+									<img src="data:image/jpg;base64,'.$item['imagen'].'"/>
+								</label>'.$buena.'</div><br>';
+
+								$radio=$radio.'<div>
+								<label>
+									<input type="radio" name="preg'.$i.'" value="'.$item['id_opciones'].'" disabled checked>
+									<img class="imgresp" src="data:image/jpg;base64,'.$item['imagen'].'"/>
+								</label>'.$buena.'</div><br>';
+							}else{
+
+								$radio = $radio.'<input type="radio" name="preg'.$i.'" value="'.$item['id_opciones'].'" disabled checked/> '.$item['enunciado'].$buena.'<br>';
+								$check = $check.'<input type="checkbox" name="preg'.$i.'" value="'.$item['id_opciones'].'" disabled checked/> '.$item['enunciado'].$buena.'<br>';
+							}
+						}else if($item['porcentaje'] == 0)
+						{
+							if($item['imagen']!=null)
+							{
+								$check=$check.'<div">
+								<label">
+									<input type="checkbox" name="preg'.$i.'" value="'.$item['id_opciones'].'" disabled checked>
+									<img src="data:image/jpg;base64,'.$item['imagen'].'"/>
+								</label>'.$mala.'</div><br>';
+
+								$radio=$radio.'<div>
+								<label>
+									<input type="radio" name="preg'.$i.'" value="'.$item['id_opciones'].'" disabled checked> 
+									<img class="imgresp" src="data:image/jpg;base64,'.$item['imagen'].'"/>
+								</label>'.$mala.'</div><br>';
+							}else{
+								$radio = $radio.'<input type="radio" name="preg'.$i.'" value="'.$item['id_opciones'].'" disabled checked/> '.$item['enunciado'].$mala.'<br/>';
+								$check = $check.'<input type="checkbox" name="preg'.$i.'" value="'.$item['id_opciones'].'" disabled checked/> '.$item['enunciado'].$mala.'<br/>';
+							}
+                        }
+                        else
+						{
+							if($item['imagen']!=null)
+							{
+								$check=$check.'<div">
+								<label">
+									<input type="checkbox" name="preg'.$i.'" value="'.$item['id_opciones'].'" disabled>
+									<img src="data:image/jpg;base64,'.$item['imagen'].'"/>
+								</label></div><br>';
+
+								$radio=$radio.'<div>
+								<label>
+									<input type="radio" name="preg'.$i.'" value="'.$item['id_opciones'].'" disabled>
+									<img class="imgresp" src="data:image/jpg;base64,'.$item['imagen'].'"/>
+								</label></div><br>';
+							}else{
+
+								$radio = $radio.'<input type="radio" name="preg'.$i.'" value="'.$item['id_opciones'].'" disabled/> '.$item['enunciado'].'<br/>';
+								$check = $check.'<input type="checkbox" name="preg'.$i.'" value="'.$item['id_opciones'].'" disabled/> '.$item['enunciado'].'<br/>';
+							}
+						}
+                        
+						if($item['porcentaje']<=99 && $porcentaje==1)
+						{
+							if($item['porcentaje']>0)
+								$porcentaje = 0;
+						}
+					}
+					if($porcentaje==1)
+						$p = $p.$radio;
+					else
+						$p = $p.$check;	
+
 				}
 
+				$i++;
 				echo $p = $p.'</div></div>';
 			}
 		}
@@ -330,5 +533,21 @@ class EvaluacionController extends CI_Controller {
 			<td id="puntos" colspan="2">'.$total.'</td>
 		</tr>';
 
+	}
+
+
+	public function ConsultarRespuestaCorrectammm()
+	{
+		$npreguntas = $this->input->get('npreguntas');
+		$idevaluacion = $this->input->get('id_evaluacion');
+
+
+		$Evaluacionbuena = $this->Respuesta_modal->ConsultarResultadoRespuestasMalas($idevaluacion,$npreguntas);
+
+		$EvaluacionMala = $this->Respuesta_modal->ConsultarResultadoRespuestasBuenas($idevaluacion,$npreguntas);
+
+		echo json_encode($Evaluacionbuena);
+
+		echo json_encode($EvaluacionMala);
 	}
 }

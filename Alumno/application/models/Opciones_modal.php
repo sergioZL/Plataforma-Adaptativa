@@ -53,5 +53,20 @@ class Opciones_modal extends CI_Model{
 
         return $query->row();
     }
+
+
+    public function ConsultarResultadoRespuestasBuenas($idevaluacion,$npreguntas)
+    {
+        $sql = 'Select * from opciones where `opciones`.`id_pregunta` = "'.$npreguntas.'" and id_opciones in (select id_opcion from respuestas where `respuestas`.`id_pregunta` = "'.$npreguntas.'" and id_evaluacion = "'.$idevaluacion.'" and id_opcion = id_opciones) ;';
+        
+        return $this->db->query($sql)->result_array();
+    }
+
+    public function ConsultarResultadoRespuestasMalas($idevaluacion,$npreguntas)
+    {
+        $sql = 'Select * from opciones where `opciones`.`id_pregunta` = "'.$npreguntas.'" and id_opciones not in (select id_opcion from respuestas where `respuestas`.`id_pregunta` = "'.$npreguntas.'" and id_evaluacion = "'.$idevaluacion.'" and id_opcion = id_opciones) ;';
+        
+       return $this->db->query($sql)->result_array();
+    }
     
 }
