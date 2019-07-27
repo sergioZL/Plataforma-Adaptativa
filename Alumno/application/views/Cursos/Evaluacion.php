@@ -102,10 +102,10 @@
                     <td  style="width:70px"><b>Alumno</b></td>
                     <td colspan="2"><?php echo $varsesion ?></td>
                 </tr>
-                <tr>
+                <!--<tr>
                     <td style="width:70px"><b>Puntos</b></td>
-                    <td id="puntos" colspan="2">50</td>
-                </tr>
+                    <td id="puntos" colspan="2"></td>
+                </tr>-->
             </tbody>
         </table>
         <br>
@@ -271,12 +271,12 @@
 
     function abrir(imagen)
     {
-        $("#ModalImagen").modal('show');
         //$("#ModalImagen").modal('show');
-        alert("sada");
-        var codigo ='<img id="img"  width="300px" height="375px" src="data:image/jpg;base64,'+imagen+'">';
+        //$("#ModalImagen").modal('show');
+        //alert("sada");
+        //var codigo ='<img id="img"  width="300px" height="375px" src="data:image/jpg;base64,'+imagen+'">';
         //$("#ContenidoIMG").append(codigo);
-        alert(codigo);
+        //alert(codigo);
         
     }
 

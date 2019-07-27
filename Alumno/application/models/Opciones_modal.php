@@ -45,7 +45,7 @@ class Opciones_modal extends CI_Model{
 
     public function ConsultarResultadoRespuestas($idevaluacion,$npreguntas)
     {
-        $this->db->select('sum(porcentaje) as cal');
+        $this->db->select('sum(porcentaje) / count(distinct opciones.id_pregunta) / 10 as cal');
         $this->db->from( $this->table);
         $this->db->join('respuestas', $this->table.'.id_opciones  = respuestas.id_opcion','LEFT');
         $this->db->where('respuestas.id_evaluacion',$idevaluacion);

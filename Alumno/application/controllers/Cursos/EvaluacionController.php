@@ -527,10 +527,10 @@ class EvaluacionController extends CI_Controller {
 
 		$calificacion = $this->Opciones_modal->ConsultarResultadoRespuestas($idevaluacion,$npreguntas);
 
-		$total=$calificacion->cal * 100 / 4;
+		
 		echo '<tr>
 			<td style="width:70px"><b>Calificación</b></td>
-			<td id="puntos" colspan="2">'.$total.'</td>
+			<td id="puntos" colspan="2">'.$calificacion->cal.'</td>
 		</tr>';
 
 	}
