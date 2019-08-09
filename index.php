@@ -6,9 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="Alumno/app-assets/css/diseño.css">    
-    <link rel="stylesheet" href="Alumno/app-assets/css/bootstrap.min.css">
-    <script src="sitio/js/jquery.min.js" charset="utf-8"></script>
+    <link rel="stylesheet" href="Plataforma/app-assets/css/diseño.css">    
+    <link rel="stylesheet" href="Plataforma/app-assets/css/bootstrap.min.css">
     <title>Login</title>
 </head>
 <body>
@@ -16,7 +15,7 @@
 
     <div class="container">
         <form action="session.php" method="POST" class="login">
-            <h1 class="title"><h3></h3><img class="login-img" src="Alumno/app-assets/imagenes/logo.png" title="Plataforma de Cursos" alt="Plataforma de Cursos"> <h3></h3></h1>
+            <h1 class="title"><h3></h3><img class="login-img" src="Plataforma/app-assets/imagenes/logo.png" title="Plataforma de Cursos" alt="Plataforma de Cursos"> <h3></h3></h1>
                 <br>
                 <div class="form-group">
                     <label>Usuario</label>

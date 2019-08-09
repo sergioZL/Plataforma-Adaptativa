@@ -6,18 +6,21 @@ $pwd = $_POST['password'];
 $regreso = 0;
 $_SESSION['usuario'] = $username;
 
-header("location:Alumno/index.php/alumno/MisCursos");
+//$conexion = mysqli_connect("172.16.50.92:3306","ti","MYZhhWxV5QAye34A","ti");
+$conexion = mysqli_connect("127.0.0.1:3306","ti","MYZhhWxV5QAye34A","ti");
 
-require("Plataforma/connect_db.php");
-$sql2=mysql_query("SELECT * FROM Usuario WHERE clave ='$username'");
+$consulta="SELECT * FROM usuario WHERE clave ='$username'";
+$sql2 = mysqli_query($conexion,$consulta);
+
+
 
 if ($sql2 == false) {
 	echo "<script>alert('Error al consultar el usuario. Vuelva a intentarlo')</script>";
 	$regreso++;
 }
-
+ 
 if ($regreso == 0) {
-	$rs = mysql_fetch_array($sql2);
+	$rs = $sql2->fetch_assoc();
 	if ($rs == false){
 		$regreso++;
 		echo "<script>alert('Error al realizar consulta. Vuelva a intentarlo')</script>";
@@ -36,10 +39,11 @@ if ($regreso == 0) {
 		$tip = $rs['tipo'];
 				switch ($tip) {
 					case 'al':
-						header("location:Alumno/index.php/alumno/MisCursos");
+						header("location:Plataforma/index.php/alumno/MisCursos");
 						break;
 					case 'pr':
-						header("location:Plataforma/home.php");
+						//header("location:Plataforma/index.php/cursos/nuevo_curso");
+						header("location:Plataforma/index.php/cursos/todos");
 						break;
 					case 'su':
 						header("location:Plataforma/usuarios.php");
