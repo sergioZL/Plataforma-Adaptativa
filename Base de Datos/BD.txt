@@ -1,0 +1,190 @@
+create database ti;
+-- drop database ti;
+use ti;
+
+CREATE TABLE carrera(
+  clave varchar(10) NOT NULL,
+  nombre varchar(50) NOT NULL,
+  PRIMARY KEY (clave)
+);
+
+CREATE TABLE usuario (
+  clave varchar(10) NOT NULL, 
+  `password` varchar(10) NOT NULL,
+  tipo char(2) NOT NULL,
+  activo tinyint(1) NOT NULL DEFAULT '1',
+  PRIMARY KEY (clave)
+);
+
+CREATE TABLE alumnos (
+  clave varchar(10) NOT NULL,
+  nombre varchar(40) NOT NULL,
+  app varchar(40) NOT NULL,
+  apm varchar(40) NOT NULL,
+  clave_carrera VARCHAR(10) NOT NULL,
+  PRIMARY KEY (clave),
+  FOREIGN KEY (clave) REFERENCES usuario(clave) ON UPDATE CASCADE,
+  FOREIGN KEY (clave_carrera) REFERENCES carrera(clave) on update cascade
+);
+
+CREATE TABLE configuracion (
+	id int(10) primary key auto_increment, 
+	ruta varchar(150)  NULL,
+	numpregunta int(11) not null
+);
+
+
+-- nuevo
+CREATE TABLE `categoria` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `descripcion` varchar(30) NOT NULL,
+  `clave` varchar(10) NOT NULL,
+  PRIMARY KEY (`id`),
+  CONSTRAINT `categoria_Carrera_pbfk` FOREIGN KEY (`clave`) REFERENCES `carrera` (`clave`) ON UPDATE CASCADE
+);
+
+CREATE TABLE `cursos` (
+  `clave` varchar(10) NOT NULL,
+  `nombre` varchar(40)  NOT NULL,
+  `descripcion` mediumtext NOT NULL,
+  `foto` mediumblob NOT NULL,
+ -- tema varchar(150) not null,  
+ `categoria` int(11),
+  fechaActualizado DATETIME DEFAULT CURRENT_TIMESTAMP, -- DATETIME DEFAULT CURRENT_TIMESTAMP,DATETIME ON UPDATE CURRENT_TIMESTAMP
+  `clave_carrera` varchar(10) NOT NULL,
+  PRIMARY KEY (`clave`),
+  KEY `Cursos_Carrera_pbfk` (`clave_carrera`),
+  CONSTRAINT `Cursos_Carrera_pbfk` FOREIGN KEY (`clave_carrera`) REFERENCES `carrera` (`clave`) ON UPDATE CASCADE,
+  CONSTRAINT `Categoria_Curso_pbfk`FOREIGN KEY (`categoria`) REFERENCES `categoria` (`id`) ON UPDATE CASCADE
+);
+
+CREATE TABLE inscrito (
+  clave_alumno varchar(10) NOT NULL,
+  clave_curso varchar(10) NOT NULL,
+  avance int(11) NOT NULL DEFAULT '0',
+  id_duracion int(11) not null default '0',
+  PRIMARY KEY (clave_alumno, clave_curso),
+  FOREIGN KEY (clave_alumno) REFERENCES alumnos (clave) ON UPDATE CASCADE,
+  FOREIGN KEY (clave_curso) REFERENCES cursos (clave) ON UPDATE CASCADE
+);
+
+CREATE TABLE lecciones (
+  clave int(11) NOT NULL AUTO_INCREMENT,
+  nombre varchar(60) NOT NULL,
+  secuencia int(11) NOT NULL,
+  clave_curso varchar(10) NOT NULL,
+  descripcion varchar(300) NOT NULL,
+  PRIMARY KEY (clave),
+  FOREIGN KEY(clave_curso) REFERENCES cursos(clave)
+);
+
+CREATE TABLE temas (
+  id int(11) NOT NULL AUTO_INCREMENT,
+  nombre varchar(40) NOT NULL,
+  secuencia int(11) NOT NULL DEFAULT '1',
+  id_leccion int(10) NOT NULL,
+  descripcionTema varchar(150) NOT NULL,
+  PRIMARY KEY (id),
+  FOREIGN KEY(id_leccion) REFERENCES lecciones(clave)
+);
+ 
+CREATE TABLE  duracion (
+	id INT(11) primary key auto_increment,
+    duracion INT(11) NOT NULL,
+    clave_inscrito varchar(10) NOT NULL, 
+    clave_curso varchar(10) NOT NULL,
+    foreign key (clave_inscrito) references inscrito(clave_alumno),
+    foreign key (clave_curso) references cursos(clave)
+);
+
+-- ALTER TABLE inscrito 
+-- ADD CONSTRAINT `fk_inscrito_duracion` 
+-- FOREIGN KEY (id_duracion)
+-- REFERENCES duracion (id);
+
+CREATE TABLE avance (
+	id INT(11) primary key auto_increment,
+    avance int(11) not null,
+    revisado int(11) not null,
+    id_duracion INT(11) NOT NULL,
+    id_tema INT(11) not null,
+    FOREIGN KEY(id_duracion) REFERENCES duracion(id),
+    FOREIGN KEY(id_tema) REFERENCES temas(id)
+);
+
+-- ALTER TABLE inscrito 
+-- ADD CONSTRAINT `fk_inscrito_avance` 
+-- FOREIGN KEY (id_avance)
+-- REFERENCES avance (id);
+
+
+CREATE TABLE evaluacion(
+	id INT(11) NOT NULL AUTO_INCREMENT,
+    tipo VARCHAR(22) NOT NULL,
+    clave_alumno varchar(10) NOT NULL,
+    clave_curso varchar(10) NOT NULL,
+    PRIMARY KEY(id),
+    CONSTRAINT Evaluacion_Alumno_pbfk FOREIGN KEY (clave_alumno) REFERENCES alumnos(clave) ON UPDATE CASCADE,
+	CONSTRAINT Evaluacion_Curso_pbfk FOREIGN KEY (clave_curso) REFERENCES cursos(clave) ON UPDATE CASCADE
+);
+
+CREATE TABLE banco_preguntas (
+  id int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  enunciado varchar(200) NOT NULL,
+  imagen mediumblob,
+  id_tema int(11) NOT NULL,
+  FOREIGN KEY(id_tema) REFERENCES temas(id)
+);
+
+
+CREATE TABLE opciones(
+	id_opciones INT(11) NOT NULL AUTO_INCREMENT,
+    porcentaje INT(3) NOT NULL,
+    enunciado MEDIUMTEXT NOT NULL,
+    imagen MEDIUMBLOB,
+	 id_pregunta INT(11),
+    PRIMARY KEY(id_opciones),
+    FOREIGN KEY(id_pregunta) REFERENCES banco_preguntas(id)
+);
+
+
+CREATE TABLE preguntas(
+  id_pregunta INT(11) NOT NULL,
+  id_evaluacion INT(11) NOT NULL,
+  id_alumno varchar(10) NOT NULL,  
+  primary key(id_pregunta, id_evaluacion),
+  foreign key(id_pregunta) references banco_preguntas(id),
+  foreign key(id_alumno) references alumnos(clave)
+);
+
+
+CREATE TABLE respuestas (
+  id_respuesta int(11) NOT NULL AUTO_INCREMENT primary key,
+  id_opcion INT(11) null,
+  id_pregunta int(11) NOT NULL,
+  id_evaluacion INT(11) not null,
+  -- foreign key(id_opcion) references opciones(id_opciones),
+  foreign key(id_pregunta) references banco_preguntas(id),
+  foreign key(id_evaluacion) references evaluacion(id)
+);
+
+-- nuevo
+CREATE TABLE material (
+  id int(11) NOT NULL AUTO_INCREMENT,
+  tipo_material int(10) NOT NULL,
+  descripcion_material varchar(50) NOT NULL,
+  id_temas int(10) NOT NULL,
+  clave_curso varchar(10) NOT NULL,
+  PRIMARY KEY (id),
+  CONSTRAINT Tema_Curso_pbfk FOREIGN KEY (id_temas) REFERENCES temas(id) ON UPDATE CASCADE, 
+  CONSTRAINT Curso_Curso_pbfk FOREIGN KEY (clave_curso) REFERENCES cursos (clave) ON UPDATE CASCADE
+);
+
+-- nuevo
+CREATE TABLE aprendizaje (
+  id int(11) NOT NULL AUTO_INCREMENT,
+  aprendizaje varchar(200) NOT NULL,
+  clave_curso varchar(10) NOT NULL,
+  PRIMARY KEY (id),
+  CONSTRAINT Aprendizaje_Curso_pbfk FOREIGN KEY (clave_curso) REFERENCES cursos(clave) ON UPDATE CASCADE
+);
