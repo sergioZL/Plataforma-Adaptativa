@@ -241,6 +241,7 @@ class ConfiguracionController extends CI_Controller {
 		$clave_curso = $this->input->post('clave_curso');
 		$id_leccion = $this->input->post('id_leccion');
 		$id_tema = $this->input->post('id_tema');
+		$nombre = $this->input->post('descripcion_material');
 
         $path = './Material/';
         if (!is_dir($path.$clave_curso)) {
@@ -260,9 +261,10 @@ class ConfiguracionController extends CI_Controller {
 
 		$config['upload_path'] 		= $path;
 		$config['allowed_types']	= 'png|jpg|mp3|mp4|pdf|doc|docx|mpeg|mwv';
-		$config['max_size']    		= 4096000;
+		$config['max_size']    		= 34096000;
 		$config['remove_spaces'] 	= TRUE;
- 
+		$config['file_name']		= $nombre;
+
         $this->load->library('upload', $config);
  
 		if (!$this->upload->do_upload()) 

@@ -124,7 +124,7 @@
             $.ajax({
                 type: 'POST',
                 
-                url: 'http://localhost/plataforma-Adaptativa/Plataforma/index.php/ConfiguracionController/getCursos',
+                url: '<?php echo site_url();?>/ConfiguracionController/getCursos',
                 success: function(data) {
                     //data = JSON.parse(data);
                     //console.log(data);

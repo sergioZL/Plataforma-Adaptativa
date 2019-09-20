@@ -218,7 +218,7 @@
 
             $.ajax({
                 type: 'POST',
-                url: 'http://localhost/plataforma-Adaptativa/Plataforma/index.php/ConfiguracionController/getLeccionesPorCurso?clave_curso='+clave_curso,
+                url: '<?php echo site_url()?>/ConfiguracionController/getLeccionesPorCurso?clave_curso='+clave_curso,
                 dataType: 'json',
                 success: function(data) {
                     //console.log(data);
@@ -259,7 +259,7 @@
         function getTemasPorLeccion(id_leccion, contenedor, totalTemas) {
             $.ajax({
                 type: 'POST',
-                url: 'http://localhost/plataforma-Adaptativa/Plataforma/index.php/ConfiguracionController/getTemasPorLeccion?id_leccion='+id_leccion,
+                url: '<?php echo site_url()?>/ConfiguracionController/getTemasPorLeccion?id_leccion='+id_leccion,
                 dataType: 'json',
                 success: function(data) {
                     //console.log(data);
@@ -274,7 +274,7 @@
                         for(var j = 0; j < data.length; j++) {
                             console.log(data);
                             
-                            temas +=  '<a href="http://localhost/plataforma-Adaptativa/Plataforma/index.php/ConfiguracionController/getArbolData?id_tema='+data[j].id+'" class="list-group-item list-group-item-action">' +
+                            temas +=  '<a href="<?php echo site_url()?>/ConfiguracionController/getArbolData?id_tema='+data[j].id+'" class="list-group-item list-group-item-action">' +
                                         '<h5>'+data[j].nombre+'</h5>'+
                                       '</a>';  
                         }
@@ -293,7 +293,7 @@
 
             $.ajax({
                 type: 'POST',
-                url: 'http://localhost/plataforma-Adaptativa/Plataforma/index.php/ConfiguracionController/getLeccionesCount?clave_curso='+clave_curso,
+                url: '<?php echo site_url()?>/ConfiguracionController/getLeccionesCount?clave_curso='+clave_curso,
                 dataType: 'json',
                 success: function(data) {
                     //console.log(data);
@@ -317,7 +317,7 @@
 
             $.ajax({
                 type: 'POST',
-                url: 'http://localhost/plataforma-Adaptativa/Plataforma/index.php/ConfiguracionController/getTemasCount?id_leccion='+id_leccion,
+                url: '<?php echo site_url()?>/ConfiguracionController/getTemasCount?id_leccion='+id_leccion,
                 dataType: 'json',
                 async: false,
                 success: function(data) {
