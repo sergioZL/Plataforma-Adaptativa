@@ -87,23 +87,43 @@ class EvaluacionController extends CI_Controller {
 			
 			foreach ($Pregunta as $pregunta) 
 			{
-				$p='<div id="pregresp" class="pregresp">
-					<div id="pregunta" class="pregunta">'.$i.'. '.$pregunta['enunciado'].'<br/></div>
-					<input id="Npregunta" type="hidden" value="'.$pregunta['id']. '">
-					<div id="respuestas" class="respuestas">';
-
-				if($pregunta['imagen']!=null)
-					$p = $p.'<div >
-					<button id="VerImg" type="button" class="btn btn-primary" onclick="abrir()" data-target="#ModalImagen" data-toggle="modal" > Ver Imagen</button>
-					</div><br/>';
-
-					//'.$pregunta['imagen'].'
-					//					<!--<img style="display:none" width="300px" height="375px" src="data:image/jpg;base64,'.$pregunta['imagen'].'" alt="">-->
-
-
 				$PreguntasExamen = $this->Opciones_modal->ConsultarOpciones($pregunta['id']);
-				if($PreguntasExamen!=null)
-				{
+				/**
+				 * $PreguntasExamen contiene un vector con los datos de las opciones de cada una 
+				 * de las preguntas las cuales se optiene mediante el metodo  ConsultarOpciones()
+				 * del Modelo Opciones_modal
+				 */
+				$porcent = 0; // Sirve para almacenar la suma de los porcentajes de cada una de las opciones
+				foreach ( $PreguntasExamen as $item ){
+					/**
+					 * por medio de el foreach se accede a cada uno de los objetos del vector asociativo
+					 * al $porcent se le suma el porcentaje de cada uno de los objetos
+					 */
+					$porcent = $porcent + $item['porcentaje'];
+				}
+				if($porcent == 100){
+					$imagen = '';
+					if ($pregunta['imagen']) {
+						# code...
+						$imagen = '<img style="width: 200px; height:200px;" src="data:image/jpg;base64,'.$pregunta['imagen'].'"/>';
+					}
+					$p='<div id="pregresp" class="pregresp">
+						<div id="pregunta" class="pregunta">'.$i.'. '.$pregunta['enunciado'].'<br/></div>
+						'.$imagen.'
+						<input id="Npregunta" type="hidden" value="'.$pregunta['id']. '">
+						<div id="respuestas" class="respuestas">';
+				
+					if($pregunta['imagen']!=null)
+						$p = $p.'<div >
+						</div><br/>';
+						//<button id="VerImg" type="button" class="btn btn-primary" onclick="abrir()" data-target="#ModalImagen" data-toggle="modal" > Ver Imagen</button>
+				
+						//'.$pregunta['imagen'].'
+						//					<!--<img style="display:none" width="300px" height="375px" src="data:image/jpg;base64,'.$pregunta['imagen'].'" alt="">-->
+				
+				
+					if($PreguntasExamen!=null)
+					{
 					$porcentaje = 1;
 					/*
 					1- solo una pregunta
@@ -117,8 +137,8 @@ class EvaluacionController extends CI_Controller {
 						{
 							$check=$check.'<div">
 							<label">
-								<input id="resp" type="checkbox" name="preg'.$i.'" value="'.$item['id_opciones'].'">
-								<img src="data:image/jpg;base64,'.$item['imagen'].'"/>
+								<input id="resp" type="checkbox" name="preg'.$i.'" value="'.$item['id_opciones'].'">'.$item['enunciado'].'
+								<img style="width: 200px; height:200px;" src="data:image/jpg;base64,'.$item['imagen'].'"/>
 							</label></div><br>';
 
 							$radio=$radio.'<div>
@@ -137,15 +157,16 @@ class EvaluacionController extends CI_Controller {
 							if($item['porcentaje']>0)
 								$porcentaje = 0;
 						}
-					}
+						}
 						
-					if($porcentaje==1)
-						$p = $p.$radio;
-					else
-						$p = $p.$check;	
+						if($porcentaje==1)
+							$p = $p.$radio;
+						else
+							$p = $p.$check;	
+					}
+					$i++;
+					echo $p = $p.'</div></div>';
 				}
-				$i++;
-				echo $p = $p.'</div></div>';
 			}
 		}
 			echo '<input id="NPre" type="text" value="'.$i .'/>';

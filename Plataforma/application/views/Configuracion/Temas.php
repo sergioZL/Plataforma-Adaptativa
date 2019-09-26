@@ -116,6 +116,7 @@
         <div >
             <div class="col-md-7 text-right">
                 <a class="btn btn-primary mb-4" style="color:white;" data-toggle="modal" data-target="#modalNuevoMaterial">Agregar material</a>
+                <a class="btn btn-primary mb-4" style="color:white;" data-toggle="modal" href="<?php echo site_url()?>/ConfiguracionController/Preguntas?id_tema=<?php echo $id_tema?>">Agregar Preguntas</a>
             </div>
         </div>
     </div>
@@ -182,7 +183,7 @@
                 dataType: 'json',
                 async: false,
                 success: function(data) {
-                    console.log(data);
+                    // console.log(data);
                     var titulos = '';
 
                     titulos += '<h6>Curso: '+data.nombre_curso+'</h6>';

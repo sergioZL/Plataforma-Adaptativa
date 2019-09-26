@@ -19,6 +19,7 @@ class ConfiguracionController extends CI_Controller {
 		parent::__construct();
 			$this->load->helper('url_helper');
 			$this->load->model('configuracion_model');
+			$this->load->model('Preguntas_Model');
 			$this->load->helper('form');
 			$this->load->library('form_validation');
 			$this->load->library('user_agent');
@@ -339,6 +340,94 @@ class ConfiguracionController extends CI_Controller {
 
 			echo 'clave: '.$items[$item].'     secuencia: '.$itemplus;
 		}
+	}
+	/**	Apartir de aqui son los controladores para la parte de preguntas por tema */
+	public function Preguntas(){
+
+		$id_tema = $this->input->get('id_tema');
+
+		$id_leccion = $this->configuracion_model->getLeccion($id_tema);
+		$clave_curso = $this->configuracion_model->getCurso($id_leccion);
+
+		$data = array(
+			'id_tema' => $id_tema,
+			'id_leccion' => $id_leccion,
+			'id_curso' => $clave_curso
+		);
+		
+		$this->load->view('Configuracion/Preguntas',$data);
+	}
+	public function getPreguntasTema(){
+		$id_tema = $this->input->get('id_tema');
+
+		$data = $this->Preguntas_Model->getPreguntasPorTema($id_tema);
+
+		echo json_encode($data);
+	}
+	public function geOpcionesPorPregunta(){
+		$id = $this->input->get('id');
+		$data  = $this->Preguntas_Model->getOpcionesPorPregunta($id);
+		if($data != null) echo json_encode($data);
+		else echo null;
+	}
+	public function cargarModal(){
+		$id_tema = $this->input->post('tema');
+		$id_pregunta = $this->input->post('pregunta');
+
+		$data = array(
+			'id_tema' => $id_tema,
+			'id_pregunta' => $id_pregunta
+		);
+
+		echo $this->load->view('Configuracion/modalPreguntas',$data);
+		//echo $id_tema;
+	}
+	public function agregarPreguntas(){
+		$enunciado = $this->input->post('enunciado');
+		$foto = base64_encode(file_get_contents($_FILES['userImage']['tmp_name']));
+		$id_tema = $this->input->post('id_tema');
+
+		$id_leccion = $this->configuracion_model->getLeccion($id_tema);
+		$clave_curso = $this->configuracion_model->getCurso($id_leccion);
+
+		$data = array(
+			'id_tema' => $id_tema,
+			'enunciado' => $enunciado,
+			'imagen' => $foto		
+		);
+		$this->Preguntas_Model->insertPregunta($data);
+		$datos = array(
+			'id_tema' => $id_tema,
+			'id_leccion' => $id_leccion,
+			'id_curso' => $clave_curso
+		);
+
+		$this->load->view('Configuracion/Preguntas',$datos);
+	}
+	public function agregarOpciones(){
+		$id_tema = $this->input->post('id_tema');
+		$id_leccion = $this->configuracion_model->getLeccion($id_tema);
+		$clave_curso = $this->configuracion_model->getCurso($id_leccion);
+		
+		$enunciado = $this->input->post('enunciado');
+		$foto = base64_encode(file_get_contents($_FILES['userImage']['tmp_name']));
+		$id_pregunta = $this->input->post('id_pregunta');
+		$porcentaje = $this->input->post('porcentaje');
+		
+		$data = array(
+			'porcentaje' => $porcentaje,
+			'enunciado' => $enunciado,
+			'imagen' => $foto,	
+			'id_pregunta' => $id_pregunta		
+		);
+		$datos = array(
+			'id_tema' => $id_tema,
+			'id_leccion' => $id_leccion,
+			'id_curso' => $clave_curso
+		);
+		$this->Preguntas_Model->insertarOpciones($data);
+
+		$this->load->view('Configuracion/Preguntas',$datos);
 	}
 }
  
