@@ -8,6 +8,7 @@ class MisCursosController extends CI_Controller {
 		$this->load->helper('url_helper');
 		$this->load->model('Inscrito_modal');
 		$this->load->model('Categoria_modal');
+		$this->load->model('Material_Model');
     }
 
 	public function load_MisCursos()
@@ -40,11 +41,11 @@ class MisCursosController extends CI_Controller {
 			if($inclito['avance'] > 99){$avance = "Completos";}
 			if($inclito['avance'] >= 1 && $inclito['avance'] <=99){$avance = "EnCurso";}
 			if($inclito['avance'] < 1){$avance = "SinEmpezar";}
-			
-		echo $Cursos =	
+			//<a href="'.site_url().'/Material?curso='.$inclito['clave'].'" style="text-decoration:none ">
+		 $Cursos =	
 			'<div class="card-deck" style="margin-left: 20px;">
 				<div class="filterDiv '.$avance.'">
-				<a href="'.site_url().'/Material?curso='.$inclito['clave'].'" style="text-decoration:none ">
+				<button class="btn btn-link" onclick="mostrar(&#39;'.$inclito['clave'].'&#39;);" style="text-decoration:none;">
 					<div class="card" style="width: 250px; min-height: 450px; max-height: 450px; ">
 						<img class="card-img-top" style="max-height: 250px;"  src="data:image/jpg;base64,'. $inclito['foto'].'" alt="Card image cap">
 						<div class="card-body">
@@ -55,8 +56,9 @@ class MisCursosController extends CI_Controller {
 							<p class="card-text" style="margin-top: 10px;">'.$inclito['descripcion'].'</p>
 						</div>
 					</div>
-				</a>
+				</button>
 			</div>';
+		echo htmlspecialchars_decode($Cursos);
 		}
 	}
 
@@ -93,11 +95,11 @@ class MisCursosController extends CI_Controller {
 			if($inclito['avance'] > 99){$avance = "Completos";}
 			if($inclito['avance'] >= 1 && $inclito['avance'] <=99){$avance = "EnCurso";}
 			if($inclito['avance'] < 1){$avance = "SinEmpezar";}
-			
-		echo $Cursos =	
+			//<a href="'.site_url().'/Material?curso='.$inclito['clave'].'" style="text-decoration:none ">
+		$Cursos =	
 			'<div class="card-deck" style="margin-left: 20px;">
 				<div class="filterDiv '.$avance.'">
-				<a href="'.site_url().'/Material?curso='.$inclito['clave'].'" style="text-decoration:none ">
+				<button class="btn btn-link" onclick="mostrar(&#39;'.$inclito['clave'].'&#39;);" style="text-decoration:none;">
 					<div class="card" style="width: 250px; min-height: 450px; max-height: 450px; ">
 						<img class="card-img-top" style="max-height: 250px;"  src="data:image/jpg;base64,'. $inclito['foto'].'" alt="Card image cap">
 						<div class="card-body">
@@ -108,9 +110,20 @@ class MisCursosController extends CI_Controller {
 							<p class="card-text" style="margin-top: 10px;">'.$inclito['descripcion'].'</p>
 						</div>
 					</div>
-				</a>
+				</button>
 			</div>';
+		echo htmlspecialchars_decode($Cursos);
 		}
+	}
+
+	/**
+	 * Regresa el primer material contenido en el curso para que 
+	 * este pueda ser mostrado al usuario 
+	 */
+	public function CargarPrimerMaterial(){
+		$claveCurso = $this->input->post('claveCurso');
+		$result = $this->Material_Model->encontrarPrimerMaterialDeCurso($claveCurso);
+		echo json_encode($result);
 	}
 
 

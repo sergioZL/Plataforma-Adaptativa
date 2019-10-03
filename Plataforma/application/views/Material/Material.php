@@ -25,6 +25,8 @@
     <script src="<?php echo base_url();?>app-assets/js/myjs.js"></script>
     <script src="<?php echo base_url();?>app-assets/js/jquery-3.3.1.min.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">    
+    <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.6.3/css/all.css' integrity='sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/' crossorigin='anonymous'> 
     
     <style>
         .bloqueo
@@ -173,8 +175,8 @@
         
     </style>
   </head>
-  <body>
-
+  <body onunload="guardarAvances()">
+        
         <!--Menu canvas lateral-->
         <div id="mySidenav" class="sidenav">
             <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
@@ -184,7 +186,7 @@
                     <button type="button" class="btn btn-outline-secondary" onclick="filterSelection(2);Pause();"><span class="fa fa-file-audio-o "></span></button>
                     <button type="button" class="btn btn-outline-secondary" onclick="filterSelection(3);Pause();"><span class="fa fa-file-pdf-o "></span></button>
             </div> -->
-            <div class="pull-right pt-5"><a href="<?php echo site_url();?>/Cursos/Temario?curso=<?php echo  $curso?>" style="text-decoration: none; color:rgba(255, 255, 255, 0.63);">ir al temario</a></div>
+            <div class="pull-right pt-5"><a href="<?php echo site_url();?>/Cursos/Temario?curso=<?php echo   $curso?>" style="text-decoration: none; color:rgba(255, 255, 255, 0.63);">ir al temario  </a></div>
             </div>
             <!--nuevos elementos del menu desplegable-->                
             <div  class="row ">   
@@ -199,13 +201,25 @@
             </div>
         </div>                          
     </div>
-    
-    <div class="container_Video" id="Video">    
+    <?php
+        $display = 'display:block;';
+        if(isset($_POST['materialSend'])){
+            $tipo = $_POST['tipo'];
+            if($_POST['tipo'] != 1){ 
+                $display = 'display:none;';
+            }else{
+                 $avance = $_POST['avance'];
+                 $surce =  base_url(trim($_POST['materialSend'])).'.mp4'.'#t='.$avance; 
+            }
+        }
+        else $surce =  base_url()."Material/video/SpaceX Falcon Heavy.mp4"
+    ?>
+    <div class="container_Video" id="Video" style="<?php echo $display; ?>">    
         <div class="containerVideo">
             
-            <div id="VideoRoute">
+            <div id="VideoRoute" >
                 <video id="video" class="video" controls preload="metadata" controlslist="nodownload">
-                    <source id="vid" src="<?php echo  base_url(); ?>Material/video/SpaceX Falcon Heavy.mp4"><!--#t=15 para empezar en el segundo--> 
+                    <source id="vid" src="<?php echo  $surce; ?>"><!--#t=15 para empezar en el segundo--> 
                 </video>
             </div>
         
@@ -216,13 +230,27 @@
             </div>
         </div>
     </div>
-    
+    <?php
+        $disp = 'display:none;';
+        if(isset($_POST['materialSend'])){
+            if($_POST['tipo'] != 2){ 
+                $display = 'display:none;';
+            }else{
+                $avance = $_POST['avance'];
+                $surc =  base_url(trim($_POST['materialSend'])).'.mp3'.'#t='.$avance; 
+                //$surc =  base_url(trim($_POST['materialSend'])).'.mp3'; 
+                $display = 'display:none;';
+                $disp = 'display:Block;';
+            }
+        }
+        else  $surc =  base_url().'Material/audio/Alan Walker - Faded (Instrumental Version).mp3';
+    ?>
 
-    <div class="container_Audio" id="Audio" style="display:none;">
+    <div class="container_Audio" id="Audio" style="<?php echo $disp; ?>">
         <div class="containerAudio">    
             <div id="audioRoute">
                 <audio class="audio" id="audio" controls preload="metadata" controlslist="nodownload" style="width: 50%;">
-                    <source id="aud" src="<?php echo  base_url(); ?>Material/audio/Alan Walker - Faded (Instrumental Version).mp3"> 
+                    <source id="aud" src="<?php echo $surc ?> "> 
                 </audio>
             </div>
             <div class="submenu" onclick="Pause()">
@@ -269,23 +297,37 @@
         http://localhost/Plataforma-Adaptativa/Plataforma/Material/Mysql1/4/2/nuevo.pdf#page=1
         http://localhost/Plataforma-Adaptativa/Plataforma/Material/pdf/UnidadesTematicas_Programacion.pdf#page=17
     </div>-->
- 
+    <?php
+        $dis = 'display:none;';
+        if(isset($_POST['materialSend'])){
+            if($_POST['tipo'] != 3){ 
+                $display = 'display:none;';
+            }else{
+                $sur =  base_url(trim($_POST['materialSend'])).'.pdf'; 
+                $display = 'display:none;';
+                $disp = 'display:none;';
+                $dis = 'display:block;';
+            }
+        }
+        else  $sur =  base_url().'Material/pdf/UnidadesTematicas_Programacion.pdf#page=17';
+    ?>
 
-
-    <div class="container_PDF" id="PDF" style="display:none;"> 
+    <div class="container_PDF" id="PDF" style="<?php echo $dis?>" > 
         <div class="submenu" onclick="Pause()">
             <div class="menu pointer col-md-1 pt-5  icon_white submenuAudio">
                 <span style="font-size:40px;cursor:pointer" onclick="openNav()">&#9776;</span>
             </div>         
         </div>    
-        <iframe  id="pdf" style="width:100%; border:none; height:100vh;" src="<?php echo  base_url(); ?>Material/pdf/UnidadesTematicas_Programacion.pdf#page=17" style="width: 100%;height: 100%;" type="application/pdf" ></iframe>
+        <iframe  id="pdf" style="width:100%; border:none; height:100vh;" src="<?php echo $sur; ?>" style="width: 100%;height: 100%;" type="application/pdf" >
+        
+        </iframe>
     </div>
 
 
 <script>
         
+        var tipos = <?php echo $_POST['tipo']; ?>+0;
         $(document).ready(function(){
-            
             CargarLecciones();
             $("#video").on('ended', function(){
                 //alert('El video ha finalizado!!!');
@@ -387,11 +429,12 @@
         }
         function mostrar(rout,tipo){
             var routa = '<?php echo base_url() ?>'+rout.trim();
+            console.log(routa);
+            
             filterSelection(routa,tipo);
         }
         function filterSelection(newUrl,idButton)
         {
-            
             
             var Video = document.getElementById('Video');
             var Audio = document.getElementById('Audio');
@@ -400,6 +443,7 @@
 
             switch(idButton) {
             case 1:
+                tipos = 1;
                 newUrl = newUrl+'.mp4';
                 // console.log(newUrl);
                 // $('#vid').attr("src", newUrl);
@@ -415,19 +459,9 @@
                 PDF.style.display = 'none';
                 break;
 
-            case 2:
-                
+            case 2: 
+                tipos = 2;
                 newUrl = newUrl+'.mp3';
-                console.log(newUrl);
-                
-                // // $('#audio').attr("href", newUrl);
-                // $("#audioRoute").children().remove();
-
-                // $("#audioRoute").append(
-                //     '<audio autoplay class="audio" id="audio" controls preload="metadata" controlslist="nodownload" style="width: 50%;>'
-                //         +'<source src="'+newUrl+'#t=15"><!--#t=15 para empezar en el segundo-->' 
-                //     +'</audio>'
-                // );
                 $("#audioRoute").children().remove();
 
                  $("#audioRoute").append(
@@ -443,51 +477,79 @@
                 break;
 
             case 3:
+                tipos = 3;
                 newUrl = newUrl+'.pdf#page=1';
                 $('#pdf').attr("src", newUrl);
                  Video.style.display = 'none';
                  Audio.style.display = 'none';
                  PDF.style.display = 'block';
+                 guardarAvances();
                 break;
             }
         }
-        // function filterSelection(idButton)
-        // {
-
-        //     var Video = document.getElementById('Video');
-        //     var Audio = document.getElementById('Audio');
-        //     var PDF = document.getElementById('PDF');
-
-
-        //     switch(idButton) {
-        //     case 1:
-        //         Video.style.display = 'block';
-        //         Audio.style.display = 'none';
-        //         PDF.style.display = 'none';
-        //         break;
-
-        //     case 2:
-        //         Video.style.display = 'none';
-        //         Audio.style.display = 'block';
-        //         PDF.style.display = 'none';
-        //         break;
-
-        //     case 3:
-        //         Video.style.display = 'none';
-        //         Audio.style.display = 'none';
-        //         PDF.style.display = 'block';
-        //         break;
-        //     }
-        // }
-
         
-        function Pause() { 
+        function Pause() {
             var Video = document.getElementById("video"); 
             Video.pause();
+            console.log(Video.currentTime);
             var Audio = document.getElementById("audio"); 
             Audio.pause(); 
         }
-        
+            
+        function guardarAvances(){
+            
+            switch (tipos) {
+                case 1:
+                    var rout = $('#vid').attr('src');
+                    var Video = document.getElementById("video"); 
+                    var res = rout.split("/");  
+                    var ultimo = {
+                        leccion:res[7],
+                        tema:res[8],
+                        nombre:res[9],
+                        url:rout,
+                        tipo:tipos,
+                        avance:Video.currentTime
+                    }
+                    var clave = '<?php echo $curso; ?>';
+                    window.localStorage.setItem(  clave , JSON.stringify( ultimo ) );
+                    break;
+                case 2:
+                    var rout = $('#aud').attr('src');
+                    var Audio = document.getElementById("audio"); 
+                    var res = rout.split("/");  
+                    var ultimo = {
+                        leccion:res[7],
+                        tema:res[8],
+                        nombre:res[9],
+                        url:rout,
+                        tipo:tipos,
+                        avance:Audio.currentTime
+                    }
+                    var clave = '<?php echo $curso; ?>';
+                    window.localStorage.setItem(  clave , JSON.stringify( ultimo ) );
+                    break;
+                case 3:
+                     var rout = $('#pdf').attr('src');
+                     var currentPageNum = $('#pdf').contents().find('#input').val();
+                      var res = rout.split("/");  
+                      var ultimo = {
+                          leccion:res[7],
+                          tema:res[8],
+                          nombre:res[9],
+                          url:rout,
+                          tipo:tipos,
+                          avance:currentPageNum
+                     }
+                    var clave = '<?php echo $curso; ?>';
+                    window.localStorage.setItem(  clave , JSON.stringify( ultimo ) );
+                    break;
+                
+                default:
+                    break;
+            }
+        }
+
 
     </script>
     

@@ -133,6 +133,19 @@
 </div>
 
     <script>
+    var but = 'Comenzar desde el principio';
+    $(document).ready(function () {
+        var clave = '<?php echo $_GET['curso'];?>';
+        var Ultimo = window.localStorage.getItem(clave);
+        if(Ultimo != null){
+            ult = JSON.parse(Ultimo);
+            but = ult.nombre.split(".");
+            ruta = ult.url.substring(50);
+            uta = ruta.split(".");
+            ava = ult.avance;
+            $('#boton').append('<button type="button" class="btn btn-success" onclick="mostrar( &quot '+uta[0]+'&quot,'+ult.tipo+','+ava+');"> <h2 id="bot">'+but[0]+'</h2></button>');
+        }
+    });
     CargarInfoCursos();
     CargarLecciones();
         $('#buscar').click(function()
@@ -153,39 +166,42 @@
                     var n = resp.length;
                     //var data = JSON.parse(resp);
 
-                    for(var i = 0; i < n; i++)
-                    {
-                        temas(resp,i);
-                    }
+                    temas(resp);
+
+                    // for(var i = 0; i < n; i++)
+                    // {
+                    //     temas(resp,i);
+                    // }
                 }
             });
         }
 
-        function temas(data,i)
+        function temas(data)
         {
             $.ajax
             ({
                 type:'post',
-                url:'<?php echo site_url();?>/Cursos/PreviewController/ConsultarTemasCursos?IdLeccion='+data[i].clave,
+                url:'<?php echo site_url();?>/Cursos/PreviewController/ConsultarTemasCursos?IdLeccion='+data[0].clave,
                 success :function(resp)
                 {
                     $("#Leccion").append(
                         '<div class="card leccion shadow-sm mb-3 rounded-0">'+
                             '<h5 class="card-header">'+
                                 '<!--Cabecera del menu desplegable-->'+
-                                '<a data-toggle="collapse" href="#contenido' + data[i].secuencia+ '" aria-expanded="true" aria-controls="contenidoUno"'+
-                                    'id="leccion' + data[i].secuencia+ '" class="d-block">'+
+                                '<a data-toggle="collapse" href="#contenido' + data[0].secuencia+ '" aria-expanded="true" aria-controls="contenidoUno"'+
+                                    'id="leccion' + data[0].secuencia+ '" class="d-block">'+
                                     '<i class="fa fa-chevron-down pull-right"></i>'
-                                    + data[i].nombre +' '+ data[i].secuencia +
+                                    + data[0].nombre +' '+ data[0].secuencia +
                                 '</a>'+
                             '</h5>'+
-                        '<div id="contenido' + data[i].secuencia+ '" class="collapse" aria-labelledby="leccionUno">'+
+                        '<div id="contenido' + data[0].secuencia+ '" class="collapse" aria-labelledby="leccionUno">'+
                             '<!--Contenido del menu desplegable-->'+
                             '<div class="card-body">'+
                                 '<h6>Este es el contenido de la leccion</h6>'+
-                                '<p>' + data[i].descripcion+ '</p>'+
+                                '<p>' + data[0].descripcion+ '</p>'+
                             '</div>'+resp
                     );
+                    if(data.length > 1) temas(data.slice(1,data.length));
                 }                    
             });
         }
@@ -220,11 +236,21 @@
                         '</div>'+
                         '<br>'+
                         '<br>'+
-                        '<a href="<?php echo site_url('Material?curso='.$curso)?>"> <button type="button" class="btn btn-success"> <h2>Continuar desde: tema-2.2</h2></button></a>'
+                        '<div id="boton"></div>'
                         
                     );                    
                 }
             });
+        }
+        function mostrar(data,tipo,ava = null){
+            var url = '<?php echo site_url('/Material?curso='.$curso);?>';
+            var form = $('<form action="' + url + '" method="post">' +
+              '<input type="text" name="materialSend" value="' + data + '" />' +
+              '<input type="text" name="tipo" value="' + tipo + '" />'+
+              '<input type="text" name="avance" value="'+ava+'" />'+
+              '</form>');
+            $('body').append(form);
+            form.submit();
         }
     </script>  
 

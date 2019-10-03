@@ -37,7 +37,22 @@ class MaterialController extends CI_Controller {
             foreach ($material as $mat){
                 $ruta= '&quot Material/'.$mat['clave_curso'].'/'.$id.'/'.$mat['id_temas'].'/'.$mat['descripcion_material'].'&quot';
                 $tipo = $mat['tipo_material'];
-                $carga = $carga.'<button class="btn btn-link" onclick="mostrar('.$ruta.','.$tipo.');"><p class="h6"> <span class="fas fa-play-circle fa-2x"></span>'.$mat['descripcion_material'].'</p> </button><br>';
+                $icono = '';
+				switch ($tipo) {
+					case 1:
+						$icono = 'fas fa-play-circle fa-2x';
+						break;
+					case 2:
+						$icono = 'fas fas fa-volume-up fa-2x';
+						break;
+					case 3:
+						$icono = 'fas fa-file-pdf fa-2x';
+						break;
+					default:
+						# code...
+						break;
+				}
+                $carga = $carga.'<button class="btn btn-link" onclick="mostrar('.$ruta.','.$tipo.');"><p class="h6"> <span class="'.$icono.'"></span>'.$mat['descripcion_material'].'</p> </button><br>';
 
             }
 			echo $nose ='<div class="card rounded-0">
