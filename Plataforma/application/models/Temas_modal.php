@@ -20,8 +20,16 @@ class Temas_modal extends CI_Model{
 
         return $query->result_array();
     } 
+    public function ConsultarTemasPorCursos($id){
+        $this->db->select();
+        $this->db->from($this->table);
+        $this->db->join('lecciones',$this->table.'.id_leccion = lecciones.clave','right');
+        $this->db->where('lecciones.clave_curso',$id);
+        $query = $this->db->get();
 
-    /*public function ConsultarTemasCursos($id)
+        return $query->num_rows();
+    }
+    /*public function ConsultarTemasPorCursos($id)
     {
         $this->db->select($this->table.'.secuencia as secuenciaTema,temas.*,lecciones.*');
         $this->db->from($this->table);

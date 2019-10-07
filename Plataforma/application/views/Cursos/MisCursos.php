@@ -245,6 +245,7 @@
                 uta  = ruta.split(".");//se divide en un vector para eliminar la extencion del archivo
                 ava  = ult.avance;//contiene el avance del material visitado
                 tipo = ult.tipo;//contiene el tipo de material que se esta bisitando existen solo 3 tipos
+                claveMat = ult.material;
             }else {/**Si no existe un ultimo material visitado de este curso se consulta a la base de datos
                       Cual es el primer material contenido del curso para que este pueda ser mostrado
                        */
@@ -255,20 +256,22 @@
                     async:false,
                     success: function (response) {
                         obj = JSON.parse(response);
+                        claveMat = obj.id;
                         ruta = "Material/"+obj.clave_curso+"/"+obj.leccion+"/"+obj.tema+"/"+obj.Descripcion+".mpg";
                         uta  = ruta.split(".");
                         tipo = obj.tipo;
                         ava = 0;
+                        console.log(obj);
                     }
                 });
             }
             var url = '<?php echo site_url();?>/Material?curso='+id+'';
-            //console.log(url);
             
             var form = $('<form action="' + url + '" method="post">' +
               '<input type="text" name="materialSend" value="' + uta[0] + '" />' +
               '<input type="text" name="tipo" value="' + tipo + '" />'+
               '<input type="text" name="avance" value="'+ava+'" />'+
+              '<input type="text" name="claveMat" value="'+claveMat+'" />'+
               '</form>');
             $('body').append(form);
             form.submit();

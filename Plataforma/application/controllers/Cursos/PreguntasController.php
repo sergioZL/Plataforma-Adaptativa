@@ -5,6 +5,7 @@ class PreguntasController extends CI_Controller {
 	public function __construct() {
         parent::__construct();
 		$this->load->model('Inscrito_modal');
+		$this->load->model('Temas_modal');
         $this->load->helper('url_helper');
     }
 
@@ -19,6 +20,16 @@ class PreguntasController extends CI_Controller {
 		$idUsuario = $this->input->get('idUsuario');
 		
 		$Curso = $this->Inscrito_modal->IncribirAlumno($id,$idUsuario);
+
+		$duracion = $this->Temas_modal->ConsultarTemasPorCursos($id);
+
+		$data = array(
+			'duracion' => $duracion,
+			'clave_inscrito' => $idUsuario,
+			'clave_curso' => $id
+		);
+
+		$dur = $this->Inscrito_modal->insertarDuracion($data);
 		
 		//if($Curso ==True)
 			echo 'Se inscribio al curso';

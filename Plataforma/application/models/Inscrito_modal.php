@@ -102,7 +102,12 @@ class Inscrito_Modal extends CI_Model{
 
         return $query->result_array();
     } 
-
+    public function insertarDuracion($data){
+        $this->db->insert('duracion',$data);  
+        
+        $insertId = $this->db->insert_id();
+        return $insertId; 
+    }
     /*public function ConsultarCursosTemasUsuario($Tema)
     {
         $this->db->select('*');

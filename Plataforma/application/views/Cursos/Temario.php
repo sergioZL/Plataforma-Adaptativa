@@ -133,16 +133,17 @@
 </div>
 
     <script>
-    var but = 'Comenzar desde el principio';
+    var but = 'Comenzar desde el principio'; //Este mensaje se mostrara al usuario por default si este no ha revisado algun material antes
     $(document).ready(function () {
-        var clave = '<?php echo $_GET['curso'];?>';
-        var Ultimo = window.localStorage.getItem(clave);
-        if(Ultimo != null){
+        var clave = '<?php echo $_GET['curso'];?>'; //Almacena la clave de curso al que pertenece los temas
+        var Ultimo = window.localStorage.getItem(clave); //Se optiene el ultimo material visitado por medio del local storage
+        if(Ultimo != null){ //Si ya se tenia guardado el ultimo material visitdo en el localstorage  se obtienen los datos de este objeto
             ult = JSON.parse(Ultimo);
             but = ult.nombre.split(".");
             ruta = ult.url.substring(50);
             uta = ruta.split(".");
             ava = ult.avance;
+            //Los datos obtenidos se guardan en el boton que muestra el ultimo material visitado de este curso
             $('#boton').append('<button type="button" class="btn btn-success" onclick="mostrar( &quot '+uta[0]+'&quot,'+ult.tipo+','+ava+');"> <h2 id="bot">'+but[0]+'</h2></button>');
         }
     });
@@ -242,15 +243,21 @@
                 }
             });
         }
-        function mostrar(data,tipo,ava = null){
-            var url = '<?php echo site_url('/Material?curso='.$curso);?>';
-            var form = $('<form action="' + url + '" method="post">' +
+        /**
+         * Esta funcion sirve para enviar datos a la vista de materiales los cuales sirven para mostrar
+         * Los ultimos materiales visitados en el curso 
+         */
+        function mostrar(data,tipo,ava = null,claveMaterial = null){
+            var url = '<?php echo site_url('/Material?curso='.$curso);?>';// almacena la la url de la vista material
+            if(claveMaterial) claveMat = claveMaterial;
+            var form = $('<form action="' + url + '" method="post">' + // contiene un string con los datos de un formulario
               '<input type="text" name="materialSend" value="' + data + '" />' +
               '<input type="text" name="tipo" value="' + tipo + '" />'+
               '<input type="text" name="avance" value="'+ava+'" />'+
+              '<input type="text" name="claveMat" value="'+claveMat+'" />'+
               '</form>');
-            $('body').append(form);
-            form.submit();
+            $('body').append(form);//se agrega el formulario al html de la pagina 
+            form.submit();//se realiza el submit del formulario
         }
     </script>  
 

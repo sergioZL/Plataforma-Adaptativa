@@ -87,7 +87,7 @@ class PreviewController extends CI_Controller {
 						# code...
 						break;
 				}
-                $carga = $carga.'<button class="btn btn-link" onclick="mostrar('.$ruta.','.$tipo.');"><p class="h6"> <span class="'.$icono.'"></span> &nbsp &nbsp'.$mat['descripcion_material'].'</p> </button><br>';
+                $carga = $carga.'<button class="btn btn-link" onclick="mostrar('.$ruta.','.$tipo.',0,'.$mat['id'].');"><p class="h6"> <span class="'.$icono.'"></span> &nbsp &nbsp'.$mat['descripcion_material'].'</p> </button><br>';
 
             }
 			echo $nose ='<div class="card rounded-0">

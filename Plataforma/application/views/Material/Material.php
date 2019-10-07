@@ -497,7 +497,7 @@
         }
             
         function guardarAvances(){
-            
+            var claveMaterial = '<?php echo $_POST['claveMat']; ?>';
             switch (tipos) {
                 case 1:
                     var rout = $('#vid').attr('src');
@@ -509,7 +509,8 @@
                         nombre:res[9],
                         url:rout,
                         tipo:tipos,
-                        avance:Video.currentTime
+                        avance:Video.currentTime,
+                        material:claveMaterial
                     }
                     var clave = '<?php echo $curso; ?>';
                     window.localStorage.setItem(  clave , JSON.stringify( ultimo ) );
@@ -524,7 +525,8 @@
                         nombre:res[9],
                         url:rout,
                         tipo:tipos,
-                        avance:Audio.currentTime
+                        avance:Audio.currentTime,
+                        material:claveMaterial
                     }
                     var clave = '<?php echo $curso; ?>';
                     window.localStorage.setItem(  clave , JSON.stringify( ultimo ) );
@@ -539,7 +541,8 @@
                           nombre:res[9],
                           url:rout,
                           tipo:tipos,
-                          avance:currentPageNum
+                          avance:currentPageNum,
+                          material:claveMaterial
                      }
                     var clave = '<?php echo $curso; ?>';
                     window.localStorage.setItem(  clave , JSON.stringify( ultimo ) );

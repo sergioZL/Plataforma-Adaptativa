@@ -16,8 +16,12 @@
 
             return $query->result_array();
         }
+        /**
+         * Devuelve el primer material del curso ordenado como estan configuradas las 
+         * lecciones y los temas
+         */
         public function encontrarPrimerMaterialDeCurso($claveCurso){
-            $this->db->select('material.clave_curso, lecciones.clave as `leccion`,temas.id as `tema`, descripcion_material as `Descripcion`, tipo_material as `tipo`');
+            $this->db->select('material.id as `id`,material.clave_curso, lecciones.clave as `leccion`,temas.id as `tema`, descripcion_material as `Descripcion`, tipo_material as `tipo`');
             $this->db->from($this->table);
             $this->db->join('temas',$this->table.'.id_temas = temas.id','INNER');
             $this->db->join('lecciones','lecciones.clave = id_leccion','INNER');
@@ -28,6 +32,17 @@
 
             return $query->row();
         }
+        public function encontrarUltimoMaterialDeCurso($claveCurso,$claveAlumnno){
+        
+        }
+        public function guardarUltimoMaterialDeCurso($claveCurso,$claveAlumnno,$idMaterial){
 
+        }
+        public function guardarAvanceMaterial($data){
+
+        }
+        public function ActualizarAvanceMaterial(){
+            
+        }
     }
 ?>

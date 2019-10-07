@@ -117,6 +117,15 @@ class MisCursosController extends CI_Controller {
 	}
 
 	/**
+	 * Regresa el ultimo material visitado del curso por el usuario
+	 */
+	public function CargarUltimo(){
+		$claveCurso = $this->input->post('claveCurso');
+		$claveAlumno = $this->input->post('claveAlumno');
+		$result = $this->Material_Model->encontrarUltimoMaterialDeCurso($claveCurso,$claveAlumnno);
+		echo json_encode($result);
+	}
+	/**
 	 * Regresa el primer material contenido en el curso para que 
 	 * este pueda ser mostrado al usuario 
 	 */
