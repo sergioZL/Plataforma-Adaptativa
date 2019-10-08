@@ -261,7 +261,7 @@ class ConfiguracionController extends CI_Controller {
         $this->load->helper(array('form','url'));
 
 		$config['upload_path'] 		= $path;
-		//$config['allowed_types']	= 'png|jpg|mp3|mp4|pdf|doc|docx|mpeg|mwv';
+		//$config['allowed_types']	= 'png|jpg|mp3|mp4|pdf|doc|docx|mpeg|mwv ';
 		$config['allowed_types']	= '*';
 		$config['max_size']    		= 34096000;
 		$config['remove_spaces'] 	= TRUE;
