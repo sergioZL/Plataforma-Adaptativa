@@ -11,6 +11,7 @@ class MaterialController extends CI_Controller {
 	    $this->load->model('Aprendizaje_modal');
         $this->load->model('Temas_modal');	
         $this->load->model('Material_Model');
+        $this->load->model('Avance_modal');
     }
 
     public function load_Material()
@@ -95,5 +96,89 @@ class MaterialController extends CI_Controller {
         echo $material = $this->input->get('material');
     
            
+    }
+    /**
+     * Sirve para colocar el ultimo material consultado en la base de datos
+     */
+    public function setUltimo(){
+        $utlimoMaterial = $this->input->post('ultimo');
+        $idCurso = $this->input->post('Curso');
+        $idUsuario = $this->input->post('Usuario');
+        $ultimo = json_decode($utlimoMaterial);
+        
+        //Consultamos si ya existe un avance registrado en este curso
+        $duracion = $this->Avance_modal->ConsultarDuracion($idCurso,$idUsuario);
+        $avance = $this->Avance_modal->ConsultarAvance($duracion->id,$ultimo->tema);
+        
+        /**
+         * Si existe un avance registrado con esta duracion pasamos a consultar si hay un 
+         * avance material registrado sino registramos un nuevo avance
+        */
+
+        if($avance == null){//Si no hay avance en este tema se inserta un nuevo avance
+            
+            $revisado = 1;
+            $av = 0;
+            $data = array( //Estos datos son para insertarse en la tabla avance
+                'avance'      => $av,
+                'revisado'    => $revisado,
+                'id_duracion' => $duracion->id,
+                'id_tema'     => $ultimo->tema 
+            );
+
+            $idavance = $this->Avance_modal->InsertarAvance($data); //esta varialble tiene almacenado el id del avance registrado
+                $comple = false;
+                $revisiones = 1;
+                $pro = 10;
+                $rep = 1;
+            $datos = array(//Estos datos son para insertar en la tabla avance_material
+                'idavance'   => $idavance, 
+                'idmaterial' => $ultimo->material,
+                'avance'     => $ultimo->avance,
+                'conpletado' => $comple,
+                'revisiones' => $revisiones,
+                'tiempo_promedio' => $pro,
+                'repeticiones' => $rep,
+                'duracion' => $ultimo->duracion
+            );
+            $this->Avance_modal->InsertarAvanceMaterial($datos);//Se inserta el avance en la tabla avance_material
+            //Se actualisa la tabla avance con el nuevo avance 
+            actualizarAvance($idavance,$ultimo->avance);
+        }else{
+            $avanceMaterial = $this->Avance_modal->ConsultarAvanceMaterial($avance->id,$ultimo->material);
+            if($avanceMaterial){
+                //actualizarAvanceMaterial();
+            }    
+        }
+        echo json_encode($avanceMaterial);
+
+    }
+    /**
+     * actualiza la tabla avance con el nuevo avance
+     */
+    public function actualisarAvance($idavance,$idTema){
+        //se optiene el porcentaje promedio de los avances de cada material
+        //consultando el total de avance material unido a los materiales que hay por tema
+        $cantidad = 0;
+        $porcentaje = 0;
+        $porcentajePromedio = 0;
+        $avanceMaterialTema = $this->Avance_modal->getavanceMaterialTema($idTema);
+        foreach ($avanceMaterialTema as $amt) {    
+            $obj = json_encode($amt);
+            $jbo = json_decode($obj);
+            if( !$jbo->idavance || $jbo->idavance == $idavance ){    
+                $cantidad = $cantidad + 1;
+                $total = $jbo->duracion;
+                $ava = $jbo->avance;
+                $prc = 0;
+                if($total){
+                    $prc = $ava * 100 / $total;
+                }
+                $porcentaje = $porcentaje+$prc;
+            }
+        }
+        $porcentajePromedio = $porcentaje / $cantidad;
+        $psp = round( $porcentajePromedio );
+        $this->Avance_modal->updateAvance( $idavance , $psp);//Actualiza el avance del tema
     }
 }

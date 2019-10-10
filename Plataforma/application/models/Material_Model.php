@@ -38,11 +38,5 @@
         public function guardarUltimoMaterialDeCurso($claveCurso,$claveAlumnno,$idMaterial){
 
         }
-        public function guardarAvanceMaterial($data){
-
-        }
-        public function ActualizarAvanceMaterial(){
-            
-        }
     }
 ?>

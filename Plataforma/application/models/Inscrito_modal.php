@@ -18,7 +18,13 @@ class Inscrito_Modal extends CI_Model{
         $insertId = $this->db->insert_id();
         return $insertId; 
     }
+    public function ActualizarInscripcion($idduracion,$idAlumno,$idCurso){
+        $this->db->set('id_duracion',$idduracion,FALSE);
+        $this->db->where('clave_alumno',$idAlumno);
+        $this->db->where('clave_curso',$idCurso);
+        $this->db->update($this->table);
 
+    }
     public function ConsultarCursosUsuarios($id)
     {
         $this->db->select('*');

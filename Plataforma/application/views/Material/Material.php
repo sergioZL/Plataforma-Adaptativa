@@ -494,10 +494,12 @@
             console.log(Video.currentTime);
             var Audio = document.getElementById("audio"); 
             Audio.pause(); 
+            guardarAvances();
         }
             
         function guardarAvances(){
             var claveMaterial = '<?php echo $_POST['claveMat']; ?>';
+            var ultimo = '';
             switch (tipos) {
                 case 1:
                     var rout = $('#vid').attr('src');
@@ -510,10 +512,22 @@
                         url:rout,
                         tipo:tipos,
                         avance:Video.currentTime,
-                        material:claveMaterial
+                        material:claveMaterial,
+                        duracion:Video.duration
                     }
                     var clave = '<?php echo $curso; ?>';
                     window.localStorage.setItem(  clave , JSON.stringify( ultimo ) );
+
+                    MaterialUltimo = JSON.stringify(ultimo);
+                    $.ajax({
+                        type: "post",
+                        url: "<?php echo site_url();?>/Material/MaterialController/setUltimo",
+                        data: {ultimo:MaterialUltimo},
+                        success: function (response) {
+                            console.log(JSON.parse(response));
+                        }
+                    });
+
                     break;
                 case 2:
                     var rout = $('#aud').attr('src');
@@ -526,10 +540,20 @@
                         url:rout,
                         tipo:tipos,
                         avance:Audio.currentTime,
-                        material:claveMaterial
+                        material:claveMaterial,
+                        duracion:Audio.duration
                     }
                     var clave = '<?php echo $curso; ?>';
                     window.localStorage.setItem(  clave , JSON.stringify( ultimo ) );
+                    MaterialUltimo = JSON.stringify(ultimo);
+                    $.ajax({
+                        type: "post",
+                        url: "<?php echo site_url();?>/Material/MaterialController/setUltimo",
+                        data: {ultimo:MaterialUltimo,Curso:'<?php echo $curso; ?>',Usuario:'<?php echo $varsesion ?>'},
+                        success: function (response) {
+                            console.log(JSON.parse(response));
+                        }
+                    });
                     break;
                 case 3:
                      var rout = $('#pdf').attr('src');
@@ -546,11 +570,23 @@
                      }
                     var clave = '<?php echo $curso; ?>';
                     window.localStorage.setItem(  clave , JSON.stringify( ultimo ) );
+
+                    MaterialUltimo = JSON.stringify(ultimo);
+                    $.ajax({
+                        type: "post",
+                        url: "<?php echo site_url();?>/Material/MaterialController/setUltimo",
+                        data: {ultimo:MaterialUltimo},
+                        success: function (response) {
+                            console.log(JSON.parse(response));
+                        }
+                    });
+
                     break;
                 
                 default:
                     break;
             }
+
         }
 
 

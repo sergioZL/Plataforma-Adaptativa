@@ -22,7 +22,7 @@ class PreguntasController extends CI_Controller {
 		$Curso = $this->Inscrito_modal->IncribirAlumno($id,$idUsuario);
 
 		$duracion = $this->Temas_modal->ConsultarTemasPorCursos($id);
-
+		
 		$data = array(
 			'duracion' => $duracion,
 			'clave_inscrito' => $idUsuario,
@@ -30,6 +30,7 @@ class PreguntasController extends CI_Controller {
 		);
 
 		$dur = $this->Inscrito_modal->insertarDuracion($data);
+		$this->Inscrito_modal->ActualizarInscripcion($dur,$idUsuario,$id);
 		
 		//if($Curso ==True)
 			echo 'Se inscribio al curso';
