@@ -114,6 +114,16 @@ class Inscrito_Modal extends CI_Model{
         $insertId = $this->db->insert_id();
         return $insertId; 
     }
+    /**
+     * Actualiza la tabla inscrito colocando el id del ultimo material visitado por el usuario
+     */
+    public function updateInscripcion($claveAlumno,$claveCurso,$idUltimo,$avance){
+        $this->db->set('ultimo',$idUltimo);
+        $this->db->set('avance',$avance);
+        $this->db->where('clave_alumno',$claveAlumno);
+        $this->db->where('clave_curso',$claveCurso);
+        $this->db->update($this->table);
+    }
     /*public function ConsultarCursosTemasUsuario($Tema)
     {
         $this->db->select('*');

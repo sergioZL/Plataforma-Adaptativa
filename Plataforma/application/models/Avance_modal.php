@@ -65,6 +65,14 @@
             return $query->result_array();
         }
         /**
+         * Actualiza la tabla avance material
+         */
+        public function updateAvanceMaterial($data){
+            $this->db->where('avance_material.idavance',$data->idavance);
+            $this->db->where('avance_material.idmaterial',$data->idmaterial);
+            $this->db->update('avance_material', $data);
+        }
+        /**
          * Regresa el id de la tabla duración que corresponde a el curso y al usuario
          * dados como argumentos
          */
@@ -73,6 +81,14 @@
             $this->db->from('duracion');
             $this->db->where('duracion.clave_inscrito',$idUsuario);
             $this->db->where('duracion.clave_curso',$idCurso);
+            $query = $this->db->get();
+            
+            return $query->row();
+        }
+        public function getDuracion($id){
+            $this->db->select();
+            $this->db->from('duracion');
+            $this->db->where('duracion.id',$id);
             $query = $this->db->get();
             
             return $query->row();
@@ -89,6 +105,14 @@
             $query = $this->db->get();
             
             return $query->row();
+        }
+        public function ConsultarAvances($idDuracion){
+            $this->db->select();
+            $this->db->from($this->table);
+            $this->db->where($this->table.'.id_duracion',$idDuracion);
+            $query = $this->db->get();
+            
+            return $query->result_array();
         }
         /**
          * Regresa el avance de los materiales correspondientes al id de tema 

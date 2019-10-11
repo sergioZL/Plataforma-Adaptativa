@@ -12,6 +12,7 @@ class MaterialController extends CI_Controller {
         $this->load->model('Temas_modal');	
         $this->load->model('Material_Model');
         $this->load->model('Avance_modal');
+        $this->load->model('Inscrito_modal');
     }
 
     public function load_Material()
@@ -53,7 +54,7 @@ class MaterialController extends CI_Controller {
 						# code...
 						break;
 				}
-                $carga = $carga.'<button class="btn btn-link" onclick="mostrar('.$ruta.','.$tipo.');"><p class="h6"> <span class="'.$icono.'"></span>'.$mat['descripcion_material'].'</p> </button><br>';
+                $carga = $carga.'<button class="btn btn-link" onclick="mostrar('.$ruta.','.$tipo.','.$mat['id'].');"><p class="h6"> <span class="'.$icono.'"></span>'.$mat['descripcion_material'].'</p> </button><br>';
 
             }
 			echo $nose ='<div class="card rounded-0">
@@ -143,27 +144,64 @@ class MaterialController extends CI_Controller {
             );
             $this->Avance_modal->InsertarAvanceMaterial($datos);//Se inserta el avance en la tabla avance_material
             //Se actualisa la tabla avance con el nuevo avance 
-            actualizarAvance($idavance,$ultimo->avance);
+            $this->actualizarAvance($idavance,$ultimo->tema);
         }else{
-            $avanceMaterial = $this->Avance_modal->ConsultarAvanceMaterial($avance->id,$ultimo->material);
-            if($avanceMaterial){
-                //actualizarAvanceMaterial();
-            }    
-        }
-        echo json_encode($avanceMaterial);
+             $avanceMaterial = $this->Avance_modal->ConsultarAvanceMaterial($avance->id,$ultimo->material);
+             if($avanceMaterial){//Si el material visitado por el usuario ya esta en la tabla se actualiza
+                 $this->actualizarAvanceMaterial($avanceMaterial, $ultimo );
+             }else{//sino se agrega el material 
+                
+                 $comple = false;
+                 $revisiones = 1;
+                 $pro = 10;
+                 $rep = 1;
+                 $datos = array(//Estos datos son para insertar en la tabla avance_material
+                     'idavance'   => $avance->id, 
+                     'idmaterial' => $ultimo->material,
+                     'avance'     => $ultimo->avance,
+                     'conpletado' => $comple,
+                     'revisiones' => $revisiones,
+                     'tiempo_promedio' => $pro,
+                     'repeticiones' => $rep,
+                     'duracion' => $ultimo->duracion
+                 );
 
+                $this->Avance_modal->InsertarAvanceMaterial($datos);//Se inserta el avance en la tabla avance_material
+            }
+             
+            //Se actualiza el avance de este tema
+            $this->actualizarAvance($avance->id,$ultimo->tema);   
+        }
+        // Finalmente se coloca el ultimo material visitado en la tabla inscrito
+        $this->actualizarInscripcion($idUsuario,$idCurso,$ultimo->material,$duracion);   
+    }
+    /**
+     * Actualiza la inscripcion
+     */
+    public function actualizarInscripcion($idUsuario,$idCurso,$ultimo,$Idduracion){
+        $dur = $this->Avance_modal->getDuracion($Idduracion->id);
+        $avances = $this->Avance_modal->ConsultarAvances($Idduracion->id);
+        $ava = 0;
+        foreach ($avances as $amt) {
+            $obj = json_encode($amt);
+            $jbo = json_decode($obj);
+            $ava = $ava+$jbo->avance;
+        }
+        $avancePromedio = $ava/$dur->duracion;
+        $this->Inscrito_modal->updateInscripcion($idUsuario,$idCurso,$ultimo,$avancePromedio);
     }
     /**
      * actualiza la tabla avance con el nuevo avance
      */
-    public function actualisarAvance($idavance,$idTema){
+    public function actualizarAvance($idavance,$idTema){
+        
         //se optiene el porcentaje promedio de los avances de cada material
         //consultando el total de avance material unido a los materiales que hay por tema
         $cantidad = 0;
         $porcentaje = 0;
         $porcentajePromedio = 0;
         $avanceMaterialTema = $this->Avance_modal->getavanceMaterialTema($idTema);
-        foreach ($avanceMaterialTema as $amt) {    
+        foreach ($avanceMaterialTema as $amt) {   
             $obj = json_encode($amt);
             $jbo = json_decode($obj);
             if( !$jbo->idavance || $jbo->idavance == $idavance ){    
@@ -175,10 +213,26 @@ class MaterialController extends CI_Controller {
                     $prc = $ava * 100 / $total;
                 }
                 $porcentaje = $porcentaje+$prc;
+                echo json_encode($jbo); 
             }
         }
         $porcentajePromedio = $porcentaje / $cantidad;
         $psp = round( $porcentajePromedio );
         $this->Avance_modal->updateAvance( $idavance , $psp);//Actualiza el avance del tema
+    }
+    /**
+     * Actualiza la tabla avance_material 
+     */
+    public function actualizarAvanceMaterial( $datos, $last ){
+         $data = json_decode(json_encode($datos[0]));
+         $ultimo = json_decode(json_encode($last));
+         $data->avance = $ultimo->avance; //Se coloca el nuevo avance
+         if( $ultimo->avance > ($data->duracion - 5) ){
+             $data->avance = $data->duracion;
+             $data->conpletado = 1; //si el avance del material es mayor a el tiempo de duracion del material menos dos segundos se marca como completado
+        }
+         else $data->conpletado = 0;
+         $data->revisiones = $data->revisiones+1; //se aumenta en uno el numero de revisiones del material
+         $this->Avance_modal->updateAvanceMaterial($data);//Se actualiza el registro en la base de datos
     }
 }

@@ -327,6 +327,7 @@
 <script>
         
         var tipos = <?php echo $_POST['tipo']; ?>+0;
+        var claveMaterial = '<?php echo $_POST['claveMat']; ?>';
         $(document).ready(function(){
             CargarLecciones();
             $("#video").on('ended', function(){
@@ -427,19 +428,19 @@
                 }                    
             });
         }
-        function mostrar(rout,tipo){
+        function mostrar(rout,tipo,id){
             var routa = '<?php echo base_url() ?>'+rout.trim();
             console.log(routa);
             
-            filterSelection(routa,tipo);
+            filterSelection(routa,tipo,id);
         }
-        function filterSelection(newUrl,idButton)
+        function filterSelection(newUrl,idButton,id)
         {
             
             var Video = document.getElementById('Video');
             var Audio = document.getElementById('Audio');
             var PDF = document.getElementById('PDF');
-
+            
 
             switch(idButton) {
             case 1:
@@ -450,8 +451,8 @@
                 $("#VideoRoute").children().remove();
 
                 $("#VideoRoute").append(
-                '<video id="video" autoplay class="video" controls preload="metadata" controlslist="nodownload">'
-                    +'<source id="vid" src="'+newUrl+'#t=120"><!--#t=15 para empezar en el segundo-->' 
+                '<video  id="video" autoplay class="video" controls preload="metadata" controlslist="nodownload">'
+                    +'<source clave="'+id+'" id="vid" src="'+newUrl+'#t=120"><!--#t=15 para empezar en el segundo-->' 
                 +'</video>'
                 );
                 Video.style.display = 'block';
@@ -466,8 +467,8 @@
 
                  $("#audioRoute").append(
                     '<div id="audioRoute">'
-                        +'<audio class="audio" id="audio" controls preload="metadata" controlslist="nodownload" style="width: 50%;">'
-                            +'<source id="aud" src="'+newUrl+'">' 
+                        +'<audio  class="audio" id="audio" controls preload="metadata" controlslist="nodownload" style="width: 50%;">'
+                            +'<source clave="'+id+'" id="aud" src="'+newUrl+'">' 
                         +'</audio>'
                     +'</div>');
 
@@ -498,11 +499,15 @@
         }
             
         function guardarAvances(){
-            var claveMaterial = '<?php echo $_POST['claveMat']; ?>';
+            
             var ultimo = '';
             switch (tipos) {
                 case 1:
                     var rout = $('#vid').attr('src');
+                    terial= $('#vid').attr('clave');
+                    if(terial) claveMaterial = terial;
+                    console.log(claveMaterial);
+                    
                     var Video = document.getElementById("video"); 
                     var res = rout.split("/");  
                     var ultimo = {
@@ -522,15 +527,18 @@
                     $.ajax({
                         type: "post",
                         url: "<?php echo site_url();?>/Material/MaterialController/setUltimo",
-                        data: {ultimo:MaterialUltimo},
+                        data: {ultimo:MaterialUltimo,Curso:'<?php echo $curso; ?>',Usuario:'<?php echo $varsesion ?>'},
                         success: function (response) {
-                            console.log(JSON.parse(response));
+                            console.log(response);
                         }
                     });
 
                     break;
                 case 2:
                     var rout = $('#aud').attr('src');
+                    var terial= $('#aud').attr('clave');
+                    if(terial) claveMaterial = terial;
+                    console.log(terial);
                     var Audio = document.getElementById("audio"); 
                     var res = rout.split("/");  
                     var ultimo = {
@@ -551,7 +559,7 @@
                         url: "<?php echo site_url();?>/Material/MaterialController/setUltimo",
                         data: {ultimo:MaterialUltimo,Curso:'<?php echo $curso; ?>',Usuario:'<?php echo $varsesion ?>'},
                         success: function (response) {
-                            console.log(JSON.parse(response));
+                            console.log(response);
                         }
                     });
                     break;
