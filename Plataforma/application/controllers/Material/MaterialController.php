@@ -211,6 +211,7 @@ class MaterialController extends CI_Controller {
                 $prc = 0;
                 if($total){
                     $prc = $ava * 100 / $total;
+                    if($jbo->conpletado == 1) $prc = 100;
                 }
                 $porcentaje = $porcentaje+$prc;
                 echo json_encode($jbo); 

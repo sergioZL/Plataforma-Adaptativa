@@ -33,7 +33,19 @@
             return $query->row();
         }
         public function encontrarUltimoMaterialDeCurso($claveCurso,$claveAlumnno){
-        
+           $this->db->select("inscrito.ultimo as 'id', material.descripcion_material as 'Descripcion',
+           material.clave_curso as 'clave_curso', temas.id_leccion as 'leccion', temas.id as 'tema',
+           material.tipo_material as 'tipo',avance_material.avance as 'avance'");
+           $this->db->from('inscrito');
+           $this->db->join('avance_material','inscrito.ultimo = avance_material.idmaterial','INNER');
+           $this->db->join('material','avance_material.idmaterial = material.id','INNER');
+           $this->db->join('temas','material.id_temas = temas.id','INNER');
+           $this->db->join('lecciones','temas.id_leccion = lecciones.clave');
+           $this->db->where('inscrito.clave_alumno',$claveAlumnno);
+           $this->db->where('inscrito.clave_curso',$claveCurso);
+           $query = $this->db->get();
+
+           return $query->row();
         }
         public function guardarUltimoMaterialDeCurso($claveCurso,$claveAlumnno,$idMaterial){
 

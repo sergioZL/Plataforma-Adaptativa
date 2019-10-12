@@ -247,23 +247,44 @@
                 tipo = ult.tipo;//contiene el tipo de material que se esta bisitando existen solo 3 tipos
                 claveMat = ult.material;
             }else {/**Si no existe un ultimo material visitado de este curso se consulta a la base de datos
-                      Cual es el primer material contenido del curso para que este pueda ser mostrado
+                      Cual es el ultimo material visto del curso para que este pueda ser mostrado
                        */
-                $.ajax({
-                    type: "post",
-                    url: "<?php echo site_url();?>/Cursos/MisCursosController/CargarPrimerMaterial",
-                    data: {claveCurso:id},
-                    async:false,
-                    success: function (response) {
-                        obj = JSON.parse(response);
-                        claveMat = obj.id;
-                        ruta = "Material/"+obj.clave_curso+"/"+obj.leccion+"/"+obj.tema+"/"+obj.Descripcion+".mpg";
-                        uta  = ruta.split(".");
-                        tipo = obj.tipo;
-                        ava = 0;
-                        console.log(obj);
-                    }
-                });
+                       console.log('hello');
+                 $.ajax({
+                     type: "post",
+                     url: "<?php echo site_url();?>/Cursos/MisCursosController/CargarUltimo",
+                     data: {claveCurso:id,claveAlumno:'<?php echo $varsesion; ?>'},
+                     async:false,
+                     success: function (response) {
+                        if(response){                         
+                         obj = JSON.parse(response);
+                         claveMat = obj.id;
+                         ruta = "Material/"+obj.clave_curso+"/"+obj.leccion+"/"+obj.tema+"/"+obj.Descripcion+".mpg";
+                         uta  = ruta.split(".");
+                         tipo = obj.tipo;
+                         ava = obj.avance;
+                        }else{
+                            /**
+                             * Si no hay un ultimo curso revisdado en la base de datos entonces cargamos el primer 
+                             * material del curso con orden de temas
+                             */
+                            $.ajax({
+                                type: "post",
+                                url: "<?php echo site_url();?>/Cursos/MisCursosController/CargarPrimerMaterial",
+                                data: {claveCurso:id},
+                                async:false,
+                                success: function (response) {
+                                    obj = JSON.parse(response);
+                                    claveMat = obj.id;
+                                    ruta = "Material/"+obj.clave_curso+"/"+obj.leccion+"/"+obj.tema+"/"+obj.Descripcion+".mpg";
+                                    uta  = ruta.split(".");
+                                    tipo = obj.tipo;
+                                    ava = 0;
+                                }
+                            });
+                        }
+                     }
+                 });
             }
             var url = '<?php echo site_url();?>/Material?curso='+id+'';
             
@@ -274,8 +295,7 @@
               '<input type="text" name="claveMat" value="'+claveMat+'" />'+
               '</form>');
             $('body').append(form);
-            form.submit();
-            
+             form.submit(); 
         }
 
     </script>

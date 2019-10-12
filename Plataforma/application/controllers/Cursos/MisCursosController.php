@@ -122,7 +122,7 @@ class MisCursosController extends CI_Controller {
 	public function CargarUltimo(){
 		$claveCurso = $this->input->post('claveCurso');
 		$claveAlumno = $this->input->post('claveAlumno');
-		$result = $this->Material_Model->encontrarUltimoMaterialDeCurso($claveCurso,$claveAlumnno);
+		$result = $this->Material_Model->encontrarUltimoMaterialDeCurso($claveCurso,$claveAlumno);
 		echo json_encode($result);
 	}
 	/**
