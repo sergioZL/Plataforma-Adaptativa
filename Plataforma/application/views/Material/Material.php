@@ -408,6 +408,7 @@
             ({
                 type:'post',
                 url:'<?php echo site_url();?>/Material/MaterialController/ConsultarTemasCursosID?IdLeccion='+data[0].clave,
+                data:{Curso:'<?php echo $curso; ?>', Usuario: '<?php echo $varsesion; ?>'},
                 success :function(resp)
                 {
                     $("#Leccion").append('<div class="card leccion shadow-sm mb-3 rounded-0">'+
@@ -428,13 +429,13 @@
                 }                    
             });
         }
-        function mostrar(rout,tipo,id){
+        function mostrar(rout,tipo,id,avance){
             var routa = '<?php echo base_url() ?>'+rout.trim();
             console.log(routa);
             
-            filterSelection(routa,tipo,id);
+            filterSelection(routa,tipo,id,avance);
         }
-        function filterSelection(newUrl,idButton,id)
+        function filterSelection(newUrl,idButton,id,avance)
         {
             
             var Video = document.getElementById('Video');
@@ -452,7 +453,7 @@
 
                 $("#VideoRoute").append(
                 '<video  id="video" autoplay class="video" controls preload="metadata" controlslist="nodownload">'
-                    +'<source clave="'+id+'" id="vid" src="'+newUrl+'#t=120"><!--#t=15 para empezar en el segundo-->' 
+                    +'<source clave="'+id+'" id="vid" src="'+newUrl+'#t='+avance+'"><!--#t=15 para empezar en el segundo-->' 
                 +'</video>'
                 );
                 Video.style.display = 'block';
@@ -468,7 +469,7 @@
                  $("#audioRoute").append(
                     '<div id="audioRoute">'
                         +'<audio  class="audio" id="audio" controls preload="metadata" controlslist="nodownload" style="width: 50%;">'
-                            +'<source clave="'+id+'" id="aud" src="'+newUrl+'">' 
+                            +'<source clave="'+id+'" id="aud" src="'+newUrl+'#t='+avance+'">' 
                         +'</audio>'
                     +'</div>');
 

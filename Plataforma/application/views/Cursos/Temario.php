@@ -143,8 +143,9 @@
             ruta = ult.url.substring(50);
             uta = ruta.split(".");
             ava = ult.avance;
+            idmat = ult.material;
             //Los datos obtenidos se guardan en el boton que muestra el ultimo material visitado de este curso
-            $('#boton').append('<button type="button" class="btn btn-success" onclick="mostrar( &quot '+uta[0]+'&quot,'+ult.tipo+','+ava+');"> <h2 id="bot">'+but[0]+'</h2></button>');
+            $('#boton').append('<button type="button" class="btn btn-success" onclick="mostrar( &quot '+uta[0]+'&quot,'+ult.tipo+','+ava+','+idmat+');"> <h2 id="bot">'+but[0]+'</h2></button>');
         }
     });
     CargarInfoCursos();
@@ -183,6 +184,7 @@
             ({
                 type:'post',
                 url:'<?php echo site_url();?>/Cursos/PreviewController/ConsultarTemasCursos?IdLeccion='+data[0].clave,
+                data:{Curso:'<?php echo $curso; ?>', Usuario: '<?php echo $varsesion; ?>'},
                 success :function(resp)
                 {
                     $("#Leccion").append(
