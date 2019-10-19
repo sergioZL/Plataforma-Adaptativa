@@ -68,7 +68,7 @@ class MaterialController extends CI_Controller {
 						# code...
 						break;
 				}
-                $carga = $carga.'<button style="width: 100%;" class="btn btn-link" onclick="mostrar('.$ruta.','.$tipo.','.$mat['id'].','. $ava.');"><p class="h6"> 
+                $carga = $carga.'<button style="width: 100%;" class="btn btn-link" onclick="mostrar('.$ruta.','.$tipo.','.$mat['id'].','. $ava.');"><p class="h6 pull-left"> 
                 <span class="'.$icono.'"></span>
                 '.$mat['descripcion_material'].'
                 </p>
@@ -80,19 +80,19 @@ class MaterialController extends CI_Controller {
             }
             $avanceTema = 0;
             if($avance) $avanceTema = $avance->avance;
-			echo $nose ='<div class="card rounded-0">
-                <h5 class="card-header">
+			echo $nose ='<div class="card rounded-0"  >
+                <h5 class="card-header" style="height: 70px;">
                     <a data-toggle="collapse" href="#content'. $item['id'] .'" aria-expanded="true"
                         aria-controls="content'. $item['id'] .'" id="Tema'. $item['id'] .'" class="d-block">
                         <i class="fa fa-chevron-down pull-right"></i>
-                        <p class="font-weight-bold temas"><span class=" badge badge-primary badge-pill">'.$avanceTema.'%</span> Tema '. $item['secuencia'].': '.$item['nombre'].'<p>
+                        <p class="font-weight-bold temas"><small> <span class=" badge badge-primary badge-pill">'.$avanceTema.'%</span>Tema '. $item['secuencia'].': '.$item['nombre'].'</small><p>
                     </a>
                 </h5>
                 <div id="content'. $item['id'] .'" class="collapse carta-body" aria-labelledby="Tema'. $item['id'] .'">
-                    <div class="card-body carta-body" style="width: 100%;">
+                    <!--<div class="card-body carta-body" style="width: 100%;">
 
-                        '.$carga.'
-                    </div>
+                    </div>-->
+                    '.$carga.'
                 </div>
             </div>';
 			
@@ -223,6 +223,7 @@ class MaterialController extends CI_Controller {
         $porcentaje = 0;
         $porcentajePromedio = 0;
         $avanceMaterialTema = $this->Avance_modal->getavanceMaterialTema($idTema);
+        $avance = $this->Avance_modal->getAvance($idavance);
         foreach ($avanceMaterialTema as $amt) {   
             $obj = json_encode($amt);
             $jbo = json_decode($obj);
@@ -230,18 +231,19 @@ class MaterialController extends CI_Controller {
                 $cantidad = $cantidad + 1;
                 $total = $jbo->duracion;
                 $ava = $jbo->avance;
+                $revisado = $avance->revisado+1;
                 $prc = 0;
                 if($total){
                     $prc = $ava * 100 / $total;
                     if($jbo->conpletado == 1) $prc = 100;
                 }
                 $porcentaje = $porcentaje+$prc;
-                echo json_encode($jbo); 
+                echo json_encode($avance); 
             }
         }
         $porcentajePromedio = $porcentaje / $cantidad;
         $psp = round( $porcentajePromedio );
-        $this->Avance_modal->updateAvance( $idavance , $psp);//Actualiza el avance del tema
+        $this->Avance_modal->updateAvance( $idavance , $psp , $revisado);//Actualiza el avance del tema
     }
     /**
      * Actualiza la tabla avance_material 

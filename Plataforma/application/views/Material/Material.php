@@ -411,20 +411,21 @@
                 data:{Curso:'<?php echo $curso; ?>', Usuario: '<?php echo $varsesion; ?>'},
                 success :function(resp)
                 {
-                    $("#Leccion").append('<div class="card leccion shadow-sm mb-3 rounded-0">'+
-                            '<h5 class="card-header">'+
+                    $("#Leccion").append('<div class="card leccion shadow-sm mb-3 rounded-0 ">'+
+                            '<h6 class="card-header bg-white">'+
                                 '<!--Cabecera del menu desplegable-->'+
                                 '<a data-toggle="collapse" href="#contenido' + data[0].secuencia+ '" aria-expanded="true" aria-controls="contenidoUno"'+
                                     'id="leccion' + data[0].secuencia+ '" class="d-block">'+
                                     '<i class="fa fa-chevron-down pull-right"></i><p class="font-weight-bold">'
-                                    +'Lección '+ data[0].secuencia+': '+data[0].nombre + 
+                                    +'<small>'+'Lección '+ data[0].secuencia+': '+data[0].nombre +'</small>'+ 
                                 '</p></a>'+
-                            '</h5>'+
+                            '</h6>'+
                             '<div id="contenido' + data[0].secuencia+ '" class="collapse" aria-labelledby="leccion' + data[0].secuencia+ '">'+
                             '<!--Contenido del menu desplegable-->'+
-                                '<div class="card-body">'+
-                                resp+
-                                '</div>');
+                                '<!--<div class="card-body">'+
+                                '</div>-->'
+                                +resp
+                                );
                     if(data.length > 1) temas(data.slice(1,data.length));
                 }                    
             });

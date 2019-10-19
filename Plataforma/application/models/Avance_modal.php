@@ -27,9 +27,9 @@
          * Actualiza la tabla avance modificando el porcentaje del avance que se tiene en el tema 
          * y el numero de reviciones que tiene el tema 
          */
-        public function updateAvance($idAvance,$avance){
+        public function updateAvance($idAvance,$avance,$revisiones){
             $this->db->set('avance',$avance);
-            $this->db->set('revisado','revisado + 1');
+            $this->db->set('revisado',$revisiones);
             $this->db->where('id',$idAvance);
             $this->db->update('avance');
         }
@@ -106,6 +106,7 @@
             
             return $query->row();
         }
+
         public function ConsultarAvances($idDuracion){
             $this->db->select();
             $this->db->from($this->table);
@@ -114,6 +115,16 @@
             
             return $query->result_array();
         }
+
+        public function getAvance($idAvance){
+            $this->db->select();
+            $this->db->from($this->table);
+            $this->db->where($this->table.'.id',$idAvance);
+            $query = $this->db->get();
+            
+            return $query->row();
+        }
+
         /**
          * Regresa el avance de los materiales correspondientes al id de tema 
          * proporcionado en el argumento
