@@ -7,6 +7,7 @@ $route['404_override'] = '';
 
 
 $route['alumno/MisCursos'] = 'Cursos/MisCursosController/load_MisCursos';
+$route['alumno/Encuesta'] = 'Cursos/EncuestaController/load_Encuesta';
 $route['Cursos/NuevosCursos'] = 'Cursos/NuevoCursosController/load_NuevosCursos';
 $route['Cursos/Preview'] = 'Cursos/PreviewController/load_Preview';
 $route['Cursos/Pregunta'] = 'Cursos/PreguntasController/load_Preguntas';

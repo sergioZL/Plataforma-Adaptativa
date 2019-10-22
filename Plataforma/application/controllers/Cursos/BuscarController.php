@@ -5,9 +5,15 @@ class BuscarController extends CI_Controller {
 	public function __construct() {
 		parent::__construct();
 		$this->load->model('Cursos_modal');
+		$this->load->model('configuracion_model');
         $this->load->helper('url_helper');
     }
+	public function getCarreras() {
 
+		$data = $this->configuracion_model->getCarreras();
+
+		echo json_encode($data);
+	}
 	public function load_Buscar()
 	{
 		$this->load->view('Cursos/Buscar');

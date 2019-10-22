@@ -25,6 +25,14 @@ class Inscrito_Modal extends CI_Model{
         $this->db->update($this->table);
 
     }
+    public function ActualizarAlumno($idAlumno,$visual,$auditivo,$cinestesico){
+        $this->db->set('eavisual',$visual,FALSE);
+        $this->db->set('eaauditivo',$auditivo,FALSE);
+        $this->db->set('eacinestesico',$cinestesico,FALSE);
+        $this->db->where('clave',$idAlumno);
+        $this->db->update('alumnos');
+
+    }
     public function ConsultarCursosUsuarios($id)
     {
         $this->db->select('*');

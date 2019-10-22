@@ -83,8 +83,9 @@ class EvaluacionController extends CI_Controller {
 		$Tema = $this->Lecciones_modal->ConsultarLeccionesPorCurso($Curso);
 		foreach ($Tema as $tema)
 		{
-			$Pregunta = $this->BancoPreguntas_modal->ConsultarPreguntas($tema['id'],$limit->numpregunta);
-			
+			//$limit->numpregunta
+			$Pregunta = $this->BancoPreguntas_modal->ConsultarPreguntas($tema['id'],10);
+			//echo json_encode($limit);
 			foreach ($Pregunta as $pregunta) 
 			{
 				$PreguntasExamen = $this->Opciones_modal->ConsultarOpciones($pregunta['id']);

@@ -249,14 +249,15 @@
             }else {/**Si no existe un ultimo material visitado de este curso se consulta a la base de datos
                       Cual es el ultimo material visto del curso para que este pueda ser mostrado
                        */
-                       console.log('hello');
                  $.ajax({
                      type: "post",
                      url: "<?php echo site_url();?>/Cursos/MisCursosController/CargarUltimo",
                      data: {claveCurso:id,claveAlumno:'<?php echo $varsesion; ?>'},
                      async:false,
                      success: function (response) {
-                        if(response){                         
+                        if(response =! 'null'){
+                         console.log(response );
+                    
                          obj = JSON.parse(response);
                          claveMat = obj.id;
                          ruta = "Material/"+obj.clave_curso+"/"+obj.leccion+"/"+obj.tema+"/"+obj.Descripcion+".mpg";

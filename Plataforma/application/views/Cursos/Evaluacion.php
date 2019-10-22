@@ -182,6 +182,8 @@
             url:'<?php echo site_url();?>/Cursos/EvaluacionController/ConsultarPregunta?Curso=<?php echo $_GET['curso'];?>',    
             success:function(resp)
             {
+                console.log(resp);
+                
                 $("#contenedroPreguntas").append(resp);
             }
         });
