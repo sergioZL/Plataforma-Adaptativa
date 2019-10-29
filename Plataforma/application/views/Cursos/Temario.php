@@ -24,13 +24,16 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">    
     <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.6.3/css/all.css' integrity='sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/' crossorigin='anonymous'>                            
+     <script defer src="https://use.fontawesome.com/releases/v5.11.2/js/all.js"></script> <!-- nuevo font awesome -->
 </head> 
 <body>  
-
+<?php
+        $this->load->view('Cursos/Nav');
+?>
 
 <!-- nav -->
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<!-- <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <a class="navbar-brand text-left" href="<?php echo site_url();?>/alumno/MisCursos">
     <img class="login-img text-left" src="<?php echo base_url();?>app-assets/imagenes/logo.png" style="width: 50%; margin: 0;">
   </a>
@@ -53,7 +56,7 @@
         <ul class="navbar-nav offset-lg-1 offset-xl-3">
             <!--<li class="nav-item">
                 <a class="nav-link" style="color: #07ad90;" href="<?php echo site_url();?>/Cursos/NuevosCursos">Nuevos cursos</a>
-            </li>-->
+            </li>--><!--
                <li class="dropdown">
                 <a href="" class="btn" data-toggle="dropdown" >
                     <span class="far fa-bell fa-2x" style="color: #07ad90;" title="Notificaciones"></span>
@@ -92,21 +95,21 @@
         </ul>
     </div>
   </div>
-</nav>
+</nav> -->
 
 <?php //echo $curso =$_GET['curso']; ?>
 
 
 <section class="seccion-superior"><!--Esta es la parte superior del temario-->
     <div class="row pt-4 py-4 offset-1">
-        <div class="panelImagen col-lg-4 ">
+        <div class="panelImagen col-lg-3 ">
             <div id="imagen">
 
 
             </div>
         </div>
-        <div class="row col-lg-8 ">
-            <div class="offset-1">
+        <div class="col-lg-8 ">
+            <div >
                 
                 <div id="info">
                 
@@ -145,9 +148,29 @@
             ava = ult.avance;
             idmat = ult.material;
             //Los datos obtenidos se guardan en el boton que muestra el ultimo material visitado de este curso
-            $('#boton').append('<button type="button" class="btn btn-success" onclick="mostrar( &quot '+uta[0]+'&quot,'+ult.tipo+','+ava+','+idmat+');"> <h2 id="bot">'+but[0]+'</h2></button>');
+            $('#boton').append('<button type="button" style="background-color:#07ad90;" class="btn btn-success" onclick="mostrar( &quot '+uta[0]+'&quot,'+ult.tipo+','+ava+','+idmat+');"> <h2 id="bot">'+but[0]+'</h2></button>');
         }
+
+        //optiene la clave de usuario actual
+        let usuario = '<?php echo $varsesion; ?>';
+        
+        /**
+         * Optiene los datos de alumno relacionados con este usuario
+         */
+        $.get( '<?php echo site_url();?>/Cursos/EncuestaController/obtenerAlumno', { varusuario: usuario} )
+            .done(function( data ) {
+                let obj = JSON.parse( data );// convierte los datos optenidos a un objeto de tipo json
+                actualizarHeader(obj[0]);
+            });
     });
+
+        function actualizarHeader(data){
+            $('#userName').html('<br>'+data.nombre+' '+data.app); // Coloca el nombre de usuario y apellido paterno en el navbar
+            console.log(data);
+            let inN = data.nombre.split( "", 1 );
+            let inA = data.app.split( "", 1 );
+            $('#inicial').html(inN+inA);
+        }
     CargarInfoCursos();
     CargarLecciones();
         $('#buscar').click(function()
@@ -188,7 +211,7 @@
                 success :function(resp)
                 {
                     $("#Leccion").append(
-                        '<div class="card leccion shadow-sm mb-3 rounded-0">'+
+                        '<div class="card leccion shadow-sm mb-3 rounded-0" style="background-color:#07ad90;">'+
                             '<h5 class="card-header">'+
                                 '<!--Cabecera del menu desplegable-->'+
                                 '<a data-toggle="collapse" href="#contenido' + data[0].secuencia+ '" aria-expanded="true" aria-controls="contenidoUno"'+
@@ -220,13 +243,12 @@
                 success:function(resp)
                 {
                     $("#imagen").append(
-                        '<img class="card-img-top h-100" src="data:image/jpg;base64,'+ resp[0].foto+'" alt="Proyecto 1">'
+                        '<img class="card-img-top h-75 w-75" src="data:image/jpg;base64,'+ resp[0].foto+'" alt="Proyecto 1">'
                     );
 
                     $("#info").append(
 
                         '<h2 class="text-white">' + resp[0].nombre +'</h2>'+
-                        '<br>'+
                         '<h4 class="text-white">has completado: 1 leccion de 5</h4>'+
                         '<div class="popup" onclick="myFunction()">'+
                             '<div class="progress">'+
@@ -237,8 +259,6 @@
                             '</div>'+
                             '<span class="popuptext" id="myPopup"> Segun el examen diagnostico este es el progreso que tienes del curso</span>'+
                         '</div>'+
-                        '<br>'+
-                        '<br>'+
                         '<div id="boton"></div>'
                         
                     );                    

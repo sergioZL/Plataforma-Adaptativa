@@ -1,71 +1,61 @@
-*
-{
+* {
     text-align: center;
-    font-family: sans-serif,Arial;
+    font-family: sans-serif, Arial;
     margin: 0;
     text-decoration: none;
-    color: black;
+    color: #07ad90;
 }
 
-.pointer
-{
+.pointer {
     cursor: pointer;
 }
 
-.filtrar
-{
+.filtrar {
+    color: black;
     background-color: #f1f2f5;
     margin: 20px;
     padding: 10px;
 }
 
-h6
-{
+h6 {
+    color: black;
     text-align: left;
     margin-left: 20px;
 }
 
-.ordenar
-{
+.ordenar {
     padding: 10px;
 }
 
-.filtos
-{
+.filtos {
     padding: 10px;
 }
 
-.btnDrop
-{
+.btnDrop {
     left: 100px;
-    
-    margin-right: 25px; 
+    margin-right: 25px;
     right: 100px;
 }
 
-
-.ContenedorCursos 
-{ 
+.ContenedorCursos {
     width: 100%;
     margin: auto;
     overflow: hidden;
 }
 
-h3
-{ 
+h3 {
     margin-top: 15px;
     border-bottom: 2px solid rgb(121, 128, 133);
-    color:  rgb(63, 66, 68);
+    color: rgb(63, 66, 68);
     padding-bottom: 5px;
     margin-left: 20px;
     margin-right: 20px;
     text-align: left;
 }
 
-.ContenedorCursos .Curso 
-{
+.ContenedorCursos .Curso {
     margin-left: 5%;
-    float:left;
+    float: left;
     width: 250px;
     /*margin-right: 10px;*/
     padding: 1px;
@@ -73,79 +63,71 @@ h3
     margin-top: 10px;
     margin-block-end: 10px;
     border: 0px;
-    box-shadow: rgba(0,0,0,0.7) 0px 3px 3px 0px;padding-block-end: 20px;
+    box-shadow: rgba(0, 0, 0, 0.7) 0px 3px 3px 0px;
+    padding-block-end: 20px;
 }
 
-.ContenedorCursos .Curso .Porcentaje
-{
+.ContenedorCursos .Curso .Porcentaje {
     background-color: white;
     padding: 15px;
 }
 
-#IMGCurso
-{
+#IMGCurso {
     height: 100%;
     width: 100%;
-    overflow:hidden;
+    overflow: hidden;
     margin-block-end: 5px;
 }
 
-.Porcentaje .progress
-{
+.Porcentaje .progress {
     width: 90%;
-    margin-top: 10px; 
+    margin-top: 10px;
     margin-left: 10px;
     margin-right: 10px;
     height: 5px;
-    border-radius: 5px; 
+    border-radius: 5px;
     background-color: #333;
 }
 
-.Porcentaje .progress .bar
-{
+.Porcentaje .progress .bar {
     height: 5px;
     width: 5%;
     background-color: #ff2a00;
     border-radius: 6px;
 }
 
-.ContenedorCursos .Curso .Img
-{
+.ContenedorCursos .Curso .Img {
     width: 250px;
-    height:140px;
-    line-height: 50px;   
+    height: 140px;
+    line-height: 50px;
     text-align: center;
-    color:white;
+    color: white;
     font-size: 10px;
 }
 
-.ContenedorCursos 
-{
+.ContenedorCursos {
     padding: 0px;
     margin: 0px;
 }
 
-.ContenedorCursos .Curso .NombreCurso
-{
+.ContenedorCursos .Curso .NombreCurso {
     width: 250px;
-    height:30px;
+    height: 30px;
     line-height: 50px;
-    background: white;    
+    background: white;
     text-align: center;
-    color:black;
+    color: black;
     font-size: 18px;
     line-height: 25px;
 }
 
-.ContenedorCursos .Curso .DescriProducto
-{
+.ContenedorCursos .Curso .DescriProducto {
     width: 250px;
-    height:150px;
+    height: 150px;
     line-height: 50px;
-    background: white;  
-    color:black;
+    background: white;
+    color: black;
     font-size: 20px;
-    line-height:15px;
+    line-height: 15px;
     overflow: hidden;
 }
-

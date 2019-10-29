@@ -66,7 +66,7 @@ if(!isset($_POST['matricula'])){
 		echo "<script>location.href='index.php'</script>";
 	}
 }else{
-	//echo "ahorita vemos que pedo";
+	
 	$clave = $_POST['matricula'];
 	$password = $_POST['password'];
 	$nombre = $_POST['nombre'];

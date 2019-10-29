@@ -27,6 +27,7 @@ class Lecciones_modal extends CI_Model{
         $this->db->from($this->table);
         $this->db->join('temas', $this->table.'.clave = temas.id_leccion','right');
         $this->db->where($this->table.'.clave_curso',$id);
+        $this->db->order_by($this->table.'.secuencia', "ASC");
         $query = $this->db->get();
 
         return $query->result_array();

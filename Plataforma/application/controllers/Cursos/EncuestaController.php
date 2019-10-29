@@ -16,5 +16,12 @@
             $this->Inscrito_modal->ActualizarAlumno($usuario,$visial,$auditivo,$cinestesico);
             echo 'actualizado';
         }
+        public function obtenerAlumno(){
+            $varusuario = $this->input->get('varusuario');
+
+            $alumno = $this->Inscrito_modal->obtenerAlumno($varusuario);
+
+            echo json_encode($alumno);
+        }
     }
 ?>

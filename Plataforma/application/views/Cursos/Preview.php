@@ -26,32 +26,34 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">    
     <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.6.3/css/all.css' integrity='sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/' crossorigin='anonymous'>          
+    <script defer src="https://use.fontawesome.com/releases/v5.11.2/js/all.js"></script> 
+
 </head>
 <body>
     <?php
         $this->load->view('Cursos/Nav');
     ?>
-    <section class="seccion-superior py-4 mt-5 ">     
+    <section class="seccion-superior ">     
         <div class="container">
           <div class="row">
-            <div class="col-12 col-md-6">
-                <div class="card">
+            <div class="col-12 col-md-4">
+                <div class="card" style="width: 18rem;" >
                     <div id="imagen">
                     
                     </div>
-                    <div class="card-body">
-                      <h5 class="card-title  text-center">Este curso contiene</h5>
+                    <!-- <div class="card-body">
+                      <h6 class="card-title  text-center">Este curso contiene</h6>
                       <p class="card-text">
-                            <i class='far fa-file-video fa-2x'></i> 2 videos acerca de los temas tratados en las lecciones <br>
-                            <i class='far fa-file-audio fa-2x'></i> 1 audios acerca de los temas tratados en las lecciones <br>
-                            <i class='far fa-file-pdf fa-2x'></i> 1 documentos pdf acerca de los temas tratados en las lecciones <br>
-                            <i class='far fa-check-square fa-2x'></i> una evaluacion por cada una de las lecciones tomadas en el curso <br>
-                      </p>
+                            <i class='far fa-file-video'></i> <font size="2">2 videos acerca de los temas tratados en las lecciones</font> <br>
+                            <i class='far fa-file-audio'></i> <font size="2"> 1 audios acerca de los temas tratados en las lecciones</font> <br>
+                            <i class='far fa-file-pdf '></i> <font size="2"> 1 documentos pdf acerca de los temas tratados en las lecciones </font> <br>
+                            <i class='far fa-check-square'> </i> <font size="2"> una evaluacion por cada una de las lecciones tomadas en el curso </font><br>
+                        </p>
                       <a href="Pregunta?curso=<?php echo $curso ?>" class="btn btn-primary btn-superior">!Inscribete!</a>
-                    </div>
-                  </div>
+                    </div> -->
+                </div>
             </div>
-            <div id="info" class="col-12 col-md-6 text-center text-md-left align-self-md-center text-white ">
+            <div id="info" class="col-12 col-md-8 text-center text-md-left align-self-md-center text-white ">
 
               
 
@@ -110,6 +112,31 @@
       </div>
 
     <script>
+
+                
+        $(document).ready(function () {
+            //optiene la clave de usuario actual
+            let usuario = '<?php echo $varsesion; ?>';
+        
+            /**
+            * Optiene los datos de alumno relacionados con este usuario
+            */
+            $.get( '<?php echo site_url();?>/Cursos/EncuestaController/obtenerAlumno', { varusuario: usuario} )
+            .done(function( data ) {
+                let obj = JSON.parse( data );// convierte los datos optenidos a un objeto de tipo json
+                actualizarHeader(obj[0]);
+            });
+        });
+
+        function actualizarHeader(data){
+            $('#userName').html('<br>'+data.nombre+' '+data.app); // Coloca el nombre de usuario y apellido paterno en el navbar
+            console.log(data);
+            let inN = data.nombre.split( "", 1 );
+            let inA = data.app.split( "", 1 );
+            $('#inicial').html(inN+inA);
+        }
+
+
         CargarCursos();
         CargarLecciones();
         aprendizaje();
@@ -124,14 +151,15 @@
                 success:function(resp)
                 {
                     $("#imagen").append(
-                        '<img class="card-img-top h-100" style="min-height: 250px; width: 100%;"  src="data:image/jpg;base64,'+ resp[0].foto+'" alt="Proyecto 1"  ">'                        
+                        '<img class="card-img-top h-50 w-100"  src="data:image/jpg;base64,'+ resp[0].foto+'" alt="Proyecto 1"  ">'                        
                     );
 
                     $("#info").append(
-                        '<h1 class="display-4 font-weight-bold text-primary"> ' + resp[0].nombre +'</h1>' +
+                        '<h1 class="display-4 font-weight-bold text-black"> ' + resp[0].nombre +'</h1>' +
                         '<p>'+ resp[0].descripcion +'</p>' +
                         '<p>Fecha de ultima actualización: ' + resp[0].fechaActualizado + ' </p>'+
-                        '<a href="#descripciones" class="btn btn-primary btn-lg btn-superior">Leér más</a>'
+                        '<a href="Pregunta?curso=<?php echo $curso ?>" class="btn btn-primary btn-superior">!Inscribete!</a>'
+                        // '<a href="#descripciones" class="btn btn-primary btn-lg btn-superior">Leér más</a>'
                     );                    
                 }
             });

@@ -19,13 +19,17 @@
     <link rel="stylesheet" href="<?php echo base_url();?>app-assets/css/bootstrap.css"/><!--
     <link rel="stylesheet" href="<?php echo base_url();?>app-assets/css/estilos.css"/>-->
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
-    
-    <script src="<?php echo base_url();?>app-assets/js/jquery-3.3.1.min.js"></script>    
     <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.6.3/css/all.css' integrity='sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/' crossorigin='anonymous'>       
+    
+    <script src="<?php echo base_url();?>app-assets/js/jquery-3.3.1.min.js"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.11.2/js/all.js"></script>    
 
     <style>
-        * {
+        /* * {
             text-decoration: none;
+            color: black;
+        } */
+        h6, li, div,p {
             color: black;
         }
 
@@ -37,6 +41,8 @@
         .show {
             display: block;
         }
+
+
     </style>
 </head>
 <body>
@@ -96,6 +102,28 @@
 
 
     <script>        
+        $(document).ready(function () {
+            //optiene la clave de usuario actual
+            let usuario = '<?php echo $varsesion; ?>';
+            
+            /**
+             * Optiene los datos de alumno relacionados con este usuario
+             */
+
+            $.get( '<?php echo site_url();?>/Cursos/EncuestaController/obtenerAlumno', { varusuario: usuario} )
+                .done(function( data ) {
+                    let obj = JSON.parse( data );// convierte los datos optenidos a un objeto de tipo json
+                    actualizarHeader(obj[0]);
+                });
+        });
+
+        function actualizarHeader(data){
+            $('#userName').html('<br>'+data.nombre+' '+data.app); // Coloca el nombre de usuario y apellido paterno en el navbar
+            console.log(data);
+            let inN = data.nombre.split( "", 1 );
+            let inA = data.app.split( "", 1 );
+            $('#inicial').html(inN+inA);
+        }
 
         CargarCursos(1);
         CargarTemas();
