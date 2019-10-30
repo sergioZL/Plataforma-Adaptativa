@@ -515,6 +515,7 @@
                     var ultimo = {
                         leccion:res[7],
                         tema:res[8],
+                        claveUsuario:'<?php echo $varsesion ?>',
                         nombre:res[9],
                         url:rout,
                         tipo:tipos,
@@ -545,6 +546,7 @@
                     var res = rout.split("/");  
                     var ultimo = {
                         leccion:res[7],
+                        claveUsuario:'<?php echo $varsesion ?>',
                         tema:res[8],
                         nombre:res[9],
                         url:rout,

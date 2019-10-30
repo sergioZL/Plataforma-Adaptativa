@@ -261,7 +261,8 @@
         * El cual se almacena en el localstorage del navegador 
         */
         function mostrar(id){
-            
+            let claveUsuario = '<?php echo $varsesion ?>';
+            let esSession = false;
             // De esta forma se obtiene el ultimo material visto del curso el cual se optiene
             // por medio del local storage usando el id del curso como clave
             var Ultimo = window.localStorage.getItem(id); //se obtiene un JsonString como resultado
@@ -269,21 +270,27 @@
 
             if(Ultimo != null){ //si existe se carga en un objeto y se accede a los datos de la variable
                 ult  = JSON.parse(Ultimo); //Se convierte el JsonString a objeto para poder disponer de sus datos
+                if(claveUsuario === ult.claveUsuario) esSession = true;
                 ruta = ult.url.substring(50);//contiene la ruta del material
                 uta  = ruta.split(".");//se divide en un vector para eliminar la extencion del archivo
                 ava  = ult.avance;//contiene el avance del material visitado
                 tipo = ult.tipo;//contiene el tipo de material que se esta bisitando existen solo 3 tipos
                 claveMat = ult.material;
-            }else {/**Si no existe un ultimo material visitado de este curso se consulta a la base de datos
+            }
+            console.log(esSession);
+            
+            if(Ultimo == null || !esSession){/**Si no existe un ultimo material visitado de este curso se consulta a la base de datos
                       Cual es el ultimo material visto del curso para que este pueda ser mostrado
                        */
+                
+                
                  $.ajax({
                      type: "post",
                      url: "<?php echo site_url();?>/Cursos/MisCursosController/CargarUltimo",
                      data: {claveCurso:id,claveAlumno:'<?php echo $varsesion; ?>'},
                      async:false,
                      success: function (response) {
-                        if(response =! 'null'){
+                        if(response != 'null'){
                          console.log(response );
                     
                          obj = JSON.parse(response);
@@ -324,7 +331,7 @@
               '<input type="text" name="claveMat" value="'+claveMat+'" />'+
               '</form>');
             $('body').append(form);
-             form.submit(); 
+            form.submit(); 
         }
 
     </script>

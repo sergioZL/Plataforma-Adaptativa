@@ -78,7 +78,7 @@
 }
 
 .leccion {
-    background: #128024;
+    background: #07ad90;
 }
 
 .leccion>h5>a {
@@ -208,7 +208,7 @@ body {
 }
 
 .btn-superior {
-    background-color: #128024 !important;
+    background-color: #07ad90 !important;
 }
 
 .card:hover {

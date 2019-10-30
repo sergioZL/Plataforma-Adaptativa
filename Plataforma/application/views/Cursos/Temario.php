@@ -184,7 +184,7 @@
             $.ajax
             ({
                 type:'post',
-                url:'<?php echo site_url();?>/Cursos/PreviewController/ConsultarTodosLeccionPorIDCursos?IdCurso=<?php echo $curso = $_GET['curso'];?>',    
+                url:'<?php echo site_url();?>/Cursos/TemarioController/ConsultarTodosLeccionPorIDCursos?IdCurso=<?php echo $curso = $_GET['curso'];?>',    
                 dataType:"json",
                 success:function(resp)
                 {
@@ -206,7 +206,7 @@
             $.ajax
             ({
                 type:'post',
-                url:'<?php echo site_url();?>/Cursos/PreviewController/ConsultarTemasCursos?IdLeccion='+data[0].clave,
+                url:'<?php echo site_url();?>/Cursos/TemarioController/ConsultarTemasCursos?IdLeccion='+data[0].clave,
                 data:{Curso:'<?php echo $curso; ?>', Usuario: '<?php echo $varsesion; ?>'},
                 success :function(resp)
                 {

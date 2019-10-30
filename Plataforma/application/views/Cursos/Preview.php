@@ -158,7 +158,7 @@
                         '<h1 class="display-4 font-weight-bold text-black"> ' + resp[0].nombre +'</h1>' +
                         '<p>'+ resp[0].descripcion +'</p>' +
                         '<p>Fecha de ultima actualización: ' + resp[0].fechaActualizado + ' </p>'+
-                        '<a href="Pregunta?curso=<?php echo $curso ?>" class="btn btn-primary btn-superior">!Inscribete!</a>'
+                        '<a href="Pregunta?curso=<?php echo $curso ?>"   class="btn btn-primary btn-superior" style="background-color:#07ad90;">!Inscribete!</a>'
                         // '<a href="#descripciones" class="btn btn-primary btn-lg btn-superior">Leér más</a>'
                     );                    
                 }
@@ -189,19 +189,20 @@
                 dataType:"json",
                 success:function(resp)
                 {
-                    var n = resp.length;
-                    //var data = JSON.parse(resp);
+                    temas(resp);
+                    // var n = resp.length;
+                    // //var data = JSON.parse(resp);
 
-                    for(var i = 0; i < n; i++)
-                    {
-                        temas(resp,i);
-                    }
+                    // for(var i = 0; i < n; i++)
+                    // {
+                    //     temas(resp,i);
+                    // }
                 }
             });
         }
 
 
-        function temas(data,i)
+        function temas(data)
         {
             $.ajax
             ({
@@ -226,6 +227,7 @@
                                 '<p>' + data[i].descripcion+ '</p>'+
                             '</div>'+resp
                     );
+                    if(data.length > 1) temas(data.slice(1,data.length));
                 }                    
             });
         }

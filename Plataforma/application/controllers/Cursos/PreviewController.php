@@ -73,13 +73,13 @@ class PreviewController extends CI_Controller {
 
 		foreach ($Tema as $item) {
 			$material = $this->cargarMaterial($item['id']);
-			$avance = $this->Avance_modal->ConsultarAvance($duracion->id,$item['id']);
+			$avance = $this->Avance_modal->ConsultarAvance($duracion['id'],$item['id']);
             $carga = "";
             foreach ($material as $mat){
 				if( !$mat['idavance'] || !$avance || $mat['idavance'] == $avance->id ){
 					$dur = $mat['duracion'];
 					$ava = $mat['avance'];
-					$porcent = $ava*100/$dur;
+					if($ava > 0)$porcent = $ava*100/$dur;
 					if(!$avance) {
 						$porcent = 0;
 						$ava = 0;
@@ -104,15 +104,13 @@ class PreviewController extends CI_Controller {
 				$carga = $carga.'<button style="width: 100%;" class="btn btn-link" onclick="mostrar('.$ruta.','.$tipo.','.$ava.','.$mat['id'].');"><p class="h6 pull-left">
 				<span  class="'.$icono.' "></span>
 				 &nbsp &nbsp'.$mat['descripcion_material'].'</p>
-				 <div class="progress" style="height:3px; width: 100%;">
-				 <div class="progress-bar  bg-dark" role="progressbar" style="width: '.$porcent.'%; height:5px;" aria-valuenow="'.$porcent.'" aria-valuemin="0" aria-valuemax="100"></div>
-			 	 </div>
 				 </button><br>';
 			}
 			}
 			$badage = 'badge-primary';
+			$avanceTema = '';
 			if($avance) $avanceTema = $avance->avance.'%';
-			if($avance->avance == 100){
+			if($avance['avance'] == 100){
 				$avanceTema = '<i class="fas fa-check"></i>';
 				$badage = 'badge-success';
 			} 
