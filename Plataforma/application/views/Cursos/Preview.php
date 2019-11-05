@@ -110,7 +110,26 @@
 
         </div>
       </div>
-
+        <div class="modal fade bd-example-modal-md" id="modalPregunta" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header text-center">
+                        <h4 class="modal-title w-200 font-weight-bold" id="chan">Selecciona una opcion para continuar</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        </button>
+                    </div>
+                    <br/>
+                    <div class="modal-body mx-3">
+                        <div style="margin-bottom: 10px; color:white;">
+                            <center>
+                                <a id="inscribir" class="btn btn-primary">Comenzar desde el principio</a>
+                                <a id="incribirExamen" class="btn btn-primary">Tomar examen diagnostico</a>
+                            </center>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     <script>
 
                 
@@ -158,12 +177,14 @@
                         '<h1 class="display-4 font-weight-bold text-black"> ' + resp[0].nombre +'</h1>' +
                         '<p>'+ resp[0].descripcion +'</p>' +
                         '<p>Fecha de ultima actualización: ' + resp[0].fechaActualizado + ' </p>'+
-                        '<a href="Pregunta?curso=<?php echo $curso ?>"   class="btn btn-primary btn-superior" style="background-color:#07ad90;">!Inscribete!</a>'
+                        '<a data-toggle="modal" data-target="#modalPregunta" class=" btn btn-primary btn-superior" style="background-color:#07ad90;">!Inscribete!</a>'
+                        // '<a href="Pregunta?curso=<?php echo $curso ?>"   class="btn btn-primary btn-superior" style="background-color:#07ad90;">!Inscribete!</a>'
                         // '<a href="#descripciones" class="btn btn-primary btn-lg btn-superior">Leér más</a>'
                     );                    
                 }
             });
         }
+        
 
         function aprendizaje()
         {
@@ -237,7 +258,43 @@
             if( $("#textBuscar").val() != "")
                 window.location.href="<?php echo site_url();?>/Cursos/Buscar?nombre="+ $("#textBuscar").val();
         });
+        var tipo = 0;
         
+        $('#incribir').click(function()
+        {
+            tipo = 1;
+            IncribirCurso();    
+        });
+
+        $('#incribirExamen').click(function()
+        {
+            tipo = 2;
+            IncribirCurso();
+        });
+        function IncribirCurso()
+        {
+            $.ajax
+            ({
+                type:'post',
+                url:'<?php echo site_url();?>/Cursos/PreguntasController/IncribirAlumno?IdCurso=<?php echo $_GET['curso']; ?>&idUsuario=<?php session_start(); echo $_SESSION['usuario']?>',    
+                success:function(resp)
+                {
+                    alert(resp);
+                    if(tipo == 1)
+                        window.location.href="Temario?curso=<?php echo $_GET['curso']; ?>";
+                    else
+                        window.location.href="Evaluacion?curso=<?php echo $_GET['curso']; ?>";
+                },
+                error: function(XMLHttpRequest, textStatus, errorThrown)
+                { 
+                    if(tipo == 1)
+                        window.location.href="Temario?curso=<?php echo $_GET['curso']; ?>";
+                    else
+                        window.location.href="Evaluacion?curso=<?php echo $_GET['curso']; ?>";
+                    
+                }    
+            });
+        }
     </script>
     <script src="<?php echo base_url();?>app-assets/js/popper.min.js"></script>
     <script src="<?php echo base_url();?>app-assets/js/bootstrap.min.js"></script>

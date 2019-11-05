@@ -68,6 +68,8 @@ CREATE TABLE inscrito (
   FOREIGN KEY (clave_curso) REFERENCES cursos (clave) ON UPDATE CASCADE
 );
 
+
+
 CREATE TABLE lecciones (
   clave int(11) NOT NULL AUTO_INCREMENT,
   nombre varchar(60) NOT NULL,
@@ -179,7 +181,6 @@ CREATE TABLE material (
   CONSTRAINT Tema_Curso_pbfk FOREIGN KEY (id_temas) REFERENCES temas(id) ON UPDATE CASCADE, 
   CONSTRAINT Curso_Curso_pbfk FOREIGN KEY (clave_curso) REFERENCES cursos (clave) ON UPDATE CASCADE
 );
-
 -- nuevo
 CREATE TABLE aprendizaje (
   id int(11) NOT NULL AUTO_INCREMENT,
@@ -188,3 +189,41 @@ CREATE TABLE aprendizaje (
   PRIMARY KEY (id),
   CONSTRAINT Aprendizaje_Curso_pbfk FOREIGN KEY (clave_curso) REFERENCES cursos(clave) ON UPDATE CASCADE
 );
+-- Nueva tabla 
+-- Se agregara la tabla avance_material la cual contendra el avance que realicen los usuarios en cada uno de los materiales 
+-- contenidos en el sistema
+CREATE TABLE IF NOT EXISTS `ti`.`avance_material` (
+  `idavance` INT NOT NULL,
+  `idmaterial` INT NOT NULL,
+  `avance` DECIMAL(45) NULL,
+  `conpletado` TINYINT NULL,
+  `revisiones` INT NULL,
+  `tiempo_promedio` DECIMAL(45) NULL,
+  `repeticiones` INT NULL,
+  INDEX `idavance_idx` (`idavance` ASC) VISIBLE,
+  INDEX `idmaterial_idx` (`idmaterial` ASC) VISIBLE,
+  CONSTRAINT `idavance`
+    FOREIGN KEY (`idavance`)
+    REFERENCES `ti`.`avance` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `idmaterial`
+    FOREIGN KEY (`idmaterial`)
+    REFERENCES `ti`.`material` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+-- Se realizará un alter table a la tabla inscrito para que 
+-- se pueda visualizar el ultimo material revisado por el alumno 
+-- el campo que se agrega puede ser null ya que al recien inscribirse no abra ultimo material revisado
+ ALTER TABLE `ti`.`inscrito` ADD ultimo INT;
+ ALTER TABLE `ti`.`inscrito` 
+ ADD CONSTRAINT `fk_ultimo` 
+ FOREIGN KEY (ultimo)
+ REFERENCES avance_material (idmaterial);
+
+alter table `ti`.`avance_material` add duracion DECIMAL(45);
+alter table `ti`.`alumnos` add eavisual DECIMAL(45) NULL;
+alter table `ti`.`alumnos` add eaauditivo DECIMAL(45) NULL;
+alter table `ti`.`alumnos` add eacinestesico DECIMAL(45) NULL;

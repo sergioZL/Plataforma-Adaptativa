@@ -77,6 +77,7 @@
             outline: 2px solid #f00;
         }*/
     </style>
+    <script defer src="https://use.fontawesome.com/releases/v5.11.2/js/all.js"></script> 
 </head> 
 <body>  
     <?php
@@ -164,10 +165,29 @@
 <script>
 
 
-    $(document).ready(function()
-    {
-        cargarPreguntasCorrectas();
-    });
+$(document).ready(function () {
+            //optiene la clave de usuario actual
+            let usuario = '<?php echo $varsesion; ?>';
+        
+            /**
+            * Optiene los datos de alumno relacionados con este usuario
+            */
+            $.get( '<?php echo site_url();?>/Cursos/EncuestaController/obtenerAlumno', { varusuario: usuario} )
+            .done(function( data ) {
+                let obj = JSON.parse( data );// convierte los datos optenidos a un objeto de tipo json
+                actualizarHeader(obj[0]);
+                console.log(obj);
+            });
+            cargarPreguntasCorrectas();
+        });
+
+        function actualizarHeader(data){
+            $('#userName').html('<br>'+data.nombre+' '+data.app); // Coloca el nombre de usuario y apellido paterno en el navbar
+            console.log(data);
+            let inN = data.nombre.split( "", 1 );
+            let inA = data.app.split( "", 1 );
+            $('#inicial').html(inN+inA);
+        }
 
     function cargarPreguntasCorrectas()
     {

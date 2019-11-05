@@ -5,9 +5,11 @@
             $this->load->helper('url_helper');
             $this->load->model('Inscrito_modal');
         }
+
         public function load_Encuesta() {
             $this->load->view('Cursos/Encuesta');
         }
+
         public function actualizarEstilo(){
             $usuario = $this->input->post('alumno');
             $visial = $this->input->post('eavisual');

@@ -1,0 +1,721 @@
+[{
+    "numero": 1,
+    "enunciado": "¿Cuál de las siguientes actividades disfrutas más?",
+    "A": {
+        "enunciado": "Escuchar música",
+        "isCheked": false,
+        "estilo": "AUDITIVO"
+    },
+    "B": {
+        "enunciado": "Ver películas",
+        "isCheked": false,
+        "estilo": "VISUAL"
+    },
+    "C": {
+        "enunciado": "Bailar con buena música",
+        "isCheked": false,
+        "estilo": "CINESTÉSICO"
+    }
+}, {
+    "numero": 2,
+    "enunciado": "¿Qué programa de televisión prefieres?",
+    "A": {
+        "enunciado": "Reportajes de descubrimientos y lugares",
+        "isCheked": false,
+        "estilo": "VISUAL"
+    },
+    "B": {
+        "enunciado": "Cómico y de entretenimiento",
+        "isCheked": false,
+        "estilo": "CINESTÉSICO"
+    },
+    "C": {
+        "enunciado": "Noticias del mundo",
+        "isCheked": false,
+        "estilo": "AUDITIVO"
+    }
+}, {
+    "numero": 3,
+    "enunciado": "Cuando conversas con otra persona, tú:",
+    "A": {
+        "enunciado": "La escuchas atentamente",
+        "isCheked": false,
+        "estilo": "AUDITIVO"
+    },
+    "B": {
+        "enunciado": "La observas",
+        "isCheked": false,
+        "estilo": "VISUAL"
+    },
+    "C": {
+        "enunciado": "Tiendes a tocarla",
+        "isCheked": false,
+        "estilo": "CINESTÉSICO"
+    }
+}, {
+    "numero": 4,
+    "enunciado": "Si pudieras adquirir uno de los siguientes artículos, ¿cuálelegirías?  ",
+    "A": {
+        "enunciado": "Un jacuzzi",
+        "isCheked": false,
+        "estilo": "CINESTÉSICO"
+    },
+    "B": {
+        "enunciado": "Un estéreo",
+        "isCheked": false,
+        "estilo": "AUDITIVO"
+    },
+    "C": {
+        "enunciado": "Un televisor",
+        "isCheked": false,
+        "estilo": "VISUAL"
+    }
+}, {
+    "numero": 5,
+    "enunciado": "¿Qué prefieres hacer un sábado por la tarde?",
+    "A": {
+        "enunciado": "Quedarte en casa",
+        "isCheked": false,
+        "estilo": "CINESTÉSICO"
+    },
+    "B": {
+        "enunciado": "Ir a un concierto",
+        "isCheked": false,
+        "estilo": "AUDITIVO"
+    },
+    "C": {
+        "enunciado": "Ir al cine",
+        "isCheked": false,
+        "estilo": "VISUAL"
+    }
+}, {
+    "numero": 6,
+    "enunciado": "¿Qué tipo de exámenes se te facilitan más? ",
+    "A": {
+        "enunciado": "Examen oral",
+        "isCheked": false,
+        "estilo": "AUDITIVO"
+    },
+    "B": {
+        "enunciado": "Examen escrito",
+        "isCheked": false,
+        "estilo": "VISUAL"
+    },
+    "C": {
+        "enunciado": "Examen de opción múltiple",
+        "isCheked": false,
+        "estilo": "CINESTÉSICO"
+    }
+}, {
+    "numero": 7,
+    "enunciado": "¿Cómo te orientas más fácilmente?",
+    "A": {
+        "enunciado": "Mediante el uso de un mapa",
+        "isCheked": false,
+        "estilo": "VISUAL"
+    },
+    "B": {
+        "enunciado": "Pidiendo indicaciones",
+        "isCheked": false,
+        "estilo": "AUDITIVO"
+    },
+    "C": {
+        "enunciado": "A través de la intuición",
+        "isCheked": false,
+        "estilo": "CINESTÉSICO"
+    }
+}, {
+    "numero": 8,
+    "enunciado": "¿En qué prefieres ocupar tu tiempo en un lugar de descanso?",
+    "A": {
+        "enunciado": "Pensar",
+        "isCheked": false,
+        "estilo": "AUDITIVO"
+    },
+    "B": {
+        "enunciado": "Caminar por los alrededores",
+        "isCheked": false,
+        "estilo": "VISUAL"
+    },
+    "C": {
+        "enunciado": "Descansar",
+        "isCheked": false,
+        "estilo": "CINESTÉSICO"
+    }
+}, {
+    "numero": 9,
+    "enunciado": "¿Qué te halaga más?",
+    "A": {
+        "enunciado": "Que te digan que tienes buen aspecto",
+        "isCheked": false,
+        "estilo": "VISUAL"
+    },
+    "B": {
+        "enunciado": "Que te digan que tienes una conversación interesante",
+        "isCheked": false,
+        "estilo": "CINESTÉSICO"
+    },
+    "C": {
+        "enunciado": "Descansar",
+        "isCheked": false,
+        "estilo": "AUDITIVO"
+    }
+}, {
+    "numero": 10,
+    "enunciado": "¿Cuál de estos ambientes te atrae más?   ",
+    "A": {
+        "enunciado": "Uno en el que se sienta un clima agradable",
+        "isCheked": false,
+        "estilo": "CINESTÉSICO"
+    },
+    "B": {
+        "enunciado": "Uno en el que se escuchen las olas del mar",
+        "isCheked": false,
+        "estilo": "AUDITIVO"
+    },
+    "C": {
+        "enunciado": "Uno con una hermosa vista al océano",
+        "isCheked": false,
+        "estilo": "VISUAL"
+    }
+}, {
+    "numero": 11,
+    "enunciado": "¿De qué manera se te facilita aprender algo?",
+    "A": {
+        "enunciado": "Repitiendo en voz alta",
+        "isCheked": false,
+        "estilo": "AUDITIVO"
+    },
+    "B": {
+        "enunciado": "Escribiéndolo varias veces",
+        "isCheked": false,
+        "estilo": "VISUAL"
+    },
+    "C": {
+        "enunciado": "Relacionándolo con algo divertido",
+        "isCheked": false,
+        "estilo": "CINESTÉSICO"
+    }
+}, {
+    "numero": 12,
+    "enunciado": "¿A qué evento preferirías asistir?",
+    "A": {
+        "enunciado": "A una reunión social",
+        "isCheked": false,
+        "estilo": "CINESTÉSICO"
+    },
+    "B": {
+        "enunciado": "A una exposición de arte",
+        "isCheked": false,
+        "estilo": "VISUAL"
+    },
+    "C": {
+        "enunciado": "A una conferencia",
+        "isCheked": false,
+        "estilo": "AUDITIVO"
+    }
+}, {
+    "numero": 13,
+    "enunciado": "¿De qué manera te formas una opinión de otras personas?",
+    "A": {
+        "enunciado": "Por la sinceridad en su voz",
+        "isCheked": false,
+        "estilo": "AUDITIVO"
+    },
+    "B": {
+        "enunciado": "Por la forma de estrecharte la mano",
+        "isCheked": false,
+        "estilo": "CINESTÉSICO"
+    },
+    "C": {
+        "enunciado": "Por su aspecto",
+        "isCheked": false,
+        "estilo": "VISUAL"
+    }
+}, {
+    "numero": 14,
+    "enunciado": "¿Cómo te consideras?",
+    "A": {
+        "enunciado": "Atlético",
+        "isCheked": false,
+        "estilo": "VISUAL"
+    },
+    "B": {
+        "enunciado": "Intelectual",
+        "isCheked": false,
+        "estilo": "AUDITIVO"
+    },
+    "C": {
+        "enunciado": "Sociable",
+        "isCheked": false,
+        "estilo": "CINESTÉSICO"
+    }
+}, {
+    "numero": 15,
+    "enunciado": "¿Qué tipo de películas te gustan más?",
+    "A": {
+        "enunciado": "Clásicas",
+        "isCheked": false,
+        "estilo": "AUDITIVO"
+    },
+    "B": {
+        "enunciado": "De acción",
+        "isCheked": false,
+        "estilo": "VISUAL"
+    },
+    "C": {
+        "enunciado": "De amor",
+        "isCheked": false,
+        "estilo": "CINESTÉSICO"
+    }
+}, {
+    "numero": 16,
+    "enunciado": "¿Cómo prefieres mantenerte en contacto con otra persona?",
+    "A": {
+        "enunciado": "por correo electrónico",
+        "isCheked": false,
+        "estilo": "VISUAL"
+    },
+    "B": {
+        "enunciado": "Tomando un café juntos",
+        "isCheked": false,
+        "estilo": "CINESTÉSICO"
+    },
+    "C": {
+        "enunciado": "Por teléfono",
+        "isCheked": false,
+        "estilo": "AUDITIVO"
+    }
+}, {
+    "numero": 17,
+    "enunciado": "¿Cuál de las siguientes frases se identifican más contigo?",
+    "A": {
+        "enunciado": "Me gusta que mi coche se sienta bien al conducirlo",
+        "isCheked": false,
+        "estilo": "CINESTÉSICO"
+    },
+    "B": {
+        "enunciado": "Percibo hasta el mas ligero ruido que hace mi coche",
+        "isCheked": false,
+        "estilo": "AUDITIVO"
+    },
+    "C": {
+        "enunciado": "Es importante que mi coche esté limpio por fuera y por dentro",
+        "isCheked": false,
+        "estilo": "VISUAL"
+    }
+}, {
+    "numero": 18,
+    "enunciado": "¿Cómo prefieres pasar el tiempo con tu novia o novio?",
+    "A": {
+        "enunciado": "Conversando",
+        "isCheked": false,
+        "estilo": "AUDITIVO"
+    },
+    "B": {
+        "enunciado": "Acariciándose",
+        "isCheked": false,
+        "estilo": "CINESTÉSICO"
+    },
+    "C": {
+        "enunciado": "Mirando algo juntos",
+        "isCheked": false,
+        "estilo": "VISUAL"
+    }
+}, {
+    "numero": 19,
+    "enunciado": "Si no encuentras las llaves en una bolsa",
+    "A": {
+        "enunciado": "La buscas mirando",
+        "isCheked": false,
+        "estilo": "VISUAL"
+    },
+    "B": {
+        "enunciado": "Sacudes la bolsa para oír el ruido",
+        "isCheked": false,
+        "estilo": "AUDITIVO"
+    },
+    "C": {
+        "enunciado": "Buscas al tacto",
+        "isCheked": false,
+        "estilo": "CINESTÉSICO"
+    }
+}, {
+    "numero": 20,
+    "enunciado": "Cuando tratas de recordar algo, ¿cómo lo haces?",
+    "A": {
+        "enunciado": "A través de imágenes",
+        "isCheked": false,
+        "estilo": "VISUAL"
+    },
+    "B": {
+        "enunciado": "A través de emociones",
+        "isCheked": false,
+        "estilo": "CINESTÉSICO"
+    },
+    "C": {
+        "enunciado": "A través de sonidos",
+        "isCheked": false,
+        "estilo": "AUDITIVO"
+    }
+}, {
+    "numero": 21,
+    "enunciado": "Si tuvieras dinero, ¿qué harías?",
+    "A": {
+        "enunciado": "Comprar una casa",
+        "isCheked": false,
+        "estilo": "CINESTÉSICO"
+    },
+    "B": {
+        "enunciado": "Viajar y conocer el mundo",
+        "isCheked": false,
+        "estilo": "VISUAL"
+    },
+    "C": {
+        "enunciado": "Adquirir un estudio de grabación",
+        "isCheked": false,
+        "estilo": "AUDITIVO"
+    }
+}, {
+    "numero": 22,
+    "enunciado": "¿Con qué frase te identificas más?",
+    "A": {
+        "enunciado": "Reconozco a las personas por su voz",
+        "isCheked": false,
+        "estilo": "AUDITIVO"
+    },
+    "B": {
+        "enunciado": "No recuerdo el aspecto de la gente",
+        "isCheked": false,
+        "estilo": "CINESTÉSICO"
+    },
+    "C": {
+        "enunciado": "Recuerdo el aspecto de alguien, pero no su nombre",
+        "isCheked": false,
+        "estilo": "VISUAL"
+    }
+}, {
+    "numero": 23,
+    "enunciado": "Si tuvieras que quedarte en una isla desierta, ¿qué preferirías llevar contigo?",
+    "A": {
+        "enunciado": "Algunos buenos libros",
+        "isCheked": false,
+        "estilo": "VISUAL"
+    },
+    "B": {
+        "enunciado": "Un radio portátil de alta frecuencia",
+        "isCheked": false,
+        "estilo": "AUDITIVO"
+    },
+    "C": {
+        "enunciado": "Golosinas y comida enlatada",
+        "isCheked": false,
+        "estilo": "CINESTÉSICO"
+    }
+}, {
+    "numero": 24,
+    "enunciado": "¿Cuál de los siguientes entretenimientos prefieres?",
+    "A": {
+        "enunciado": "Tocar un instrumento musical",
+        "isCheked": false,
+        "estilo": "AUDITIVO"
+    },
+    "B": {
+        "enunciado": "Sacar fotografías",
+        "isCheked": false,
+        "estilo": "VISUAL"
+    },
+    "C": {
+        "enunciado": "Actividades manuales",
+        "isCheked": false,
+        "estilo": "CINESTÉSICO"
+    }
+}, {
+    "numero": 25,
+    "enunciado": "¿Cómo es tu forma de vestir?",
+    "A": {
+        "enunciado": "Impecable",
+        "isCheked": false,
+        "estilo": "VISUAL"
+    },
+    "B": {
+        "enunciado": "Informal",
+        "isCheked": false,
+        "estilo": "AUDITIVO"
+    },
+    "C": {
+        "enunciado": "Muy informal",
+        "isCheked": false,
+        "estilo": "CINESTÉSICO"
+    }
+}, {
+    "numero": 26,
+    "enunciado": "¿Qué es lo que más te gusta de una fogata nocturna?",
+    "A": {
+        "enunciado": "El calor del fuego y los bombones asados",
+        "isCheked": false,
+        "estilo": "CINESTÉSICO"
+    },
+    "B": {
+        "enunciado": "El sonido del fuego quemando la leña",
+        "isCheked": false,
+        "estilo": "AUDITIVO"
+    },
+    "C": {
+        "enunciado": "Mirar el fuego y las estrellas",
+        "isCheked": false,
+        "estilo": "VISUAL"
+    }
+}, {
+    "numero": 27,
+    "enunciado": "¿Cómo se te facilita entender algo?",
+    "A": {
+        "enunciado": "Cuando te lo explican verbalmente",
+        "isCheked": false,
+        "estilo": "AUDITIVO"
+    },
+    "B": {
+        "enunciado": "Cuando utilizan medios visuales",
+        "isCheked": false,
+        "estilo": "VISUAL"
+    },
+    "C": {
+        "enunciado": "Cuando se realiza a través de alguna actividad",
+        "isCheked": false,
+        "estilo": "CINESTÉSICO"
+    }
+}, {
+    "numero": 28,
+    "enunciado": "¿Por qué te distingues?",
+    "A": {
+        "enunciado": "Por tener una gran intuición",
+        "isCheked": false,
+        "estilo": "CINESTÉSICO"
+    },
+    "B": {
+        "enunciado": "Por ser un buen conversador",
+        "isCheked": false,
+        "estilo": "AUDITIVO"
+    },
+    "C": {
+        "enunciado": "Por ser un buen observador",
+        "isCheked": false,
+        "estilo": "VISUAL"
+    }
+}, {
+    "numero": 29,
+    "enunciado": "¿Qué es lo que más disfrutas de un amanecer?",
+    "A": {
+        "enunciado": "La emoción de vivir un nuevo día",
+        "isCheked": false,
+        "estilo": "CINESTÉSICO"
+    },
+    "B": {
+        "enunciado": "Las tonalidades del cielo",
+        "isCheked": false,
+        "estilo": "VISUAL"
+    },
+    "C": {
+        "enunciado": "El canto de las aves",
+        "isCheked": false,
+        "estilo": "AUDITIVO"
+    }
+}, {
+    "numero": 30,
+    "enunciado": "Si pudieras elegir ¿qué preferirías ser?",
+    "A": {
+        "enunciado": "Un gran médico",
+        "isCheked": false,
+        "estilo": "CINESTÉSICO"
+    },
+    "B": {
+        "enunciado": "Un gran músico",
+        "isCheked": false,
+        "estilo": "AUDITIVO"
+    },
+    "C": {
+        "enunciado": "Un gran pintor",
+        "isCheked": false,
+        "estilo": "VISUAL"
+    }
+}, {
+    "numero": 31,
+    "enunciado": "Cuando eliges tu ropa, ¿qué es lo más importante para ti?",
+    "A": {
+        "enunciado": "Que sea adecuada",
+        "isCheked": false,
+        "estilo": "AUDITIVO"
+    },
+    "B": {
+        "enunciado": "Que luzca bien",
+        "isCheked": false,
+        "estilo": "VISUAL"
+    },
+    "C": {
+        "enunciado": "Que sea cómoda",
+        "isCheked": false,
+        "estilo": "CINESTÉSICO"
+    }
+}, {
+    "numero": 32,
+    "enunciado": "¿Qué es lo que más disfrutas de una habitación?",
+    "A": {
+        "enunciado": "Que sea silenciosa",
+        "isCheked": false,
+        "estilo": "AUDITIVO"
+    },
+    "B": {
+        "enunciado": "Que sea confortable",
+        "isCheked": false,
+        "estilo": "CINESTÉSICO"
+    },
+    "C": {
+        "enunciado": "Que esté limpia y ordenada",
+        "isCheked": false,
+        "estilo": "VISUAL"
+    }
+}, {
+    "numero": 33,
+    "enunciado": "¿Qué es más sexy para ti?",
+    "A": {
+        "enunciado": "Una iluminación tenue",
+        "isCheked": false,
+        "estilo": "VISUAL"
+    },
+    "B": {
+        "enunciado": "El perfume",
+        "isCheked": false,
+        "estilo": "CINESTÉSICO"
+    },
+    "C": {
+        "enunciado": "Cierto tipo de música",
+        "isCheked": false,
+        "estilo": "AUDITIVO"
+    }
+}, {
+    "numero": 34,
+    "enunciado": "¿A qué tipo de espectáculo preferirías asistir?",
+    "A": {
+        "enunciado": "A un concierto de música",
+        "isCheked": false,
+        "estilo": "AUDITIVO"
+    },
+    "B": {
+        "enunciado": "A un espectáculo de magia",
+        "isCheked": false,
+        "estilo": "VISUAL"
+    },
+    "C": {
+        "enunciado": "A una muestra gastronómica",
+        "isCheked": false,
+        "estilo": "CIENSTÉSICO"
+    }
+}, {
+    "numero": 35,
+    "enunciado": "¿Qué te atrae más de una persona?",
+    "A": {
+        "enunciado": "Su trato y forma de ser",
+        "isCheked": false,
+        "estilo": "CINESTÉSICO"
+    },
+    "B": {
+        "enunciado": "Su aspecto físico",
+        "isCheked": false,
+        "estilo": "VISUAL"
+    },
+    "C": {
+        "enunciado": "Su conversación",
+        "isCheked": false,
+        "estilo": "AUDITIVO"
+    }
+}, {
+    "numero": 36,
+    "enunciado": "Cuando vas de compras, ¿en dónde pasas mucho tiempo?",
+    "A": {
+        "enunciado": "En una librería",
+        "isCheked": false,
+        "estilo": "CINESTÉSICO"
+    },
+    "B": {
+        "enunciado": "En una perfumería",
+        "isCheked": false,
+        "estilo": "CINESTÉSICO"
+    },
+    "C": {
+        "enunciado": "En una tienda de discos",
+        "isCheked": false,
+        "estilo": "AUDITIVO"
+    }
+}, {
+    "numero": 37,
+    "enunciado": "¿Cuáles tu idea de una noche romántica?",
+    "A": {
+        "enunciado": "A la luz de las velas",
+        "isCheked": false,
+        "estilo": "VISUAL"
+    },
+    "B": {
+        "enunciado": "Con música romántica",
+        "isCheked": false,
+        "estilo": "AUDITIVO"
+    },
+    "C": {
+        "enunciado": "Bailando tranquilamente",
+        "isCheked": false,
+        "estilo": "CINESTÉSICO"
+    }
+}, {
+    "numero": 38,
+    "enunciado": "¿Qué es lo que más disfrutas de viajar?",
+    "A": {
+        "enunciado": "Conocer personas y hacer nuevos amigos",
+        "isCheked": false,
+        "estilo": "CINESTÉSICO"
+    },
+    "B": {
+        "enunciado": "Conocer lugares nuevos",
+        "isCheked": false,
+        "estilo": "VISUAL"
+    },
+    "C": {
+        "enunciado": "Aprender sobre otras costumbres",
+        "isCheked": false,
+        "estilo": "AUDITIVO"
+    }
+}, {
+    "numero": 39,
+    "enunciado": "Cuando estás en la ciudad, ¿qué es lo que más hechas de menos del campo?",
+    "A": {
+        "enunciado": "El aire limpio y refrescante",
+        "isCheked": false,
+        "estilo": "CINESTÉSICO"
+    },
+    "B": {
+        "enunciado": "Los paisajes",
+        "isCheked": false,
+        "estilo": "VISUAL"
+    },
+    "C": {
+        "enunciado": "La tranquilidad",
+        "isCheked": false,
+        "estilo": "AUDITIVO"
+    }
+}, {
+    "numero": 40,
+    "enunciado": "Si te ofrecieran uno de los siguientes empleos, ¿cuál elegirías?",
+    "A": {
+        "enunciado": "Director de una estación de radio",
+        "isCheked": false,
+        "estilo": "AUDITIVO"
+    },
+    "B": {
+        "enunciado": "Director de un club deportivo",
+        "isCheked": false,
+        "estilo": "CINESTÉSICO"
+    },
+    "C": {
+        "enunciado": "Director de una revista",
+        "isCheked": false,
+        "estilo": "VISUAL"
+    }
+}]
