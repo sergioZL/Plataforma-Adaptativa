@@ -261,42 +261,6 @@
         </div>
     </div>
 
-
-    <!--<div class="container_Audio" id="Audio" style="display:none;">
-        <div class="containerAudio">    
-            <div id="audioRoute">
-                <audio class="audio" id="audio" controls preload="metadata" controlslist="nodownload" style="display:none;">
-                    <source src="<?php echo  base_url(); ?>Material/audio/Alan Walker - Faded (Instrumental Version).mp3"> 
-                </audio>
-            </div> 
-            <div class="submenu">
-                <div class="menu pointer col-md-1 pt-5  icon_white submenuAudio">
-                    <span style="font-size:40px;cursor:pointer" onclick="openNav()">&#9776;</span>
-                </div>         
-            </div>
-            <div class="controlsAudio">
-                <div class="progressAudio pointer">
-                    <div class="barAudio">
-
-                    </div>
-                </div>
-                
-                <i class="fa fa-play playPausebtnAudio med_icon icon_white pointer"></i>
-                <div class="timeAudio">
-                    <span class="current_timeAudio">00:00</span> /
-                    <span class="full_durationAudio">00:00</span>
-                </div>
-
-
-                <div class="pull-right" >
-                    <input type="range" class="volume_rangeAudio" min="0" max="1" step="00.1" value="1">
-                    <i class="fa fa-volume-up volume_btnAudio icon_white pointer"></i> &nbsp;&nbsp;&nbsp;&nbsp;
-                </div>
-            </div>
-        </div>
-        http://localhost/Plataforma-Adaptativa/Plataforma/Material/Mysql1/4/2/nuevo.pdf#page=1
-        http://localhost/Plataforma-Adaptativa/Plataforma/Material/pdf/UnidadesTematicas_Programacion.pdf#page=17
-    </div>-->
     <?php
         $dis = 'display:none;';
         if(isset($_POST['materialSend'])){
@@ -381,12 +345,13 @@
             $.ajax
             ({
                 type:'post',
-                url:'<?php echo site_url();?>/Material/MaterialController/ConsultarTodosLeccionPorIDCursos?IdCurso=<?php echo $curso;?>',    
+                url:'<?php echo site_url();?>/Material/MaterialController/TemarioLateral?IdCurso=<?php echo $curso;?>',    
                 dataType:"json",
+                data:{Usuario: '<?php echo $varsesion; ?>'},
                 success:function(resp)
                 {   
-                    
-                        temas(resp);
+                    console.log(resp);
+                    temas(resp);
                     // var n = resp.length;
                     // for(var i = 0; i < n; i++)
                     // {
@@ -399,36 +364,73 @@
             
         }
 
-        function temas(data)
+        function temas(lecciones)
         {
-            console.log(data);
-            
-            var leccion;
-            $.ajax
-            ({
-                type:'post',
-                url:'<?php echo site_url();?>/Material/MaterialController/ConsultarTemasCursosID?IdLeccion='+data[0].clave,
-                data:{Curso:'<?php echo $curso; ?>', Usuario: '<?php echo $varsesion; ?>'},
-                success :function(resp)
-                {
-                    $("#Leccion").append('<div class="card leccion shadow-sm mb-3 rounded-0 ">'+
-                            '<h6 class="card-header bg-white">'+
-                                '<!--Cabecera del menu desplegable-->'+
-                                '<a data-toggle="collapse" href="#contenido' + data[0].secuencia+ '" aria-expanded="true" aria-controls="contenidoUno"'+
-                                    'id="leccion' + data[0].secuencia+ '" class="d-block">'+
-                                    '<i class="fa fa-chevron-down pull-right"></i><p class="font-weight-bold">'
-                                    +'<small>'+'Lección '+ data[0].secuencia+': '+data[0].nombre +'</small>'+ 
-                                '</p></a>'+
-                            '</h6>'+
-                            '<div id="contenido' + data[0].secuencia+ '" class="collapse" aria-labelledby="leccion' + data[0].secuencia+ '">'+
-                            '<!--Contenido del menu desplegable-->'+
-                                '<!--<div class="card-body">'+
-                                '</div>-->'
-                                +resp
-                                );
-                    if(data.length > 1) temas(data.slice(1,data.length));
-                }                    
-            });
+            for (const leccion of lecciones) {    
+                $("#Leccion").append('<div class="card leccion shadow-sm mb-3 rounded-0 ">'+
+                    '<h6 class="card-header bg-white">'+
+                        '<!--Cabecera del menu desplegable-->'+
+                        '<a data-toggle="collapse" href="#contenido' + leccion.secuencia+ '" aria-expanded="true" aria-controls="contenidoUno"'+
+                            'id="leccion' + leccion.secuencia+ '" class="d-block">'+
+                            '<i class="fa fa-chevron-down pull-right"></i><p class="font-weight-bold">'
+                            +'<small>'+'Lección '+ leccion.secuencia+': '+leccion.nombre +'</small>'+ 
+                        '</p></a>'+
+                    '</h6>'+
+                    '<div id="contenido' + leccion.secuencia+ '" class="collapse" aria-labelledby="leccion' + leccion.secuencia+ '">'+
+                    '<!--Contenido del menu desplegable-->'+
+                        '<!--<div class="card-body">'+
+                        '</div>-->'
+                    
+                );
+                for (const tema of leccion.temas) {
+                    $('#contenido'+leccion.secuencia+'').append('<div class="card rounded-0"  >'+
+                                                                    '<h5 class="card-header" style="height: 70px;">'+
+                                                                        '<a data-toggle="collapse" href="#content'+tema.id+'" aria-expanded="true"'+
+                                                                            'aria-controls="content'+tema.id+'" id="Tema'+tema.id+'" class="d-block">'+
+                                                                            '<i class="fa fa-chevron-down pull-right"></i>'+
+                                                                            '<p class="font-weight-bold temas"><small> <span class=" badge badge-primary badge-pill">'+tema.avance+'%</span>Tema '+tema.secuencia+': '+tema.nombre+'</small><p>'+
+                                                                        '</a>'+
+                                                                    '</h5>'+
+                                                                '<div id="content'+tema.id+'" class="collapse carta-body" aria-labelledby="Tema'+tema.id+'">'+
+                                                                '<!--<div class="card-body carta-body" style="width: 100%;">'+
+                
+                                                                '</div>-->'+
+                                                                '</div>'+
+                                                                '</div>');
+                    for (const material of tema.materials) {
+                        tipo = material.tipo_material;
+                        icono = '';
+				        switch (tipo) {
+				        	case '1':
+				        		icono = 'fas fa-play-circle fa-2x';
+				        		break;
+				        	case '2':
+				        		icono = 'fas fas fa-volume-up fa-2x';
+				        		break;
+				        	case '3':
+				        		icono = 'fas fa-file-pdf fa-2x';
+				        		break;
+				        	default:
+				        		
+				        		break;
+				        }
+                        let avanceMaterial = material.avance || 0;
+                        let nombre = material.descripcion_material.split(' ').join('_');
+                        let ruta = '&quot Material/'+material.clave_curso+'/'+leccion.clave+'/'+material.id_temas+'/'+nombre+'&quot';
+                        let duracion = material.duracion || 0;
+                        let porcentaje = avanceMaterial * 100 / duracion;
+                        $('#content'+tema.id+'').append('<button style="width: 100%;" class="btn btn-link" onclick="mostrar('+ruta+','+tipo+','+material.id+','+avanceMaterial+');"><p class="h6 pull-left">'+ 
+                                                        '<span class="'+icono+'"></span>'+
+                                                        ''+material.descripcion_material+''+
+                                                        '</p>'+
+                                                        '<div class="progress" style="height:3px; width: 100%;">'+
+                                                        '<div class="progress-bar bg-info" role="progressbar" style="width: '+porcentaje+'%; height:5px;" aria-valuenow="'+porcentaje+'" aria-valuemin="0" aria-valuemax="100"></div>'+
+                                                        '</div>'+
+                                                        '</button><br>');
+                    }
+                }
+
+            }
         }
         function mostrar(rout,tipo,id,avance){
             var routa = '<?php echo base_url() ?>'+rout.trim();

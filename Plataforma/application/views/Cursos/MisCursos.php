@@ -282,8 +282,6 @@
             if(Ultimo == null || !esSession){/**Si no existe un ultimo material visitado de este curso se consulta a la base de datos
                       Cual es el ultimo material visto del curso para que este pueda ser mostrado
                        */
-                
-                
                  $.ajax({
                      type: "post",
                      url: "<?php echo site_url();?>/Cursos/MisCursosController/CargarUltimo",

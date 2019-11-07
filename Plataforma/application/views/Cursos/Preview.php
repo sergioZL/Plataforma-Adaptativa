@@ -122,7 +122,7 @@
                     <div class="modal-body mx-3">
                         <div style="margin-bottom: 10px; color:white;">
                             <center>
-                                <a id="inscribir" class="btn btn-primary">Comenzar desde el principio</a>
+                                <a id="incribir" class="btn btn-primary">Comenzar desde el principio</a>
                                 <a id="incribirExamen" class="btn btn-primary">Tomar examen diagnostico</a>
                             </center>
                         </div>

@@ -13,8 +13,14 @@ class NuevoCursosController extends CI_Controller {
 	{
 		$this->load->view('Cursos/NuevosCursos');
 	}
+	public function ConsultarCursosUsuarios(){
+		$alumno = $this->input->get('alumno');
+		$Curso = $this->Cursos_modal->ConsultarCursosNoinscrito($alumno);
+		echo json_encode($Curso);
+	}
 
-	public function ConsultarCursosUsuarios()
+	// Se cambiara este metodo
+	public function oldConsultarCursosUsuarios()
 	{		
 		$Curso = $this->Cursos_modal->ConsultarCursos();
         

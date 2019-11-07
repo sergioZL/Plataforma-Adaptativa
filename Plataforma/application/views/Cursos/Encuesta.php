@@ -50,7 +50,7 @@
         <center><button type="button" id="Evaluar" class="btn btn-primary d-none">Enviar</button></center>
     </div>
     <script>
-        
+        let totalPreguntas = 0;
         let inicio     = 0;
         let preguntas;
         $.getJSON("<?php echo base_url();?>app-assets/js/preguntas.json",
@@ -88,8 +88,20 @@
                                 '</div>';
                 }
                 $('#contenedroPreguntas').html(preguntass);
-                if(inicio == 30) $('#Evaluar').removeClass('d-none');
-                    else $('#Evaluar').addClass('d-none');
+                if(inicio == 30){ 
+                    $('#Evaluar').removeClass('d-none');
+                    $('#sigiente').addClass('d-none');
+                } else {
+                    $('#sigiente').removeClass('d-none');
+                    $('#Evaluar').addClass('d-none');
+                }
+
+                if(inicio == 0){ 
+                    $('#anterior').addClass('d-none');
+                } else {
+                    $('#anterior').removeClass('d-none');
+                }
+
             }else alert('ya no hay mas preguntas');
             document.querySelector('#contenedroPreguntas').scrollIntoView();
         }
@@ -112,12 +124,15 @@
                 switch (valor) {
                     case "AUDITIVO":
                         visual++;
+                        totalPreguntas++;
                         break;
                     case "VISUAL":
                         auditivo++;
+                        totalPreguntas++;
                         break;
                     case "CINESTÉSICO":
                         cinestesico++;
+                        totalPreguntas++;
                         break;
                     default:
                         break;
@@ -126,6 +141,7 @@
             visual = (visual * 100)/40;
             auditivo = (auditivo * 100)/40;
             cinestesico = (cinestesico * 100)/40;
+            if(totalPreguntas == 40){
             $.ajax({
                 type: "post",
                 url: "<?php echo site_url('Cursos/EncuestaController/actualizarEstilo'); ?>",
@@ -135,6 +151,8 @@
                     window.location.replace("<?php echo site_url('alumno/MisCursos'); ?>");
                 }
             });
+            }else alert('¡ups dejaste algunas preguntas sin contestar!');
+            totalPreguntas = 0;
             console.log("visual "+visual+'%');
             console.log("auditivo "+auditivo+'%');
             console.log("cinestesico "+cinestesico+'%');

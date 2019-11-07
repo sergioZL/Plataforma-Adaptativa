@@ -101,7 +101,7 @@
                 </tr>
                 <tr>
                     <td  style="width:70px"><b>Alumno</b></td>
-                    <td colspan="2"><?php echo $varsesion ?></td>
+                    <td id="nombreUsuario" colspan="2"><?php echo $varsesion ?></td>
                 </tr>
                 <!--<tr>
                     <td style="width:70px"><b>Puntos</b></td>
@@ -191,8 +191,9 @@
             let inN = data.nombre.split( "", 1 );
             let inA = data.app.split( "", 1 );
             $('#inicial').html(inN+inA);
+            $('#nombreUsuario').html(data.nombre+' '+data.app);
         }
-
+        
     function cargarPreguntas()
     {
         $.ajax

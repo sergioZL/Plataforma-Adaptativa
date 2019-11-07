@@ -10,13 +10,69 @@ class TemarioController extends CI_Controller {
 		$this->load->model('Inscrito_modal');
 		$this->load->model('Avance_modal');
 		$this->load->model('Cursos_modal');
+		$this->load->model('Material_Model');
     }
 
 	public function load_Temario()
 	{
 		$this->load->view('Cursos/Temario');
 	}
+	//Optiene las lecciones por curso con sus respectivos temas y materiales
+	//para la ventana de temario 
+    public function Temario(){
 
+        $id = $this ->  input -> get( 'IdCurso' );
+        $idUsuario = $this -> input -> post( 'Usuario' );
+        $duracion = $this->Avance_modal->ConsultarDuracion($id,$idUsuario);
+        $lecciones = $this-> Lecciones_modal -> ConsultarTodosLeccionesCursos(  $id );
+        foreach ( $lecciones as $leccion ) {
+            $lec = new stdClass;
+            $lec -> clave = $leccion['clave'];
+            $lec -> secuencia = $leccion['secuencia'];
+            $lec -> descripcion = $leccion['descripcion'];
+            $lec -> nombre = $leccion['nombre'];
+            
+            $topics = $this->Temas_modal->ConsultarTemasCursos($lec -> clave);
+            foreach ( $topics as $topic ) {
+                $tema = new stdClass;
+                $tema -> id = $topic['id'];
+                $tema -> nombre = $topic['nombre'];
+                $tema -> secuencia = $topic['secuencia'];
+                $tema -> descripcionTema = $topic['descripcionTema'];
+
+                $avance = $this->Avance_modal->ConsultarAvance( $duracion->id, $tema-> id );
+                if($avance == null){
+                     $materiales = $this->Material_Model->encontrarMaterial( $tema-> id );
+                     $tema -> avance = 0;
+                }
+                else{
+                    $materiales1 = $this->Material_Model->encontrarMaterial( $tema-> id );
+                    $materiales2 = $this -> Avance_modal ->getAvanceMaterial( $tema-> id, $avance->id );
+                    if( sizeof($materiales1) == sizeof($materiales2)){
+                        $materiales = $materiales2;
+                    }else{ 
+                        $materiales = array();
+                        for ($i=0; $i < sizeof( $materiales1 ); $i++) { 
+                            if ( sizeof( $materiales2 ) > $i) {
+                                array_push($materiales,$materiales2[$i]);
+                            }else array_push($materiales,$materiales1[$i]);
+                        }
+                        //$materiales = $materiales1;
+                    }
+                    $tema -> avance = $avance -> avance;
+                }
+                $tema -> materials = $materiales;
+                $temas[] = $tema;
+            }
+            $lec -> temas  = $temas;
+            unset($temas);
+            $temas = array();  
+            $vec [] = $lec;
+        }
+
+        echo json_encode($vec);
+
+    }
 	public function ConsultarPorIDCursos()
 	{	
 		session_start();

@@ -138,5 +138,18 @@
 
             return $query->result_array();
         }
+        /**
+         * 
+         */
+        public function getAvanceMaterial($idTema,$avance){
+            $this->db->select();
+            $this->db->from('avance_material');
+            $this->db->join('material','avance_material.idmaterial = material.id','right outer');
+            $this->db->where('material.id_temas',$idTema);
+            $this->db->where('avance_material.idavance',$avance);
+            $query = $this->db->get();
+
+            return $query->result_array();
+        }
     }
 ?>

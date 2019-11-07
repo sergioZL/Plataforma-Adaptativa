@@ -46,9 +46,9 @@
     <br>
 
     <script>
-        $(document).ready(function () {
         //optiene la clave de usuario actual
         let usuario = '<?php echo $varsesion; ?>';
+        $(document).ready(function () {
         
         /**
          * Optiene los datos de alumno relacionados con este usuario
@@ -73,15 +73,35 @@
         {
             $.ajax
             ({
-                type:'post',
-                url:'<?php echo site_url();?>/Cursos/NuevoCursosController/ConsultarCursosUsuarios',    
+                type:'get',
+                url:'<?php echo site_url();?>/Cursos/NuevoCursosController/ConsultarCursosUsuarios',
+                data: {alumno:usuario},    
                 success:function(resp)
                 {
-                    $("#ContenedorCursos").append(resp);
+                    // $("#ContenedorCursos").append(resp);
+                    let cursos = JSON.parse(resp);
+                    mostrarCursos(cursos);
                 }
             });
         }
+        let mostrarCursos = (cursos) => {
+            for (const curso of cursos) {
+                
+                let contenedor = '<div class="card" style="width: 250px; height:auto; margin-left: 20px;">'+
+				                    '<a href="Preview?curso='+curso.clave+'">'+
+					                    '<div class="Img">'+
+						                    '<img class="card-img-top" style="width: 250px; height:250px;" id="IMGCurso" src="data:image/jpg;base64,'+curso.foto+'" alt="Card image cap">'+
+					                    '</div>'+
+					                    '<div class="card-body ">'+
+						                    '<h5 class="card-title text-center">'+curso.nombre+'</h5>'+
+						                    '<p class="card-text text-center">'+curso.descripcion+'</p>'+
+					                    '</div>'+
+				                    '</a>'+
+			                     '</div>';
 
+                $("#ContenedorCursos").append(contenedor);
+            }
+        }
         $('#buscar').click(function()
         {
             if( $("#textBuscar").val() != "")

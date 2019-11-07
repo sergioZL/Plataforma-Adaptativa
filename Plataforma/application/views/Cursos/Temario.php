@@ -184,8 +184,9 @@
             $.ajax
             ({
                 type:'post',
-                url:'<?php echo site_url();?>/Cursos/TemarioController/ConsultarTodosLeccionPorIDCursos?IdCurso=<?php echo $curso = $_GET['curso'];?>',    
+                url:'<?php echo site_url();?>/Cursos/TemarioController/Temario?IdCurso=<?php echo $curso = $_GET['curso'];?>',    
                 dataType:"json",
+                data:{Usuario: '<?php echo $varsesion; ?>'},
                 success:function(resp)
                 {
                     var n = resp.length;
@@ -201,35 +202,102 @@
             });
         }
 
-        function temas(data)
+        function temas(lecciones)
         {
-            $.ajax
-            ({
-                type:'post',
-                url:'<?php echo site_url();?>/Cursos/TemarioController/ConsultarTemasCursos?IdLeccion='+data[0].clave,
-                data:{Curso:'<?php echo $curso; ?>', Usuario: '<?php echo $varsesion; ?>'},
-                success :function(resp)
-                {
+            for (const leccion of lecciones) {    
                     $("#Leccion").append(
                         '<div class="card leccion shadow-sm mb-3 rounded-0" style="background-color:#07ad90;">'+
                             '<h5 class="card-header">'+
                                 '<!--Cabecera del menu desplegable-->'+
-                                '<a data-toggle="collapse" href="#contenido' + data[0].secuencia+ '" aria-expanded="true" aria-controls="contenidoUno"'+
-                                    'id="leccion' + data[0].secuencia+ '" class="d-block">'+
+                                '<a data-toggle="collapse" href="#contenido' + leccion.secuencia+ '" aria-expanded="true" aria-controls="contenidoUno"'+
+                                    'id="leccion' + leccion.secuencia+ '" class="d-block">'+
                                     '<i class="fa fa-chevron-down pull-right"></i>'
-                                    + data[0].nombre +' '+ data[0].secuencia +
+                                    + leccion.secuencia +'. '+ leccion.nombre +
                                 '</a>'+
                             '</h5>'+
-                        '<div id="contenido' + data[0].secuencia+ '" class="collapse" aria-labelledby="leccionUno">'+
+                        '<div id="contenido' + leccion.secuencia+ '" class="collapse" aria-labelledby="leccionUno">'+
                             '<!--Contenido del menu desplegable-->'+
                             '<div class="card-body">'+
                                 '<h6>Este es el contenido de la leccion</h6>'+
-                                '<p>' + data[0].descripcion+ '</p>'+
-                            '</div>'+resp
+                                '<p>' + leccion.descripcion+ '</p>'+
+                            '</div>'
                     );
-                    if(data.length > 1) temas(data.slice(1,data.length));
-                }                    
-            });
+                for (const tema of leccion.temas) {
+                    $('#contenido'+leccion.secuencia+'').append('<div class="card rounded-0"  >'+
+                                                                    '<h5 class="card-header" style="height: 70px;">'+
+                                                                        '<a data-toggle="collapse" href="#content'+tema.id+'" aria-expanded="true"'+
+                                                                            'aria-controls="content'+tema.id+'" id="Tema'+tema.id+'" class="d-block">'+
+                                                                            '<i class="fa fa-chevron-down pull-right"></i>'+
+                                                                            '<p class="font-weight-bold temas"><small> <span class=" badge badge-primary badge-pill">'+tema.avance+'%</span>Tema '+tema.secuencia+': '+tema.nombre+'</small><p>'+
+                                                                        '</a>'+
+                                                                    '</h5>'+
+                                                                '<div id="content'+tema.id+'" class="collapse carta-body" aria-labelledby="Tema'+tema.id+'">'+
+                                                                '<!--<div class="card-body carta-body" style="width: 100%;">'+
+                
+                                                                '</div>-->'+
+                                                                '</div>'+
+                                                                '</div>');
+                    for (const material of tema.materials) {
+                        tipo = material.tipo_material;
+                        icono = '';
+				        switch (tipo) {
+				        	case '1':
+				        		icono = 'fas fa-play-circle fa-2x';
+				        		break;
+				        	case '2':
+				        		icono = 'fas fas fa-volume-up fa-2x';
+				        		break;
+				        	case '3':
+				        		icono = 'fas fa-file-pdf fa-2x';
+				        		break;
+				        	default:
+				        		
+				        		break;
+				        }
+                        let avanceMaterial = material.avance || 0;
+                        let nombre = material.descripcion_material.split(' ').join('_');
+                        let ruta = '&quot Material/'+material.clave_curso+'/'+leccion.clave+'/'+material.id_temas+'/'+nombre+'&quot';
+                        let duracion = material.duracion || 0;
+                        let porcentaje = avanceMaterial * 100 / duracion;                                                                           
+                        $('#content'+tema.id+'').append('<button style="width: 100%;" class="btn btn-link" onclick="mostrar('+ruta+','+tipo+','+avanceMaterial+','+material.id+');"><p class="h6 pull-left">'+ 
+                                                        '<span class="'+icono+'"></span>'+
+                                                        ''+material.descripcion_material+''+
+                                                        '</p>'+
+                                                        '<div class="progress" style="height:3px; width: 100%;">'+
+                                                        '<div class="progress-bar bg-info" role="progressbar" style="width: '+porcentaje+'%; height:5px;" aria-valuenow="'+porcentaje+'" aria-valuemin="0" aria-valuemax="100"></div>'+
+                                                        '</div>'+
+                                                        '</button><br>');
+                    }
+                }
+
+            }
+            // $.ajax
+            // ({
+            //     type:'post',
+            //     url:'<?php echo site_url();?>/Cursos/TemarioController/ConsultarTemasCursos?IdLeccion='+data[0].clave,
+            //     data:{Curso:'<?php echo $curso; ?>', Usuario: '<?php echo $varsesion; ?>'},
+            //     success :function(resp)
+            //     {
+            //         $("#Leccion").append(
+            //             '<div class="card leccion shadow-sm mb-3 rounded-0" style="background-color:#07ad90;">'+
+            //                 '<h5 class="card-header">'+
+            //                     '<!--Cabecera del menu desplegable-->'+
+            //                     '<a data-toggle="collapse" href="#contenido' + data[0].secuencia+ '" aria-expanded="true" aria-controls="contenidoUno"'+
+            //                         'id="leccion' + data[0].secuencia+ '" class="d-block">'+
+            //                         '<i class="fa fa-chevron-down pull-right"></i>'
+            //                         + data[0].nombre +' '+ data[0].secuencia +
+            //                     '</a>'+
+            //                 '</h5>'+
+            //             '<div id="contenido' + data[0].secuencia+ '" class="collapse" aria-labelledby="leccionUno">'+
+            //                 '<!--Contenido del menu desplegable-->'+
+            //                 '<div class="card-body">'+
+            //                     '<h6>Este es el contenido de la leccion</h6>'+
+            //                     '<p>' + data[0].descripcion+ '</p>'+
+            //                 '</div>'+resp
+            //         );
+            //         if(data.length > 1) temas(data.slice(1,data.length));
+            //     }                    
+            // });
         }
 
 
