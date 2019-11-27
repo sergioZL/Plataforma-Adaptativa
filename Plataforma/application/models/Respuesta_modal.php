@@ -9,6 +9,18 @@ class Respuesta_modal extends CI_Model{
         $this->load->database();
     }
 
+    public function getRespuestasUsuarioTema($idUsuario,$Tema){
+        $this->db->select('sum(porcentaje) as porc');
+        $this->db->from( $this->table );
+        $this->db->join('banco_preguntas',$this->table.'.id_pregunta = banco_preguntas.id','LEFT');
+        $this->db->join('evaluacion',$this->table.'.id_evaluacion = evaluacion.id','LEFT');
+        $this->db->join('opciones',$this->table.'.id_opcion = opciones.id_opciones','LEFT');
+        $this->db->where('clave_alumno',$idUsuario);
+        $this->db->where('banco_preguntas.id_tema',$Tema);
+        $query = $this->db->get();
+        return $query->result();
+    }
+
     public function InsertRespuestas($id_opcion,$id_pregunta,$id_evaluacion)
     {
         $data = array('id_opcion' => $id_opcion,'id_pregunta' => $id_pregunta, 

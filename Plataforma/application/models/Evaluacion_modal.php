@@ -17,6 +17,6 @@ class Evaluacion_modal extends CI_Model{
         
         $insertId = $this->db->insert_id();
         return $insertId;    
-    } 
+    }  
 }
 

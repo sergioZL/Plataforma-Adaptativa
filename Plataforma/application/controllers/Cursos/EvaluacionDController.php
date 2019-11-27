@@ -31,7 +31,7 @@ class EvaluacionDController extends CI_Controller {
         $TemasLecciones = $this->Lecciones_modal->ConsultarLeccionesPorCurso($Curso);
         $let = 0;
         foreach ($TemasLecciones as $tema) {
-            $Preguntas = $this->BancoPreguntas_modal->ConsultarPreguntas($tema['id'],100);
+            $Preguntas = $this->BancoPreguntas_modal->ConsultarPreguntas($tema['id'],10);
             foreach ($Preguntas as $pregunta) {
                 $let = $let+1;
                 $Question = new stdClass;
@@ -41,12 +41,34 @@ class EvaluacionDController extends CI_Controller {
                 $Question -> imagen = $pregunta['imagen'];
                 $Opciones = $this->Opciones_modal->ConsultarOpciones($pregunta['id']);
                 $Question -> opciones = $Opciones;
-                $Questions[] = $Question;
+                $porcent = 0;
+                foreach ($Opciones as $item) {
+                    $porcent = $porcent + $item['porcentaje'];
+                }
+
+                if($porcent == 100) $Questions[] = $Question;
             }
         }        
         echo json_encode($Questions);
 
     }
+    public function Evaluar(){
+        
+        $clave_curso =$this->input->post('IdCurso');
+        $id_alumno   =$this->input->post('id_alumno');
+        $TipoEvaluacion =$this->input->post('TipoEvaluacion');
+        $respuestas = $this->input->post('Respuestas');
+        $respuestas = json_encode($respuestas);
+        $respuestas = json_decode($respuestas);
 
+        $idEvaluacion = $this->Evaluacion_modal->InsertEvaluacion( $TipoEvaluacion, $id_alumno, $clave_curso);
+
+        foreach ($respuestas as $respuesta) {
+            //$this->Preguntas_modal->InsertPreguntas( $respuesta -> idPregunta, $idEvaluacion, $id_alumno);
+            
+            $this->Respuesta_modal->InsertRespuestas( $respuesta -> opcion, $respuesta -> idPregunta, $idEvaluacion);
+        }
+        echo json_encode($idEvaluacion);
+    }
 }
 ?>

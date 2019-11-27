@@ -114,10 +114,11 @@
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header text-center">
-                        <h4 class="modal-title w-200 font-weight-bold" id="chan">Selecciona una opcion para continuar</h4>
+                        <h4 class="modal-title w-200 font-weight-bold" id="chan">Te sugerimos realizar la evaluación diagnóstica para obtener información que permita personalizar tu experiencia en el curso</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         </button>
                     </div>
+
                     <br/>
                     <div class="modal-body mx-3">
                         <div style="margin-bottom: 10px; color:white;">
@@ -143,7 +144,7 @@
             $.get( '<?php echo site_url();?>/Cursos/EncuestaController/obtenerAlumno', { varusuario: usuario} )
             .done(function( data ) {
                 let obj = JSON.parse( data );// convierte los datos optenidos a un objeto de tipo json
-                actualizarHeader(obj[0]);
+                actualizarHeader(obj);
             });
         });
 
@@ -210,6 +211,7 @@
                 dataType:"json",
                 success:function(resp)
                 {
+                    console.log(resp);
                     temas(resp);
                     // var n = resp.length;
                     // //var data = JSON.parse(resp);
@@ -231,6 +233,7 @@
                 url:'<?php echo site_url();?>/Cursos/PreviewController/ConsultarTemasCursos?IdLeccion='+data[i].clave,
                 success :function(resp)
                 {
+                   
                     $("#Leccion").append(
                         '<div class="card leccion shadow-sm mb-3 rounded-0">'+
                             '<h5 class="card-header">'+
@@ -283,14 +286,14 @@
                     if(tipo == 1)
                         window.location.href="Temario?curso=<?php echo $_GET['curso']; ?>";
                     else
-                        window.location.href="Evaluacion?curso=<?php echo $_GET['curso']; ?>";
+                        window.location.href="Evaluacion?curso=<?php echo $_GET['curso']; ?>&&tipo=diagnostico";
                 },
                 error: function(XMLHttpRequest, textStatus, errorThrown)
                 { 
                     if(tipo == 1)
                         window.location.href="Temario?curso=<?php echo $_GET['curso']; ?>";
                     else
-                        window.location.href="Evaluacion?curso=<?php echo $_GET['curso']; ?>";
+                        window.location.href="Evaluacion?curso=<?php echo $_GET['curso']; ?>&&tipo=diagnostico";
                     
                 }    
             });

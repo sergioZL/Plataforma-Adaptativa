@@ -29,6 +29,41 @@
     <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.6.3/css/all.css' integrity='sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/' crossorigin='anonymous'> 
     
     <style>
+        #form {
+          width: 250px;
+          margin: 0 auto;
+          height: 50px;
+        }
+
+        #form p {
+          text-align: center;
+        }
+
+        #form label {
+          font-size: 20px;
+        }
+
+        input[type="radio"] {
+          display: none;
+        }
+
+        label {
+          color: grey;
+        }
+
+        .clasificacion {
+          direction: rtl;
+          unicode-bidi: bidi-override;
+        }
+
+        label:hover,
+        label:hover ~ label {
+          color: orange;
+        }
+
+        input[type="radio"]:checked ~ label {
+          color: orange;
+        }
         .bloqueo
         {
             position:relative;
@@ -173,6 +208,124 @@
             font-size: 19px;
         }
         
+
+
+        .switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.switch input { 
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: green;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px green;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+/* Popup container - can be anything you want */
+.popup {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* The actual popup */
+.popup .popuptext {
+  visibility: hidden;
+  width: 160px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 8px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -80px;
+}
+
+/* Popup arrow */
+.popup .popuptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+/* Toggle this class - hide and show the popup */
+.popup .show {
+  visibility: visible;
+  -webkit-animation: fadeIn 1s;
+  animation: fadeIn 1s;
+}
+
+/* Add animation (fade in the popup) */
+@-webkit-keyframes fadeIn {
+  from {opacity: 0;} 
+  to {opacity: 1;}
+}
+
+@keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity:1 ;}
+}
     </style>
   </head>
   <body onunload="guardarAvances()">
@@ -188,10 +341,21 @@
             </div> -->
             <div class="pull-right pt-5"><a href="<?php echo site_url();?>/Cursos/Temario?curso=<?php echo   $curso?>" style="text-decoration: none; color:rgba(255, 255, 255, 0.63);">ir al temario  </a></div>
             </div>
-            <!--nuevos elementos del menu desplegable-->                
+            
+                <div class="ml-1">
+                    <!-- switchButton -->
+                    Adaptar 
+                <label class="switch">
+                    <input id="check_id" type="checkbox" onclick="mostrarPop();" checked >
+                    <span class="slider round"></span>
+                </label>
+                </div>
+
+            <!--nuevos elementos del menu desplegable-->
+
             <div  class="row ">   
                     <!--Menu desplegable-->
-                <div id="accordion" role="tablist" aria-multiselectable="true" class="container barra t-2 pt-5 col-md-12 ">
+                <div id="accordion" role="tablist" aria-multiselectable="true" class="container barra t-2 pt-2 col-md-12 ">
                     
                     <div  id="Leccion" class="Leccion  style-8" >
 
@@ -220,13 +384,19 @@
             <div id="VideoRoute" >
                 <video id="video" class="video" controls preload="metadata" controlslist="nodownload">
                     <source id="vid" src="<?php echo  $surce; ?>"><!--#t=15 para empezar en el segundo--> 
+                    
                 </video>
+                <center id="opciones" class="m-5 d-none">
+                    <button onclick="openNav()" class=" btn btn-dark sticky-top"> Ver mas </button>
+                    <button id="ValoracionModal" data-toggle="modal" data-target="#modalPregunta" class=" btn btn-dark sticky-top" style="color:#ffff;"> Evaluar Material </button>
+                </center>
             </div>
         
             <div class="submenu" onclick="Pause()">
                 <div class="menu pointer col-md-1 pt-5  icon_white  submenuVideo">
                     <span  style="font-size:40px;cursor:pointer" onclick="openNav()">&#9776;</span>
-                </div>         
+                </div>
+       
             </div>
         </div>
     </div>
@@ -252,7 +422,12 @@
                 <audio class="audio" id="audio" controls preload="metadata" controlslist="nodownload" style="width: 50%;">
                     <source id="aud" src="<?php echo $surc ?> "> 
                 </audio>
+                <center id="opciones" class="m-5 ">
+                    <button onclick="openNav()" class=" btn btn-dark sticky-top"> Ver mas </button>
+                    <a id="ValoracionModal" data-toggle="modal" data-target="#modalPregunta" class=" btn btn-dark " style="color:#ffff;">Valorar Material</a>
+                </center> 
             </div>
+
             <div class="submenu" onclick="Pause()">
                 <div class="menu pointer col-md-1 pt-5  icon_white submenuAudio">
                     <span style="font-size:40px;cursor:pointer" onclick="openNav()">&#9776;</span>
@@ -285,61 +460,164 @@
         <iframe  id="pdf" style="width:100%; border:none; height:100vh;" src="<?php echo $sur; ?>" style="width: 100%;height: 100%;" type="application/pdf" >
         
         </iframe>
+        <center id="opciones" class="m-5 ">
+            <button onclick="openNav()" class=" btn btn-dark sticky-top"> Ver mas </button>
+            <a id="ValoracionModal" data-toggle="modal" data-target="#modalPregunta" class=" btn btn-dark " style="color:#ffff;">Valorar Material</a>
+        </center>
     </div>
 
+    <div class="modal fade bd-example-modal-md" id="modalPregunta" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header text-center">
+                    <h4 class="modal-title w-200 font-weight-bold" id="chan">Tu opinión es importante</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"> X
+                    </button>
+                </div>
+                <div class="modal-body mx-3">
+                    <div class="contenedorValoracion"> 
+                    <form>
+                      <p class="clasificacion">
+                        <div id="valoracionContainer">
+                            <h2>El contenido ya ha sido valorado!</h2>
+                        </div>
+                      </p>
+                    </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
 
 <script>
-        
+        let valorado = false;
+        let tiempoInicio = new Date();
+        let indexpage = -1;
         var tipos = <?php echo $_POST['tipo']; ?>+0;
         var claveMaterial = '<?php echo $_POST['claveMat']; ?>';
-        $(document).ready(function(){
-            CargarLecciones();
-            $("#video").on('ended', function(){
-                //alert('El video ha finalizado!!!');
-                
-                $.ajax
-                ({
-                    type:'post',
-                    url:'<?php echo site_url();?>/Material/MaterialController/SiguienteVideo?IdCurso=<?php echo $curso;?>&material=2',    
-                    dataType:"json",
-                    success:function(resp)
-                    {                        
-                        $("#VideoRoute").children().remove();
+        let  paginasPreguntas;
+        let temario;
 
-                        $("#VideoRoute").append(
-                        '<video id="video" autoplay class="video" controls preload="metadata" controlslist="nodownload">'
-                            +'<source id="vid" src="<?php echo  base_url(); ?>Material/video/videoplayback.mp4#t=120"><!--#t=15 para empezar en el segundo-->' 
-                        +'</video>'
-                        );
-                        filterSelection(1);
-                    }
-                });
+        function mostrarPop() {
+            $('#myPopup').removeClass('show');
+            $("#Leccion").html('');
+            temas(temario);
+        }
+
+        $(document).ready(function(){
+
+            CargarLecciones();
+            $("#video").on('ended', function(){ //Se ejecutan el video llegue a su fin
+                $('#opciones').removeClass('d-none');
+                if(valorado) $('#ValoracionModal').addClass("d-none");
             });
 
-            $("#audio").on('ended', function(){
-                //alert('El audio ha finalizado!!!');
-                
-                $.ajax
-                ({
-                    type:'post',
-                    url:'<?php echo site_url();?>/Material/MaterialController/SiguienteAudio?IdCurso=<?php echo $curso;?>&material=2',    
-                    dataType:"json",
-                    success:function(resp)
-                    {                        
-                        $("#audioRoute").children().remove();
-
-                        $("#audioRoute").append(
-                            '<audio autoplay class="audio" id="audio" controls preload="metadata" controlslist="nodownload" style="width: 50%;>'
-                                +'<source src="<?php echo  base_url(); ?>Material/audio/Alan Walker - Faded (Instrumental Version).mp3"><!--#t=15 para empezar en el segundo-->' 
-                            +'</audio>'
-                        );
-                        filterSelection(2);
-                    }
-                });
+            $("#audio").on('ended', function(){ //Se ejecutan el audio llegue a su fin
+                $('#opciones').removeClass('d-none');
+                if(valorado) $('#ValoracionModal').addClass("d-none");
             });
            
+            consultarValoracion( '<?php echo $varsesion; ?>', '<?php echo $_POST['claveMat']; ?>');
+
         });      
-        
+        let consultarValoracion = (Usuario, Material) => {
+
+            $.ajax
+            ({
+                type:'get',
+                url:"<?php echo site_url();?>/Material/MaterialController/optenerPreguntasValoracion",
+                data:{ usuario: Usuario, material: Material  },    
+                success:function(resp)
+                {  
+                    console.log(resp);
+                    if(resp === "valorado"){
+                        $('#ValoracionModal').addClass("d-none");
+                          valorado = true;
+                          $('#valoracionContainer').html('<h2>El contenido ya ha sido valorado!</h2>');
+                        }else {
+                            paginasPreguntas = JSON.parse(resp);
+                            cargarValoracion(1);
+                            valorado = false;
+                        }
+                }
+            });
+        }
+        let cargarValoracion = (index ) => {
+
+            indexpage =  indexpage+index;
+            if(indexpage < paginasPreguntas.length){
+            let preguntasPagina = paginasPreguntas[indexpage].preguntas;
+            let preguntas = '';
+            let i = 0;
+            for (const pregunta of preguntasPagina) {
+                
+                 preguntas +='<div id="pregresp"  class="row">'+
+                                   '<div id="enun" class="enunciado">'+
+                                   ` ${ pregunta.enunciado }`+
+                                   '</div>'+
+                                   '<div id="respuestas"  class="ml-3">'+
+                                   `    <input id="radio${ pregunta.idpv }" type="radio" name="estrellas${ pregunta.idpv }" value="5" onclick="ponerEstrellas(  ${indexpage}, ${i}, 5)">`+
+                                   `    <label for="radio${ pregunta.idpv }">★</label>`+
+                                   `    <input id="radio${ pregunta.idpv + 1 }" type="radio" name="estrellas${ pregunta.idpv }" value="4" onclick="ponerEstrellas(  ${indexpage}, ${i}, 4)">`+
+                                   `    <label for="radio${ pregunta.idpv + 1 }">★</label>`+
+                                   `    <input id="radio${ pregunta.idpv + 2 }" type="radio" name="estrellas${ pregunta.idpv }" value="3" onclick="ponerEstrellas(  ${indexpage}, ${i}, 3)">`+
+                                   `    <label for="radio${ pregunta.idpv + 2 }">★</label>`+
+                                   `    <input id="radio${ pregunta.idpv + 3 }" type="radio" name="estrellas${ pregunta.idpv }" value="2" onclick="ponerEstrellas(  ${indexpage}, ${i}, 2)">`+
+                                   `    <label for="radio${ pregunta.idpv + 3 }">★</label>`+
+                                   `    <input id="radio${ pregunta.idpv + 4 }" type="radio" name="estrellas${ pregunta.idpv }" value="1" onclick="ponerEstrellas(  ${indexpage}, ${i}, 1)">`+
+                                   `    <label for="radio${ pregunta.idpv + 4 }">★</label>`+
+                                   `</div>`+
+                              `</div>`;
+                i++;
+            }
+                    $('#valoracionContainer').html(`<h3> ${ paginasPreguntas[indexpage].categoria } </h3>`+preguntas+
+                                                  '<div style="margin-bottom: 10px; color:white;">'+
+                                                      '<center>'+
+                                                        '<a id="Siguiente" class="btn btn-primary" onclick="cargarValoracion(1)">Siguiente</a>'+
+                                                      '</center> <br>'+
+                                                      '<center><a id="Valorar"  data-dismiss="modal" aria-label="Close" class="btn btn-primary" onclick="valorar()">Enviar</a></center>'+
+                                                   '</div>');
+            } 
+            if(indexpage >= paginasPreguntas.length -1) $('#Siguiente').addClass("d-none");
+        }
+
+        function ponerEstrellas( idxC, idxp, valor ){
+            paginasPreguntas[idxC].preguntas[idxp].valoracion = valor;
+            let pregunta = paginasPreguntas[idxC].preguntas[idxp];
+            
+        }
+
+        function valorar(){
+            let valoracion = [];
+            for (const pagina of paginasPreguntas) {
+                
+                let preguntas = pagina.preguntas;
+                for (const pregunta of preguntas) {
+                    valoracion.push({
+                        idinscrito: '<?php echo $varsesion; ?>',
+                        idpv: pregunta.idpv,
+                        valoracion: pregunta.valoracion || 0,
+                        idmaterial: claveMaterial
+                    });
+                }
+            }
+
+            // Se envia la valoracion para que sea guardada
+
+            $.ajax({
+                type: "post",
+                url: "<?php echo site_url();?>/Material/MaterialController/valorar",
+                data: {valoracion: valoracion},
+                success: function (response) {
+                    // console.log(response);
+                }
+            });
+
+            $('#valoracionContainer').html('<h2>El contenido ya ha sido valorado!</h2>');
+
+            indexpage=-1;
+        }
         function CargarLecciones()
         {
             $.ajax
@@ -350,17 +628,11 @@
                 data:{Usuario: '<?php echo $varsesion; ?>'},
                 success:function(resp)
                 {   
-                    console.log(resp);
-                    temas(resp);
-                    // var n = resp.length;
-                    // for(var i = 0; i < n; i++)
-                    // {
-                    //     temas(resp[i]);
-                        
-                    // }
+                    temario = resp;
+                    console.log("Que",resp);
+                    temas(temario);
                 }
             });
-            //$("#Leccion").html(lecciones);
             
         }
 
@@ -383,7 +655,16 @@
                     
                 );
                 for (const tema of leccion.temas) {
-                    $('#contenido'+leccion.secuencia+'').append('<div class="card rounded-0"  >'+
+                    let ocultar = false;
+                    if ($('#check_id').is(":checked"))
+                    {
+                        let calificacion = 0;
+                        if(tema.evaluado){
+                            calificacion =( (tema.evaluado.porcentaje * 10) /  tema.evaluado.total/100);
+                        }
+                        if(calificacion > 9) ocultar = true;
+                    }
+                    if(!ocultar) $('#contenido'+leccion.secuencia+'').append('<div class="card rounded-0"  >'+
                                                                     '<h5 class="card-header" style="height: 70px;">'+
                                                                         '<a data-toggle="collapse" href="#content'+tema.id+'" aria-expanded="true"'+
                                                                             'aria-controls="content'+tema.id+'" id="Tema'+tema.id+'" class="d-block">'+
@@ -396,8 +677,32 @@
                 
                                                                 '</div>-->'+
                                                                 '</div>'+
-                                                                '</div>');
+                                                                '</div>');  
+                    
+                        var a = tema.materials;
+                        var swapp;
+                        var n = a.length-1;
+                        var x=a;
+                        do {
+                            swapp = false;
+                            for (var i=0; i < n; i++)
+                            {
+                                if(tema.materials[i].valoracion){
+                                    if (x[i].valoracion.valoracion > x[i+1].valoracion.valoracion)
+                                    {
+                                       var temp = x[i];
+                                       x[i] = x[i+1];
+                                       x[i+1] = temp;
+                                       swapp = true;
+                                    }
+                                }  
+                            }
+                            n--;
+                        } while (swapp);
+                        tema.materials = x; 
+                        let p = 0;
                     for (const material of tema.materials) {
+
                         tipo = material.tipo_material;
                         icono = '';
 				        switch (tipo) {
@@ -414,6 +719,8 @@
 				        		
 				        		break;
 				        }
+                        let recon = '';
+                        if(p===0) recon = '<br><br><small class="pull-left text-dark "> Recomendado </small>';
                         let avanceMaterial = material.avance || 0;
                         let nombre = material.descripcion_material.split(' ').join('_');
                         let ruta = '&quot Material/'+material.clave_curso+'/'+leccion.clave+'/'+material.id_temas+'/'+nombre+'&quot';
@@ -422,29 +729,35 @@
                         $('#content'+tema.id+'').append('<button style="width: 100%;" class="btn btn-link" onclick="mostrar('+ruta+','+tipo+','+material.id+','+avanceMaterial+');"><p class="h6 pull-left">'+ 
                                                         '<span class="'+icono+'"></span>'+
                                                         ''+material.descripcion_material+''+
-                                                        '</p>'+
-                                                        '<div class="progress" style="height:3px; width: 100%;">'+
-                                                        '<div class="progress-bar bg-info" role="progressbar" style="width: '+porcentaje+'%; height:5px;" aria-valuenow="'+porcentaje+'" aria-valuemin="0" aria-valuemax="100"></div>'+
-                                                        '</div>'+
+                                                        `<br><small class="pull-left text-dark">${ (((material.avance || 0)/60).toFixed()) } | ${ (((material.duracion || 0)/60).toFixed())} min</small>`+
+                                                        '</p>'+recon+
+                                                        // '<div class="progress" style="height:3px; width: 100%;">'+
+                                                        // '<div class="progress-bar bg-info" role="progressbar" style="width: '+porcentaje+'%; height:5px;" aria-valuenow="'+porcentaje+'" aria-valuemin="0" aria-valuemax="100"></div>'+
+                                                        // '</div>'+
                                                         '</button><br>');
+                        p++;
                     }
                 }
 
             }
+            console.log(lecciones);
         }
         function mostrar(rout,tipo,id,avance){
-            var routa = '<?php echo base_url() ?>'+rout.trim();
-            console.log(routa);
             
+            var routa = '<?php echo base_url() ?>'+rout.trim();
+            console.log('Ruta',routa);
+            claveMaterial = id;
+            indexpage = -1;
             filterSelection(routa,tipo,id,avance);
         }
         function filterSelection(newUrl,idButton,id,avance)
         {
-            
+            console.log('Material ID',id);
+            consultarValoracion( '<?php echo $varsesion; ?>', id);
             var Video = document.getElementById('Video');
             var Audio = document.getElementById('Audio');
             var PDF = document.getElementById('PDF');
-            
+            tiempoInicio = new Date();
 
             switch(idButton) {
             case 1:
@@ -458,6 +771,10 @@
                 '<video  id="video" autoplay class="video" controls preload="metadata" controlslist="nodownload">'
                     +'<source clave="'+id+'" id="vid" src="'+newUrl+'#t='+avance+'"><!--#t=15 para empezar en el segundo-->' 
                 +'</video>'
+                +'<center id="opciones" class="m-5">'
+                    +'<button onclick="openNav()" class=" btn btn-dark sticky-top"> Ver mas </button>'
+                    +'<button id="ValoracionModal" data-toggle="modal" data-target="#modalPregunta" class=" btn btn-dark sticky-top" style="color:#ffff;"> Evaluar Material </button>'
+                +'</center>'
                 );
                 Video.style.display = 'block';
                 Audio.style.display = 'none';
@@ -474,6 +791,10 @@
                         +'<audio  class="audio" id="audio" controls preload="metadata" controlslist="nodownload" style="width: 50%;">'
                             +'<source clave="'+id+'" id="aud" src="'+newUrl+'#t='+avance+'">' 
                         +'</audio>'
+                        +'<center id="opciones" class="m-5 ">'
+                            +'<button onclick="openNav()" class=" btn btn-dark sticky-top"> Ver mas </button>'
+                            +'<a id="ValoracionModal" data-toggle="modal" data-target="#modalPregunta" class=" btn btn-dark " style="color:#ffff;">Valorar Material</a>'+
+                        +'</center>'
                     +'</div>');
 
                 Video.style.display = 'none';
@@ -496,21 +817,24 @@
         function Pause() {
             var Video = document.getElementById("video"); 
             Video.pause();
-            console.log(Video.currentTime);
+            console.log('Current time',Video.currentTime);
             var Audio = document.getElementById("audio"); 
             Audio.pause(); 
             guardarAvances();
         }
             
         function guardarAvances(){
-            
+            let tiempoFin = new Date();
+            var hora =  tiempoFin.getHours() - tiempoInicio.getHours();
+            var minutos = tiempoFin.getMinutes() - tiempoInicio.getMinutes();
+            let tiempEnMinutos = minutos + ( hora * 60 );
             var ultimo = '';
             switch (tipos) {
                 case 1:
                     var rout = $('#vid').attr('src');
                     terial= $('#vid').attr('clave');
                     if(terial) claveMaterial = terial;
-                    console.log(claveMaterial);
+                    console.log('Clave material',claveMaterial);
                     
                     var Video = document.getElementById("video"); 
                     var res = rout.split("/");  
@@ -523,6 +847,7 @@
                         tipo:tipos,
                         avance:Video.currentTime,
                         material:claveMaterial,
+                        tiempo_promedio: tiempEnMinutos,
                         duracion:Video.duration
                     }
                     var clave = '<?php echo $curso; ?>';
@@ -543,7 +868,8 @@
                     var rout = $('#aud').attr('src');
                     var terial= $('#aud').attr('clave');
                     if(terial) claveMaterial = terial;
-                    console.log(terial);
+                    console.log('Clave material',claveMaterial);
+                    console.log('Tiempo promedio',tiempEnMinutos);
                     var Audio = document.getElementById("audio"); 
                     var res = rout.split("/");  
                     var ultimo = {
@@ -555,6 +881,7 @@
                         tipo:tipos,
                         avance:Audio.currentTime,
                         material:claveMaterial,
+                        tiempo_promedio: tiempEnMinutos,
                         duracion:Audio.duration
                     }
                     var clave = '<?php echo $curso; ?>';
@@ -580,6 +907,7 @@
                           url:rout,
                           tipo:tipos,
                           avance:currentPageNum,
+                          tiempo_promedio: tiempEnMinutos,
                           material:claveMaterial
                      }
                     var clave = '<?php echo $curso; ?>';
@@ -591,6 +919,7 @@
                         url: "<?php echo site_url();?>/Material/MaterialController/setUltimo",
                         data: {ultimo:MaterialUltimo},
                         success: function (response) {
+                            
                             console.log(JSON.parse(response));
                         }
                     });

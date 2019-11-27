@@ -217,7 +217,7 @@
                          $('#contenedorPreguntas').html(preguntas);
                     },
                     error: function() {
-                        console.log('hubo un pedo en el showLecciones');
+                        console.log('No se pudieron cargar las preguntas');
                     }
                 });
             }
@@ -240,22 +240,27 @@
                             else {
                                 for(var j = 0; j < obj.length; j++) {
                                     var imagen = '';
-                                    if(obj[j].imagen) imagen = '<img class="card-img-top" style="width: 200px; height:200px;" id="imgcurso" src="data:image/jpg;base64,'+obj[i].imagen+'" alt="Card image cap">';
-                                    temas +=  '<a href="<?php echo site_url()?>/ConfiguracionController/getArbolData?id_tema='+data[j].id_opciones+'" class="list-group-item list-group-item-action border-right-0 border-left-0 border-top-0">' +
+                                    if(obj[j].imagen) imagen = '<img class="card-img-top" style="width: 200px; height:200px;" id="imgcurso" src="data:image/jpg;base64,'+obj[j].imagen+'" alt="Card image cap">';
+                                    temas +=  '<a href="#" class="list-group-item list-group-item-action border-right-0 border-left-0 border-top-0">' +
                                                 '<li class=" text-left border-right-0 border-left-0 border-top-0">) &nbsp; &nbsp;'+obj[j].enunciado+
                                                 '<span class="pull-right badge badge-primary badge-pill">'+obj[j].porcentaje+'%</span>'+
                                                 '<span>'+imagen+'</span>'+
                                                 '</li>'+
                                               '</a>';  
                                     porcentaje = porcentaje+ parseInt(obj[j].porcentaje,10);
-                                }
-                                if (porcentaje != 100) {
-                                    $('#aviso'+dat).html('<span style="color:yellow;" class="fas fa-warning text-right alert alert-info" title="Faltan opciones correctas para completar el 100% de acciertos">'
+                                } 
+                                if (porcentaje < 100) {
+                                    $('#aviso'+dat).html('<span style="color:yellow;" class=" text-right alert alert-info" title="Faltan opciones correctas para completar el 100% de acciertos">'+
+                                                        '<i class="fas fa-exclamation-circle"></i>'
                                                         +'</span>');
+                                                        temas += '<li class="list-group-item border-right-0 border-left-0 border-top-0"><button onClick="AgregarOpciones('+dat+')" id="btnAgregarTemaLeccion" class="btn btn-primary" data-toggle="modal" data-target="#modalNuevaLeccion">Agregar opción</button></li>';
                                 }
                             }
-                        }else temas = '<a class="list-group-item"><h5>No hay opciones</h5></a>';
-                        temas += '<li class="list-group-item border-right-0 border-left-0 border-top-0"><button onClick="AgregarOpciones('+dat+')" id="btnAgregarTemaLeccion" class="btn btn-primary" data-toggle="modal" data-target="#modalNuevaLeccion">Agregar opción</button></li>';
+                        }else { 
+                            temas = '<a class="list-group-item"><h5>No hay opciones</h5></a>';
+                            temas += '<li class="list-group-item border-right-0 border-left-0 border-top-0"><button onClick="AgregarOpciones('+dat+')" id="btnAgregarTemaLeccion" class="btn btn-primary" data-toggle="modal" data-target="#modalNuevaLeccion">Agregar opción</button></li>';
+                        }
+                        
                         
                         $('#contenedorOpciones'+contenedor).html(temas);
                     },

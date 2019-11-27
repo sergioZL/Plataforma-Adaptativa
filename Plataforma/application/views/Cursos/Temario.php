@@ -25,6 +25,124 @@
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">    
     <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.6.3/css/all.css' integrity='sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/' crossorigin='anonymous'>                            
      <script defer src="https://use.fontawesome.com/releases/v5.11.2/js/all.js"></script> <!-- nuevo font awesome -->
+<style>
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.switch input { 
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: green;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px green;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+/* Popup container - can be anything you want */
+.popup {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* The actual popup */
+.popup .popuptext {
+  visibility: hidden;
+  width: 160px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 8px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -80px;
+}
+
+/* Popup arrow */
+.popup .popuptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+/* Toggle this class - hide and show the popup */
+.popup .show {
+  visibility: visible;
+  -webkit-animation: fadeIn 1s;
+  animation: fadeIn 1s;
+}
+
+/* Add animation (fade in the popup) */
+@-webkit-keyframes fadeIn {
+  from {opacity: 0;} 
+  to {opacity: 1;}
+}
+
+@keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity:1 ;}
+}
+</style>
 </head> 
 <body>  
 <?php
@@ -120,6 +238,19 @@
         </div>
     </div>
 </section>
+
+
+<div class="popup" >
+    <div class="ml-5">
+        <!-- switchButton -->
+        Adaptar 
+        <label class="switch">
+            <input id="check_id" type="checkbox" onclick="mostrarPop();" checked >
+            <span class="slider round"></span>
+        </label>
+    </div>
+  <span class=" popuptext show" id="myPopup">Contenido adaptado al examen diagnostico!</span>
+</div>
     <div id="main" class="row">
         <!--Menu desplegable-->
         <div id="accordion" role="tablist" aria-multiselectable="true" class="container t-2 pt-5 col-md-11">
@@ -136,6 +267,12 @@
 </div>
 
     <script>
+    let temario;
+    function mostrarPop() {
+        $('#myPopup').removeClass('show');
+        $("#Leccion").html('');
+        temas(temario);
+    }
     var but = 'Comenzar desde el principio'; //Este mensaje se mostrara al usuario por default si este no ha revisado algun material antes
     $(document).ready(function () {
         var clave = '<?php echo $_GET['curso'];?>'; //Almacena la clave de curso al que pertenece los temas
@@ -160,7 +297,7 @@
         $.get( '<?php echo site_url();?>/Cursos/EncuestaController/obtenerAlumno', { varusuario: usuario} )
             .done(function( data ) {
                 let obj = JSON.parse( data );// convierte los datos optenidos a un objeto de tipo json
-                actualizarHeader(obj[0]);
+                actualizarHeader(obj);
             });
     });
 
@@ -189,10 +326,12 @@
                 data:{Usuario: '<?php echo $varsesion; ?>'},
                 success:function(resp)
                 {
+                    temario = resp;
+                    console.log(temario);
                     var n = resp.length;
                     //var data = JSON.parse(resp);
 
-                    temas(resp);
+                    temas(temario);
 
                     // for(var i = 0; i < n; i++)
                     // {
@@ -222,13 +361,24 @@
                                 '<p>' + leccion.descripcion+ '</p>'+
                             '</div>'
                     );
+
                 for (const tema of leccion.temas) {
-                    $('#contenido'+leccion.secuencia+'').append('<div class="card rounded-0"  >'+
+                    let ocultar = false;
+                    if ($('#check_id').is(":checked"))
+                    {
+                        let calificacion = 0;
+                        if(tema.evaluado){
+                            calificacion =( (tema.evaluado.porcentaje * 10) /  tema.evaluado.total/100);
+                        }
+                        if(calificacion > 9) ocultar = true;
+                    }
+
+                    if(!ocultar) $('#contenido'+leccion.secuencia+'').append('<div class="card rounded-0"  >'+
                                                                     '<h5 class="card-header" style="height: 70px;">'+
                                                                         '<a data-toggle="collapse" href="#content'+tema.id+'" aria-expanded="true"'+
                                                                             'aria-controls="content'+tema.id+'" id="Tema'+tema.id+'" class="d-block">'+
                                                                             '<i class="fa fa-chevron-down pull-right"></i>'+
-                                                                            '<p class="font-weight-bold temas"><small> <span class=" badge badge-primary badge-pill">'+tema.avance+'%</span>Tema '+tema.secuencia+': '+tema.nombre+'</small><p>'+
+                                                                            '<p class="font-weight-bold temas"><small> <span class=" badge badge-primary badge-pill pull-right">'+tema.avance+'%</span>Tema '+tema.secuencia+': '+tema.nombre+'</small><p>'+
                                                                         '</a>'+
                                                                     '</h5>'+
                                                                 '<div id="content'+tema.id+'" class="collapse carta-body" aria-labelledby="Tema'+tema.id+'">'+
@@ -237,6 +387,30 @@
                                                                 '</div>-->'+
                                                                 '</div>'+
                                                                 '</div>');
+
+                                                                var a = tema.materials;
+                        var swapp;
+                        var n = a.length-1;
+                        var x=a;
+                        do {
+                            swapp = false;
+                            for (var i=0; i < n; i++)
+                            {
+                                if(tema.materials[i].valoracion){
+                                    if (x[i].valoracion.valoracion > x[i+1].valoracion.valoracion)
+                                    {
+                                       var temp = x[i];
+                                       x[i] = x[i+1];
+                                       x[i+1] = temp;
+                                       swapp = true;
+                                    }
+                                }  
+                            }
+                            n--;
+                        } while (swapp);
+                        tema.materials = x; 
+                        let p = 0;
+
                     for (const material of tema.materials) {
                         tipo = material.tipo_material;
                         icono = '';
@@ -254,6 +428,8 @@
 				        		
 				        		break;
 				        }
+                        let recon = '';
+                        if(p===0) recon = '<br><br><small class="pull-left text-dark "> Recomendado </small>';
                         let avanceMaterial = material.avance || 0;
                         let nombre = material.descripcion_material.split(' ').join('_');
                         let ruta = '&quot Material/'+material.clave_curso+'/'+leccion.clave+'/'+material.id_temas+'/'+nombre+'&quot';
@@ -262,42 +438,17 @@
                         $('#content'+tema.id+'').append('<button style="width: 100%;" class="btn btn-link" onclick="mostrar('+ruta+','+tipo+','+avanceMaterial+','+material.id+');"><p class="h6 pull-left">'+ 
                                                         '<span class="'+icono+'"></span>'+
                                                         ''+material.descripcion_material+''+
-                                                        '</p>'+
-                                                        '<div class="progress" style="height:3px; width: 100%;">'+
-                                                        '<div class="progress-bar bg-info" role="progressbar" style="width: '+porcentaje+'%; height:5px;" aria-valuenow="'+porcentaje+'" aria-valuemin="0" aria-valuemax="100"></div>'+
-                                                        '</div>'+
+                                                        `<br><small class="pull-left">${ (((material.avance || 0)/60).toFixed()) } | ${ (((material.duracion || 0)/60).toFixed())} min</small>`+
+                                                        '</p>'+recon+
+                                                        // '<div class="progress" style="height:3px; width: 100%;">'+
+                                                        // '<div class="progress-bar bg-info" role="progressbar" style="width: '+porcentaje+'%; height:5px;" aria-valuenow="'+porcentaje+'" aria-valuemin="0" aria-valuemax="100"></div>'+
+                                                        // '</div>'+
                                                         '</button><br>');
+                                                        p++;
                     }
                 }
 
             }
-            // $.ajax
-            // ({
-            //     type:'post',
-            //     url:'<?php echo site_url();?>/Cursos/TemarioController/ConsultarTemasCursos?IdLeccion='+data[0].clave,
-            //     data:{Curso:'<?php echo $curso; ?>', Usuario: '<?php echo $varsesion; ?>'},
-            //     success :function(resp)
-            //     {
-            //         $("#Leccion").append(
-            //             '<div class="card leccion shadow-sm mb-3 rounded-0" style="background-color:#07ad90;">'+
-            //                 '<h5 class="card-header">'+
-            //                     '<!--Cabecera del menu desplegable-->'+
-            //                     '<a data-toggle="collapse" href="#contenido' + data[0].secuencia+ '" aria-expanded="true" aria-controls="contenidoUno"'+
-            //                         'id="leccion' + data[0].secuencia+ '" class="d-block">'+
-            //                         '<i class="fa fa-chevron-down pull-right"></i>'
-            //                         + data[0].nombre +' '+ data[0].secuencia +
-            //                     '</a>'+
-            //                 '</h5>'+
-            //             '<div id="contenido' + data[0].secuencia+ '" class="collapse" aria-labelledby="leccionUno">'+
-            //                 '<!--Contenido del menu desplegable-->'+
-            //                 '<div class="card-body">'+
-            //                     '<h6>Este es el contenido de la leccion</h6>'+
-            //                     '<p>' + data[0].descripcion+ '</p>'+
-            //                 '</div>'+resp
-            //         );
-            //         if(data.length > 1) temas(data.slice(1,data.length));
-            //     }                    
-            // });
         }
 
 
@@ -310,6 +461,7 @@
                 dataType:"json",
                 success:function(resp)
                 {
+                    console.log(resp);
                     $("#imagen").append(
                         '<img class="card-img-top h-75 w-75" src="data:image/jpg;base64,'+ resp[0].foto+'" alt="Proyecto 1">'
                     );
@@ -318,15 +470,12 @@
 
                         '<h2 class="text-white">' + resp[0].nombre +'</h2>'+
                         '<h4 class="text-white">has completado: 1 leccion de 5</h4>'+
-                        '<div class="popup" onclick="myFunction()">'+
                             '<div class="progress">'+
                                 '<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40"'+
                                 'aria-valuemin="0" aria-valuemax="100" style="width:' + resp[0].avance +'%">'+
                                     resp[0].avance +'% de progreso'+
                                 '</div>'+
                             '</div>'+
-                            '<span class="popuptext" id="myPopup"> Segun el examen diagnostico este es el progreso que tienes del curso</span>'+
-                        '</div>'+
                         '<div id="boton"></div>'
                         
                     );                    
@@ -340,7 +489,7 @@
         function mostrar(data,tipo,ava = null,claveMaterial = null){
             var url = '<?php echo site_url('/Material?curso='.$curso);?>';// almacena la la url de la vista material
             if(claveMaterial) claveMat = claveMaterial;
-            var form = $('<form action="' + url + '" method="post">' + // contiene un string con los datos de un formulario
+            var form = $('<form action="' + url + '" method="post" class="d-none">' + // contiene un string con los datos de un formulario
               '<input type="text" name="materialSend" value="' + data + '" />' +
               '<input type="text" name="tipo" value="' + tipo + '" />'+
               '<input type="text" name="avance" value="'+ava+'" />'+

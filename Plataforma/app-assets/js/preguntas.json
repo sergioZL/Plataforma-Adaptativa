@@ -54,7 +54,7 @@
     }
 }, {
     "numero": 4,
-    "enunciado": "Si pudieras adquirir uno de los siguientes artículos, ¿cuálelegirías?  ",
+    "enunciado": "Si pudieras adquirir uno de los siguientes artículos, ¿cuál elegirías?  ",
     "A": {
         "enunciado": "Un jacuzzi",
         "isCheked": false,
@@ -151,12 +151,12 @@
         "estilo": "VISUAL"
     },
     "B": {
-        "enunciado": "Que te digan que tienes una conversación interesante",
+        "enunciado": "Que te digan que tienes un trato muy agradable",
         "isCheked": false,
         "estilo": "CINESTÉSICO"
     },
     "C": {
-        "enunciado": "Descansar",
+        "enunciado": "Que te digan que tienes una conversación interesante",
         "isCheked": false,
         "estilo": "AUDITIVO"
     }
@@ -634,7 +634,7 @@
     "A": {
         "enunciado": "En una librería",
         "isCheked": false,
-        "estilo": "CINESTÉSICO"
+        "estilo": "VISUAL"
     },
     "B": {
         "enunciado": "En una perfumería",

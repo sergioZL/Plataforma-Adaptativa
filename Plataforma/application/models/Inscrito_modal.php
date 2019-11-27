@@ -40,7 +40,7 @@ class Inscrito_Modal extends CI_Model{
         $this->db->where('alumnos.clave',$varusuario);
         $query = $this->db->get();
 
-        return $query->result_array();
+        return $query->row();
 
     }
 

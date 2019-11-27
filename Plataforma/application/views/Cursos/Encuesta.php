@@ -117,17 +117,17 @@
                 if(element.A.isCheked){
                     valor = element.A.estilo;
                 }else if(element.B.isCheked){
-                    valor = element.A.estilo;
+                    valor = element.B.estilo;
                 }else if(element.C.isCheked){
-                    valor = element.A.estilo;
+                    valor = element.C.estilo;
                 }
                 switch (valor) {
                     case "AUDITIVO":
-                        visual++;
+                        auditivo++;
                         totalPreguntas++;
                         break;
                     case "VISUAL":
-                        auditivo++;
+                        visual++;
                         totalPreguntas++;
                         break;
                     case "CINESTÉSICO":
@@ -141,6 +141,7 @@
             visual = (visual * 100)/40;
             auditivo = (auditivo * 100)/40;
             cinestesico = (cinestesico * 100)/40;
+            console.log(totalPreguntas);
             if(totalPreguntas == 40){
             $.ajax({
                 type: "post",

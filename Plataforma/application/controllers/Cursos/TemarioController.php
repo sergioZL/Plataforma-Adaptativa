@@ -4,13 +4,15 @@ class TemarioController extends CI_Controller {
 
 	public function __construct() {
         parent::__construct();
-		$this->load->helper('url_helper');
+		$this->load->helper('url_helper'); 
 		$this->load->model('Lecciones_modal');
 		$this->load->model('Temas_modal');
 		$this->load->model('Inscrito_modal');
 		$this->load->model('Avance_modal');
 		$this->load->model('Cursos_modal');
 		$this->load->model('Material_Model');
+		$this->load->model('Preguntas_Model');
+		$this->load->model('Respuesta_modal');
     }
 
 	public function load_Temario()
@@ -20,11 +22,30 @@ class TemarioController extends CI_Controller {
 	//Optiene las lecciones por curso con sus respectivos temas y materiales
 	//para la ventana de temario 
     public function Temario(){
-
         $id = $this ->  input -> get( 'IdCurso' );
         $idUsuario = $this -> input -> post( 'Usuario' );
-        $duracion = $this->Avance_modal->ConsultarDuracion($id,$idUsuario);
-        $lecciones = $this-> Lecciones_modal -> ConsultarTodosLeccionesCursos(  $id );
+        $duracion = $this->Avance_modal->ConsultarDuracion(  $id, $idUsuario);
+        $lecciones = $this-> Lecciones_modal -> ConsultarTodosLeccionesCursos(   $id );
+        $alumno = $this->Inscrito_modal->obtenerAlumno( $idUsuario );
+        
+        $ATipo = new stdClass;
+        $ATipo->primero = 'eavisual';
+        if($alumno->eavisual > $alumno->eaauditivo && $alumno->eavisual > $alumno->eacinestesico){
+            $ATipo->primero = 'eavisual';
+            if($alumno->eaauditivo > $alumno->eacinestesico){
+                $ATipo->segundo = 'eaauditivo';
+            }else  $ATipo->segundo = 'eacinestesico';
+        }else if($alumno->eaauditivo > $alumno->eavisual && $alumno->eaauditivo > $alumno->eacinestesico){
+            $ATipo->primero = 'eaauditivo';
+            if($alumno->eavisual > $alumno->eacinestesico){
+                $ATipo->segundo = 'eavisual';
+            }else  $ATipo->segundo = 'eacinestesico';
+        }else if($alumno->eacinestesico > $alumno->eavisual && $alumno->eacinestesico > $alumno->eaauditivo){
+            $ATipo->primero = 'eacinestesico';
+            if($alumno->eaauditivo >  $alumno->eavisual ){
+                $ATipo->segundo = 'eaauditivo';
+            }else  $ATipo->segundo = 'eavisual';
+        }
         foreach ( $lecciones as $leccion ) {
             $lec = new stdClass;
             $lec -> clave = $leccion['clave'];
@@ -34,7 +55,17 @@ class TemarioController extends CI_Controller {
             
             $topics = $this->Temas_modal->ConsultarTemasCursos($lec -> clave);
             foreach ( $topics as $topic ) {
-                $tema = new stdClass;
+
+				$total = $this->Preguntas_Model->getTotalPreguntasPorTema($topic['id']);
+
+				$porcentResp = $this->Respuesta_modal->getRespuestasUsuarioTema($idUsuario,$topic['id']);
+
+				$tema = new stdClass;
+				
+				if($total != null){ 
+					$tema->evaluado = array('total' => $total[0]->total, 'porcentaje' => $porcentResp[0]->porc);
+				}
+
                 $tema -> id = $topic['id'];
                 $tema -> nombre = $topic['nombre'];
                 $tema -> secuencia = $topic['secuencia'];
@@ -43,19 +74,58 @@ class TemarioController extends CI_Controller {
                 $avance = $this->Avance_modal->ConsultarAvance( $duracion->id, $tema-> id );
                 if($avance == null){
                      $materiales = $this->Material_Model->encontrarMaterial( $tema-> id );
+                     $i = 0;
+                     foreach ($materiales as $mater) {
+                         $mat = json_encode($mater);
+                         $mat = json_decode($mat);
+                         $valorado = $this->Avance_modal->getValoracionMaterial($ATipo->primero,$mat->id);
+                         if($valorado)  $valorado = $this->Avance_modal->getValoracionMaterial($ATipo->segundo,$mat->id);
+                         $mat -> valoracion = $valorado[0];
+                         $materiales[$i] = $mat;
+                         $i++;
+                     }
                      $tema -> avance = 0;
                 }
                 else{
                     $materiales1 = $this->Material_Model->encontrarMaterial( $tema-> id );
                     $materiales2 = $this -> Avance_modal ->getAvanceMaterial( $tema-> id, $avance->id );
                     if( sizeof($materiales1) == sizeof($materiales2)){
+                        $i = 0;
+                        foreach ($materiales2 as $mater) {
+                            $mat = json_encode($mater);
+                            $mat = json_decode($mat);
+                            $valorado = $this->Avance_modal->getValoracionMaterial($ATipo->primero,$mat->id);
+                            if($valorado)  $valorado = $this->Avance_modal->getValoracionMaterial($ATipo->segundo,$mat->id);
+                            $mat -> valoracion = $valorado[0];
+                            $materiales2[$i] = $mat;
+                            $i++;
+                        }
+
                         $materiales = $materiales2;
                     }else{ 
                         $materiales = array();
                         for ($i=0; $i < sizeof( $materiales1 ); $i++) { 
                             if ( sizeof( $materiales2 ) > $i) {
+
+                                $mat = json_encode($materiales2[$i]);
+                                $mat = json_decode($mat);
+                                $valorado = $this->Avance_modal->getValoracionMaterial($ATipo->primero,$mat->id);
+                                if($valorado)  $valorado = $this->Avance_modal->getValoracionMaterial($ATipo->segundo,$mat->id);
+                                $mat -> valoracion = $valorado[0];
+                                $materiales2[$i] = $mat;
+
                                 array_push($materiales,$materiales2[$i]);
-                            }else array_push($materiales,$materiales1[$i]);
+
+                            }else{ 
+                                $mat = json_encode($materiales1[$i]);
+                                $mat = json_decode($mat);
+                                $valorado = $this->Avance_modal->getValoracionMaterial($ATipo->primero,$mat->id);
+                                if($valorado)  $valorado = $this->Avance_modal->getValoracionMaterial($ATipo->segundo,$mat->id);
+                                $mat -> valoracion = $valorado[0];
+                                $materiales1[$i] = $mat;
+
+                                array_push($materiales,$materiales1[$i]);
+                            }
                         }
                         //$materiales = $materiales1;
                     }
@@ -70,7 +140,67 @@ class TemarioController extends CI_Controller {
             $vec [] = $lec;
         }
 
-        echo json_encode($vec);
+        echo json_encode(  $vec );
+        // $id = $this ->  input -> get( 'IdCurso' );
+        // $idUsuario = $this -> input -> post( 'Usuario' );
+        // $duracion = $this->Avance_modal->ConsultarDuracion($id,$idUsuario);
+        // $lecciones = $this-> Lecciones_modal -> ConsultarTodosLeccionesCursos(  $id );
+        // foreach ( $lecciones as $leccion ) {
+        //     $lec = new stdClass;
+        //     $lec -> clave = $leccion['clave'];
+        //     $lec -> secuencia = $leccion['secuencia'];
+        //     $lec -> descripcion = $leccion['descripcion'];
+        //     $lec -> nombre = $leccion['nombre'];
+            
+        //     $topics = $this->Temas_modal->ConsultarTemasCursos($lec -> clave);
+        //     foreach ( $topics as $topic ) {
+
+		// 		$total = $this->Preguntas_Model->getTotalPreguntasPorTema($topic['id']);
+
+		// 		$porcentResp = $this->Respuesta_modal->getRespuestasUsuarioTema($idUsuario,$topic['id']);
+
+		// 		$tema = new stdClass;
+				
+		// 		if($total != null){ 
+		// 			$tema->evaluado = array('total' => $total[0]->total, 'porcentaje' => $porcentResp[0]->porc);
+		// 		}
+
+        //         $tema -> id = $topic['id'];
+        //         $tema -> nombre = $topic['nombre'];
+        //         $tema -> secuencia = $topic['secuencia'];
+        //         $tema -> descripcionTema = $topic['descripcionTema'];
+
+        //         $avance = $this->Avance_modal->ConsultarAvance( $duracion->id, $tema-> id );
+        //         if($avance == null){
+        //              $materiales = $this->Material_Model->encontrarMaterial( $tema-> id );
+        //              $tema -> avance = 0;
+        //         }
+        //         else{
+        //             $materiales1 = $this->Material_Model->encontrarMaterial( $tema-> id );
+        //             $materiales2 = $this -> Avance_modal ->getAvanceMaterial( $tema-> id, $avance->id );
+        //             if( sizeof($materiales1) == sizeof($materiales2)){
+        //                 $materiales = $materiales2;
+        //             }else{ 
+        //                 $materiales = array();
+        //                 for ($i=0; $i < sizeof( $materiales1 ); $i++) { 
+        //                     if ( sizeof( $materiales2 ) > $i) {
+        //                         array_push($materiales,$materiales2[$i]);
+        //                     }else array_push($materiales,$materiales1[$i]);
+        //                 }
+        //                 //$materiales = $materiales1;
+        //             }
+        //             $tema -> avance = $avance -> avance;
+        //         }
+        //         $tema -> materials = $materiales;
+        //         $temas[] = $tema;
+        //     }
+        //     $lec -> temas  = $temas;
+        //     unset($temas);
+        //     $temas = array();  
+        //     $vec [] = $lec;
+        // }
+
+        // echo json_encode($vec);
 
     }
 	public function ConsultarPorIDCursos()

@@ -1,4 +1,6 @@
+
 <?php 
+
 /**
  * Se creo este archivo para hacer pruebas y corregir errores encontrados en evaluacion 
  */
@@ -6,6 +8,8 @@
 error_reporting(0);
 session_start();
 $varsesion = $_SESSION['usuario'];
+$tipo = $_GET['tipo'];
+
 if($varsesion == null|| $varsesion == '')
 {
     header("location:../../../index.php");
@@ -67,20 +71,6 @@ if($curso =$_GET['curso'] == "")
             width:50px;
         }
 
-        /*[type=radio] { 
-            position: absolute;
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-
-        [type=radio] + img {
-            cursor: pointer;
-        }
-
-        [type=radio]:checked + img {
-            outline: 2px solid #f00;
-        }*/
     </style>
     <script defer src="https://use.fontawesome.com/releases/v5.11.2/js/all.js"></script> 
 </head>
@@ -93,22 +83,18 @@ if($curso =$_GET['curso'] == "")
     <div class="container">
 
     <table id="table" class="table  table-bordered">
-        
-        <tbody>
+        <tbody id="idTable">
             <tr>
                 <td style="width:70px"><b>Evaluacion</b></td>
-                <td id="tevaluacion" colspan="2">Diagnostica</td>
+                <td id="tevaluacion" colspan="3"><?php echo $tipo; ?></td>
             </tr>
             <tr>
                 <td  style="width:70px"><b>Alumno</b></td>
-                <td id="nombreUsuario" colspan="2"><?php echo $varsesion ?></td>
+                <td id="nombreUsuario" colspan="3"><?php echo $varsesion ?></td>
             </tr>
-            <!--<tr>
-                <td style="width:70px"><b>Puntos</b></td>
-                <td id="puntos" colspan="2"></td>
-            </tr>-->
         </tbody>
     </table>
+    <center id="botonIr"></center>
     <br>
     <div id="contenedroPreguntas">
             
@@ -117,7 +103,9 @@ if($curso =$_GET['curso'] == "")
     <center><button type="button" id="Evaluar" class="btn btn-primary">Enviar</button></center>
     <br><br>
     
+
     <script>
+        let preguntas;
         $(document).ready(function () {
             //optiene la clave de usuario actual
             let usuario = '<?php echo $varsesion; ?>';
@@ -128,15 +116,15 @@ if($curso =$_GET['curso'] == "")
             $.get( '<?php echo site_url();?>/Cursos/EncuestaController/obtenerAlumno', { varusuario: usuario} )
             .done(function( data ) {
                 let obj = JSON.parse( data );// convierte los datos optenidos a un objeto de tipo json
-                actualizarHeader(obj[0]);
-                console.log(obj);
+                actualizarHeader(obj);
+                
             });
             cargarPreguntas();
         });
 
         function actualizarHeader(data){
             $('#userName').html('<br>'+data.nombre+' '+data.app); // Coloca el nombre de usuario y apellido paterno en el navbar
-            console.log(data);
+            
             let inN = data.nombre.split( "", 1 );
             let inA = data.app.split( "", 1 );
             $('#inicial').html(inN+inA);
@@ -144,8 +132,10 @@ if($curso =$_GET['curso'] == "")
         }
         let cargarPreguntas = () => {
             $.get("<?php echo site_url();?>/Cursos/EvaluacionDController/CargarPreguntas", {Curso: '<?php echo $_GET['curso'];?>'}, (data) => {
-                    data = JSON.parse(data);
-                    mostrarPreguntas(data);
+                
+                    preguntas = JSON.parse(data);
+                    
+                    mostrarPreguntas(preguntas);
                 }
             );
         }
@@ -156,7 +146,7 @@ if($curso =$_GET['curso'] == "")
             for ( const pregunta of preguntas ) {
                 let imagen = '';
 					if (pregunta.imagen != null) {
-						let imagen = '<img style="width: 200px; height:200px;" src="data:image/jpg;base64,'+pregunta.imagen+'"/>';
+						let imagen = '<a data-toggle="modal" data-target="#modalPregunta"><img style="width: 200px; height:200px;" src="data:image/jpg;base64,'+pregunta.imagen+'"/></a>';
 					}
                 i++;
               $('#contenedroPreguntas').append('<div id="pregresp" class="pregresp">'+
@@ -164,16 +154,106 @@ if($curso =$_GET['curso'] == "")
 			        			''+imagen+''+
 			        			'<input id="Npregunta" type="hidden" value="'+pregunta.id+'">'+
 			        			'<div id="respuestas'+pregunta.id+'" class="respuestas">');
+                let tipo = 'checkbox';
+                for (const opcion of pregunta.opciones) {
+                    if(opcion.porcentaje === '100') tipo = 'radio';
+                }
+                let eschecado = '';
+                let j = 0;
+                
                 for ( const opcion of pregunta.opciones ) {
-                    if(opcion.imagen) $('#respuestas'+pregunta.id+'').append( '<div><label>'+
-                                                                              '<input id="resp" type="radio" name="preg'+pregunta.id+'" value="'+pregunta.id_opciones+'">'+
-                                                                              '<img class="imgresp" src="data:image/jpg;base64,'+opcion.imagen+'"/>'+
-                                                                              '</label></div><br>');
-                    else $('#respuestas'+pregunta.id+'').append('<input id="resp" type="radio" name="preg'+pregunta.id+'" value="'+opcion.id_opciones+'"/> '+opcion.enunciado+'<br/>');
+                    if(opcion.checked) eschecado = 'checked';
+                    if(opcion.imagen) $('#respuestas'+pregunta.id+'').append( '<div>'+
+                                                                              `<input id="resp" type="${ tipo }" name="preg${pregunta.id}" value="${opcion.id_opciones}" onclick="checado( ${i-1}, ${j}, '${ tipo }' );">`+
+                                                                              `<label data-toggle="modal" data-target="#modalPregunta"><img class="imgresp" src="data:image/jpg;base64,${opcion.imagen}" /></label></div><br>`);
+                    else $('#respuestas'+pregunta.id+'').append(`<input id="resp" type="${ tipo }" name="preg${pregunta.id}" value="${opcion.id_opciones}" onclick="checado( ${i-1}, ${j}, '${ tipo }' ); ${ eschecado }"/> ${opcion.enunciado}<br/>`);
+                 j++;
                 }
 
             }
         }
+        
+        let checado = ( idxPregunta, idxOpcion , tipo ) => {
+            for (let index = 0; index < preguntas[idxPregunta].opciones.length; index++) {
+                if(index === idxOpcion || ( preguntas[idxPregunta].opciones[index].checked === true && tipo === 'checkbox' )) preguntas[idxPregunta].opciones[index].checked = true;
+                    else preguntas[idxPregunta].opciones[index].checked = false;
+            }
+        }
+        $('#Evaluar').click(function (e) { 
+            e.preventDefault();
+            $('#contenedroPreguntas').html('');
+            let respuestas = [];  
+            let total = 0;
+            let aciertos = 0;          
+            preguntas.forEach( ( pregunta, index) =>{
+                
+                let imagen = '';
+					if (pregunta.imagen != null) {
+						let imagen = `<a data-toggle="modal" data-target="#modalPregunta"><img style="width: 200px; height:200px;" src="data:image/jpg;base64,${pregunta.imagen}"/></a>`;
+					} 
+                $('#contenedroPreguntas').append('<div id="pregresp" class="pregresp">'+
+			        			`<div id="pregunta" class="pregunta">${index + 1}.- ${pregunta.enunciado}<br/></div>`+
+			        			`${imagen}`+
+			        			`<input id="Npregunta" type="hidden" value="${pregunta.id}">`+
+			        			`<div id="respuestas${pregunta.id}" class="respuestas">`);
+                let tipo = 'checkbox';
+                pregunta.opciones.forEach( ( opcion) => {
+                    if(opcion.porcentaje === '100') tipo = 'radio';
+                });
+                let porcentaje = 0;                
+                pregunta.opciones.forEach( ( opcion, j) => { 
+                                       
+                    let eschecado = '';
+                    let icono   = '';
+                    if((opcion.checked || false)){
+                        eschecado = 'checked';
+                        respuestas.push({
+                            idPregunta: pregunta.id,
+                            opcion: opcion.id_opciones
+                        });
+                        if( opcion.porcentaje != '0' ) {
+                            porcentaje += parseInt( opcion.porcentaje, 10);
+                            icono = '<i class="fas fa-check"></i>';
+                        } else icono = '<i class="fas fa-times"></i>';
+                    } else {
+                        if( opcion.porcentaje != '0' ) icono = '<i class="fas fa-check"></i>';
+                    }
+                    if(opcion.imagen) $(`#respuestas${ pregunta.id }`).append( '<div>'+
+                                                                              `<input id="resp" type="${ tipo }" name="preg${ pregunta.id }" value="${ opcion.id_opciones }" onclick="checado( ${ index + 1}, ${ j }, '${ tipo }' );" ${ eschecado }>`+
+                                                                              `<label data-toggle="modal" data-target="#modalPregunta"> ${ icono } <img class="imgresp" src="data:image/jpg;base64,${opcion.imagen}" /></label></div><br>`);
+                    else $('#respuestas'+pregunta.id+'').append(`<input id="resp" type="${ tipo }" name="preg${pregunta.id}" value="${opcion.id_opciones}" onclick="checado( ${index + 1}, ${j}, '${ tipo }' );" ${ eschecado }/>${ icono } ${ opcion.enunciado }<br/>`);
+                    
+                });
+                aciertos += (porcentaje / 100);
+                total = index;
+            });
+            total++;
+            console.log(aciertos);
+            let calificacion = ( aciertos * 10 ) / total;
+            
+            $('#idTable').append(`<tr>
+                                    <td  style="width:70px"><b>Aciertos</b></td>
+                                    <td>${ aciertos }</td>
+                                    <td  style="width:70px"><b>Calificacion</b></td>
+                                    <td>${ calificacion }</td>
+                                 </tr>`);
+            $('#Evaluar').addClass('d-none');
+            $('#botonIr').html(`<button type="button" onclick="Terminar()" class="btn btn-primary">Terminar</button>`);
+            $.ajax({
+                type: "post",
+                url: "<?php echo site_url();?>/Cursos/EvaluacionDController/Evaluar",
+                data: { IdCurso:'<?php echo $_GET['curso']; ?>', id_alumno: '<?php echo $varsesion; ?>', TipoEvaluacion: '<?php echo $tipo; ?>', Respuestas:respuestas},
+                success: function (response) {
+                    console.log(response); 
+                    
+                }
+            });
+
+        });
+        function Terminar() { 
+            console.log('que pedo');
+            window.location.href='Temario?curso=<?php echo $_GET['curso']; ?>';
+        };
     </script>
 </body>
 </html>
