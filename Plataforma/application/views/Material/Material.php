@@ -344,7 +344,7 @@ input:checked + .slider:before {
             
                 <div class="ml-1">
                     <!-- switchButton -->
-                    Adaptar 
+                    Personalizar 
                 <label class="switch">
                     <input id="check_id" type="checkbox" onclick="mostrarPop();" checked >
                     <span class="slider round"></span>
@@ -530,7 +530,7 @@ input:checked + .slider:before {
                 data:{ usuario: Usuario, material: Material  },    
                 success:function(resp)
                 {  
-                    console.log(resp);
+                    
                     if(resp === "valorado"){
                         $('#ValoracionModal').addClass("d-none");
                           valorado = true;
@@ -629,7 +629,7 @@ input:checked + .slider:before {
                 success:function(resp)
                 {   
                     temario = resp;
-                    console.log("Que",resp);
+                    
                     temas(temario);
                 }
             });
@@ -688,7 +688,7 @@ input:checked + .slider:before {
                             for (var i=0; i < n; i++)
                             {
                                 if(tema.materials[i].valoracion){
-                                    if (x[i].valoracion.valoracion > x[i+1].valoracion.valoracion)
+                                    if (x[i].valoracion.valoracion < x[i+1].valoracion.valoracion)
                                     {
                                        var temp = x[i];
                                        x[i] = x[i+1];
@@ -720,17 +720,17 @@ input:checked + .slider:before {
 				        		break;
 				        }
                         let recon = '';
-                        if(p===0) recon = '<br><br><small class="pull-left text-dark "> Recomendado </small>';
+                        if(p===0) recon = 'border-left: 3px solid green; background-color:#f0f0f0;';
                         let avanceMaterial = material.avance || 0;
                         let nombre = material.descripcion_material.split(' ').join('_');
                         let ruta = '&quot Material/'+material.clave_curso+'/'+leccion.clave+'/'+material.id_temas+'/'+nombre+'&quot';
                         let duracion = material.duracion || 0;
                         let porcentaje = avanceMaterial * 100 / duracion;
-                        $('#content'+tema.id+'').append('<button style="width: 100%;" class="btn btn-link" onclick="mostrar('+ruta+','+tipo+','+material.id+','+avanceMaterial+');"><p class="h6 pull-left">'+ 
-                                                        '<span class="'+icono+'"></span>'+
+                        $('#content'+tema.id+'').append('<button style="width: 100%; '+recon+' border-radius: 0px;" class="btn btn-link" onclick="mostrar('+ruta+','+tipo+','+material.id+','+avanceMaterial+');"><p class="h6 pull-left">'+ 
+                                                        '<span class="'+icono+'"></span> &nbsp;'+
                                                         ''+material.descripcion_material+''+
                                                         `<br><small class="pull-left text-dark">${ (((material.avance || 0)/60).toFixed()) } | ${ (((material.duracion || 0)/60).toFixed())} min</small>`+
-                                                        '</p>'+recon+
+                                                        '</p>'+
                                                         // '<div class="progress" style="height:3px; width: 100%;">'+
                                                         // '<div class="progress-bar bg-info" role="progressbar" style="width: '+porcentaje+'%; height:5px;" aria-valuenow="'+porcentaje+'" aria-valuemin="0" aria-valuemax="100"></div>'+
                                                         // '</div>'+
@@ -740,19 +740,18 @@ input:checked + .slider:before {
                 }
 
             }
-            console.log(lecciones);
         }
         function mostrar(rout,tipo,id,avance){
             
             var routa = '<?php echo base_url() ?>'+rout.trim();
-            console.log('Ruta',routa);
+            
             claveMaterial = id;
             indexpage = -1;
             filterSelection(routa,tipo,id,avance);
         }
         function filterSelection(newUrl,idButton,id,avance)
         {
-            console.log('Material ID',id);
+            
             consultarValoracion( '<?php echo $varsesion; ?>', id);
             var Video = document.getElementById('Video');
             var Audio = document.getElementById('Audio');

@@ -274,7 +274,7 @@ class ConfiguracionController extends CI_Controller {
             print_r($this->upload->display_errors());
         }
         else{
-			print_r($this->upload->data());
+			//print_r($this->upload->data());
 
 			$tipo_material = $this->input->post('tipo_material');
 			$descripcion_material = $this->input->post('descripcion_material');
@@ -283,7 +283,7 @@ class ConfiguracionController extends CI_Controller {
 
 			$result = $this->configuracion_model->agregarRuta($path);
 
-			echo $path;
+			//echo $path;
 
 			if(is_null($resultado) && is_null($result)) {
 				echo '<script type="text/javascript">alert("no jaló");</script>';
@@ -291,7 +291,8 @@ class ConfiguracionController extends CI_Controller {
 			}else if(is_null($resultado) || is_null($result)) {
 				echo '<script type="text/javascript">alert("uno de los dos no jaló");</script>';
 			}else{
-				echo '<script type="text/javascript">alert("sí jaló");</script>';
+				//echo '<script type="text/javascript">alert("sí jaló");</script>';
+				echo '<script type="text/javascript">window.location.replace("'.base_url('index.php/ConfiguracionController/getArbolData?id_tema='.$id_tema).'");</script>';
 			}
         }
 	}

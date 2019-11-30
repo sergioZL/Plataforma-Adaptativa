@@ -155,7 +155,7 @@
             $this->db->select('sum(valoracion) as valoracion, valoracion.idmaterial');
             $this->db->from('valoracion');
             $this->db->join('alumnos','alumnos.clave =  valoracion.idinscrito','RIGHT');
-            $this->db->where('alumnos.'.$aTipo.' > ',36);
+            $this->db->where('alumnos.'.$aTipo.' > ',32);
             $this->db->where('valoracion.idmaterial',$idMaterial);
             $query = $this->db->get();
 

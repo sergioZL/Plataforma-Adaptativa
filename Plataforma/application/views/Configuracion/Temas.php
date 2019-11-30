@@ -151,8 +151,14 @@
                     echo '<div class="modal_body mx-3">';
                         echo '<div class="md-form mb-5">';
                             echo '<label data-error="wrong" data-success="right" for="tipo_material">Tipo de material</label></br>';
-                            echo form_input(array('type' => 'text', 'name' => 'tipo_material', 'id' => 'tipo_material', 'class' => 'form_control', 'size' => 40));
-                        echo '</div>';
+                            echo form_input(array('type' => 'hide', 'name' => 'tipo_material', 'id' => 'tipo_material', 'class' => 'escondido form_control', 'size' => 40));
+                            echo '<select class="form_control" id="select_material" name="tipo_materia" onchange="cambiarValor()">';
+                            echo '<option id="tipo_material" value="0">Selecciona un tipo de material...</option>';
+                            echo '<option id="tipo_material" value="1">Video</option>';
+                            echo '<option id="tipo_material" value="2">Audio</option>';
+                            echo '<option id="tipo_material" value="3">Documento PDF</option>';
+                            echo  '</select>';
+                            echo '</div>';
                         echo '<div class="md-form mb-5">';
                             echo '<label data-error="wrong" data-success="right" for="descripcion_material">Descripción de material</label></br>';
                             echo form_input(array('type' => 'text', 'name' => 'descripcion_material', 'id' => 'descripcion_material', 'class' => 'form_control', 'size' => 40));
@@ -207,6 +213,11 @@
                     console.log('hubo un pedo en el getNombres');
                 }
             });
+        }
+
+        function cambiarValor(){
+            let valor = $('#select_material').val();
+            $('#tipo_material').val(valor);
         }
 
         $(function(){

@@ -109,29 +109,34 @@ class MaterialController extends CI_Controller {
                     }else{ 
                         $materiales = array();
                         for ($i=0; $i < sizeof( $materiales1 ); $i++) { 
-                            if ( sizeof( $materiales2 ) > $i) {
 
-                                $mat = json_encode($materiales2[$i]);
-                                $mat = json_decode($mat);
-                                $valorado = $this->Avance_modal->getValoracionMaterial($ATipo->primero,$mat->id);
-                                if($valorado)  $valorado = $this->Avance_modal->getValoracionMaterial($ATipo->segundo,$mat->id);
-                                $mat -> valoracion = $valorado[0];
-                                $materiales2[$i] = $mat;
-
-                                array_push($materiales,$materiales2[$i]);
-
-                            }else{ 
-                                $mat = json_encode($materiales1[$i]);
-                                $mat = json_decode($mat);
-                                $valorado = $this->Avance_modal->getValoracionMaterial($ATipo->primero,$mat->id);
-                                if($valorado)  $valorado = $this->Avance_modal->getValoracionMaterial($ATipo->segundo,$mat->id);
-                                $mat -> valoracion = $valorado[0];
-                                $materiales1[$i] = $mat;
-
-                                array_push($materiales,$materiales1[$i]);
+                            for ($j=0; $j < sizeof( $materiales2 ); $j++) { 
+                                $mat  = json_encode($materiales1[$i]);
+                                $mat2 = json_encode($materiales2[$j]);
+                                $mat  = json_decode($mat);
+                                $mat2 = json_decode($mat2);
+                                if($mat->id == $mat2->id){
+                                    $materiales1[$i]  = $materiales2[$j];
+                                    $mat = json_encode($materiales1[$i]);
+                                    $mat = json_decode($mat);
+                                    $valorado = $this->Avance_modal->getValoracionMaterial($ATipo->primero,$mat->id);
+                                    if($valorado)  $valorado = $this->Avance_modal->getValoracionMaterial($ATipo->segundo,$mat->id);
+                                    $mat -> valoracion = $valorado[0];
+                                    $materiales1[$i] = $mat;
+                                } else {
+                                    $mat = json_encode($materiales1[$i]);
+                                    $mat = json_decode($mat);
+                                    $valorado = $this->Avance_modal->getValoracionMaterial($ATipo->primero,$mat->id);
+                                    if($valorado)  $valorado = $this->Avance_modal->getValoracionMaterial($ATipo->segundo,$mat->id);
+                                    $mat -> valoracion = $valorado[0];
+                                    $materiales1[$i] = $mat;
+                                }
                             }
+
+ 
+                            array_push($materiales,$materiales1[$i]);
                         }
-                        //$materiales = $materiales1;
+                        
                     }
                     $tema -> avance = $avance -> avance;
                 }
@@ -373,10 +378,11 @@ class MaterialController extends CI_Controller {
     }
     /**
      * Actualiza la tabla avance_material 
-     */
+     */ 
     public function actualizarAvanceMaterial( $datos, $last ){
          $data = json_decode(json_encode($datos[0]));
          $ultimo = json_decode(json_encode($last));
+         if( $data->avance != $ultimo->avance) $data->repeticiones = $data->repeticiones + 1; //si el nuevo avance es diferente se aumenta el numero de repeticiones del material
          $data->avance = $ultimo->avance; //Se coloca el nuevo avance
          if( $data->tiempo_promedio > 0 ) $data->tiempo_promedio = ($ultimo->tiempo_promedio + $data->tiempo_promedio)/2;
          else $data->tiempo_promedio = $ultimo->tiempo_promedio;

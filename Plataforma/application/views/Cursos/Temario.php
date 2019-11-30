@@ -239,21 +239,21 @@ input:checked + .slider:before {
     </div>
 </section>
 
-
+<br>
 <div class="popup" >
     <div class="ml-5">
         <!-- switchButton -->
-        Adaptar 
+        <h4>Personalizar recomendaciones
         <label class="switch">
             <input id="check_id" type="checkbox" onclick="mostrarPop();" checked >
             <span class="slider round"></span>
-        </label>
+        </label></h4>
     </div>
-  <span class=" popuptext show" id="myPopup">Contenido adaptado al examen diagnostico!</span>
+  <span class=" popuptext" id="myPopup">Contenido adaptado al examen diagnostico!</span>
 </div>
     <div id="main" class="row">
         <!--Menu desplegable-->
-        <div id="accordion" role="tablist" aria-multiselectable="true" class="container t-2 pt-5 col-md-11">
+        <div id="accordion" role="tablist" aria-multiselectable="true" class="container t-1 pt-5 col-md-11">
             <!--Leccion uno-->
             <div  id="Leccion">
                         
@@ -284,8 +284,26 @@ input:checked + .slider:before {
             uta = ruta.split(".");
             ava = ult.avance;
             idmat = ult.material;
+            name = but[0].replace(/_/g, ' ');
+            tipo = ''+ult.tipo+'';
+            icono = '';
+			switch (tipo) {
+				case '1':
+					icono = 'fas fa-play-circle fa-2x';
+					break;
+				case '2':
+					icono = 'fas fas fa-volume-up fa-2x';
+					break;
+				case '3':
+					icono = 'fas fa-file-pdf fa-2x';
+					break;
+				default:
+					
+					break;
+			}
+            
             //Los datos obtenidos se guardan en el boton que muestra el ultimo material visitado de este curso
-            $('#boton').append('<button type="button" style="background-color:#07ad90;" class="btn btn-success" onclick="mostrar( &quot '+uta[0]+'&quot,'+ult.tipo+','+ava+','+idmat+');"> <h2 id="bot">'+but[0]+'</h2></button>');
+            $('#boton').append('<br><button type="button" style="color:#000000; text-decoration:none;" class="btn btn-link" onclick="mostrar( &quot '+uta[0]+'&quot,'+ult.tipo+','+ava+','+idmat+');"> <h2 id="bot">'+'<small><span class="'+icono+'"></span></small> &nbsp; '+name+'</h2></button>');
         }
 
         //optiene la clave de usuario actual
@@ -303,7 +321,7 @@ input:checked + .slider:before {
 
         function actualizarHeader(data){
             $('#userName').html('<br>'+data.nombre+' '+data.app); // Coloca el nombre de usuario y apellido paterno en el navbar
-            console.log(data);
+            
             let inN = data.nombre.split( "", 1 );
             let inA = data.app.split( "", 1 );
             $('#inicial').html(inN+inA);
@@ -327,16 +345,10 @@ input:checked + .slider:before {
                 success:function(resp)
                 {
                     temario = resp;
-                    console.log(temario);
                     var n = resp.length;
-                    //var data = JSON.parse(resp);
 
                     temas(temario);
 
-                    // for(var i = 0; i < n; i++)
-                    // {
-                    //     temas(resp,i);
-                    // }
                 }
             });
         }
@@ -397,7 +409,7 @@ input:checked + .slider:before {
                             for (var i=0; i < n; i++)
                             {
                                 if(tema.materials[i].valoracion){
-                                    if (x[i].valoracion.valoracion > x[i+1].valoracion.valoracion)
+                                    if (x[i].valoracion.valoracion < x[i+1].valoracion.valoracion)
                                     {
                                        var temp = x[i];
                                        x[i] = x[i+1];
@@ -429,17 +441,17 @@ input:checked + .slider:before {
 				        		break;
 				        }
                         let recon = '';
-                        if(p===0) recon = '<br><br><small class="pull-left text-dark "> Recomendado </small>';
+                        if(p===0) recon = 'border-left: 3px solid green; background-color:#f0f0f0;';
                         let avanceMaterial = material.avance || 0;
                         let nombre = material.descripcion_material.split(' ').join('_');
                         let ruta = '&quot Material/'+material.clave_curso+'/'+leccion.clave+'/'+material.id_temas+'/'+nombre+'&quot';
                         let duracion = material.duracion || 0;
                         let porcentaje = avanceMaterial * 100 / duracion;                                                                           
-                        $('#content'+tema.id+'').append('<button style="width: 100%;" class="btn btn-link" onclick="mostrar('+ruta+','+tipo+','+avanceMaterial+','+material.id+');"><p class="h6 pull-left">'+ 
-                                                        '<span class="'+icono+'"></span>'+
+                        $('#content'+tema.id+'').append('<button style="width: 100%;'+recon+' border-radius: 0px;" class="btn btn-link" onclick="mostrar('+ruta+','+tipo+','+avanceMaterial+','+material.id+');"><p class="h6 pull-left">'+ 
+                                                        '<span class="'+icono+'"></span> &nbsp; '+
                                                         ''+material.descripcion_material+''+
                                                         `<br><small class="pull-left">${ (((material.avance || 0)/60).toFixed()) } | ${ (((material.duracion || 0)/60).toFixed())} min</small>`+
-                                                        '</p>'+recon+
+                                                        '</p>'+
                                                         // '<div class="progress" style="height:3px; width: 100%;">'+
                                                         // '<div class="progress-bar bg-info" role="progressbar" style="width: '+porcentaje+'%; height:5px;" aria-valuenow="'+porcentaje+'" aria-valuemin="0" aria-valuemax="100"></div>'+
                                                         // '</div>'+
@@ -461,7 +473,7 @@ input:checked + .slider:before {
                 dataType:"json",
                 success:function(resp)
                 {
-                    console.log(resp);
+                    
                     $("#imagen").append(
                         '<img class="card-img-top h-75 w-75" src="data:image/jpg;base64,'+ resp[0].foto+'" alt="Proyecto 1">'
                     );
