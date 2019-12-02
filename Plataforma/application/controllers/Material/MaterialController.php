@@ -54,13 +54,12 @@ class MaterialController extends CI_Controller {
         $alumno = $this->Inscrito_modal->obtenerAlumno( $idAlumno );
         $MejorValorados = $this->valoracion_Model->gerMejorValorado( $idTema );
         
+
         $Usuario = $this->AjustarParametrosUsuario($alumno);
 
         $samples = array();
 
         $labels = array();
-
-        
 
         foreach ($MejorValorados as $Mv ) {
 
@@ -75,6 +74,7 @@ class MaterialController extends CI_Controller {
 
         return  $classifier->predict([ $Usuario->eaauditivo, $Usuario->eacinestesico, $Usuario->eavisual ]);
         
+
     }
 
     //Optiene las lecciones por curso con sus respectivos temas y materiales

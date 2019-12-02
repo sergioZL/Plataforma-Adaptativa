@@ -146,7 +146,6 @@ class valoracion_Model extends CI_Model{
             
             $valorados = $this->getValoracionPorUsuarioTema( $Idusuario['idinscrito'], $idTema );
             
-            
             $MejorValorado = null;
             foreach ( $valorados as $valorado ) {
                 if( $MejorValorado == null){
@@ -157,6 +156,7 @@ class valoracion_Model extends CI_Model{
             }
             if($MejorValorado != null) array_push($valoraciones, $MejorValorado);
             
+
         }
         
         return $valoraciones;
