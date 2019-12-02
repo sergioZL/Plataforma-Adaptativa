@@ -1,6 +1,11 @@
 <?php
 
+require 'vendor/autoload.php';
+use Phpml\Classification\KNearestNeighbors;
+
 class MaterialController extends CI_Controller {
+    
+    
 
 	public function __construct() {
         parent::__construct();
@@ -21,6 +26,55 @@ class MaterialController extends CI_Controller {
     public function load_Material()
     {
         $this->load->view('Material/Material');
+    }
+    
+    
+    public function testMl(){
+        
+        $samples = [[0,1,0],[1,0,1],[1,0,2],[1,0,2],[1,0,1]]; // Cáda uno de los datos en el arreglo representa el tipo de aprendizaje de los alumnos
+
+        $labels = ['1','4','3','3','4']; // Aquí irán los id de los materiales
+        
+        $classifier = new KNearestNeighbors(); 
+
+        $classifier->train($samples, $labels); // Se entrena el algoritmo con los resultados de la consulta 
+        
+        echo $classifier->predict([0,0,1]); // Se realiza la predicción con los datos del nuevo alumno
+    }
+
+    // ===================================================================================================================================
+    //   Utiliza un algoritmo de regresión lineal (KNN) el cual recibe como parametro los materiales mejor valorados por los usuarios
+    //   En un determinado tema (parametro ingresado en $labels) y las caracteristicas de aprendizaje de los usuarios que valoraron este 
+    //   Material ( parametro ingresado en $samples ) y mediante las caracteristicas de aprendizaje del usuario actual predice cual 
+    //   podria ser el material del agrado de dicho usuario
+    // ===================================================================================================================================
+
+    public function RecomendacionesTema( $idAlumno, $idTema ){
+        
+        $alumno = $this->Inscrito_modal->obtenerAlumno( $idAlumno );
+        $MejorValorados = $this->valoracion_Model->gerMejorValorado( $idTema );
+        
+        $Usuario = $this->AjustarParametrosUsuario($alumno);
+
+        $samples = array();
+
+        $labels = array();
+
+        
+
+        foreach ($MejorValorados as $Mv ) {
+
+            array_push( $samples, [ $Mv['eaauditivo'], $Mv['eacinestesico'], $Mv['eavisual'] ]);
+
+            array_push( $labels, $Mv['idmaterial'] );
+        }
+
+        $classifier = new KNearestNeighbors(); 
+
+        $classifier->train($samples, $labels);
+
+        return  $classifier->predict([ $Usuario->eaauditivo, $Usuario->eacinestesico, $Usuario->eavisual ]);
+        
     }
 
     //Optiene las lecciones por curso con sus respectivos temas y materiales
@@ -60,6 +114,8 @@ class MaterialController extends CI_Controller {
             $topics = $this->Temas_modal->ConsultarTemasCursos($lec -> clave);
             foreach ( $topics as $topic ) {
 
+                $recomendacion = $this->RecomendacionesTema($idUsuario ,$topic['id']);
+                
 				$total = $this->Preguntas_Model->getTotalPreguntasPorTema($topic['id']);
 
 				$porcentResp = $this->Respuesta_modal->getRespuestasUsuarioTema($idUsuario,$topic['id']);
@@ -69,7 +125,7 @@ class MaterialController extends CI_Controller {
 				if($total != null){ 
 					$tema->evaluado = array('total' => $total[0]->total, 'porcentaje' => $porcentResp[0]->porc);
 				}
-
+                $tema -> recomendado = $recomendacion;
                 $tema -> id = $topic['id'];
                 $tema -> nombre = $topic['nombre'];
                 $tema -> secuencia = $topic['secuencia'];
@@ -441,5 +497,107 @@ class MaterialController extends CI_Controller {
         if( !$valoracion){
             return false;
         }else return true;
+    }
+
+    // ==================================================================================================================================
+    //   Regresa los parametros de aprendizaje ajustados a a la siguiente estructura [ auditivo, cinestesico, visual ] = [ 0, 0, 1]
+    // ==================================================================================================================================
+
+    function AjustarParametrosUsuario( $Usuario ){
+
+        $mayoritario = false;
+
+        if( $Usuario->eaauditivo > 28 ){
+
+            if( $Usuario->eaauditivo > 49 ){
+
+                if( $Usuario->eacinestesico > 39 ){
+                    
+                    $Usuario->eaauditivo = 2;
+                    $Usuario->eacinestesico = 1;
+                    $Usuario->eavisual = 0;
+                
+                } else if( $Usuario->eavisual > 39){
+
+                    $Usuario->eaauditivo = 2;
+                    $Usuario->eacinestesico = 0;
+                    $Usuario->eavisual = 1;
+                
+                } else {
+
+                    $Usuario->eaauditivo = 1;
+                    $Usuario->eacinestesico = 0;
+                    $Usuario->eavisual = 0; 
+
+                    $mayoritario = true;
+
+                }
+            } else if( $Usuario->eaauditivo > 36)  $Usuario->eaauditivo = 2;
+                else $Usuario->eaauditivo = 1;
+
+        } else $Usuario->eaauditivo = 0;
+
+        if( $Usuario->eacinestesico > 28 && $mayoritario == false ){
+
+            if( $Usuario->eacinestesico > 49 ){
+
+                if( $Usuario->eaauditivo  > 39 ){
+
+                    $Usuario->eaauditivo  = 1;
+                    $Usuario->eacinestesico = 2;
+                    $Usuario->eavisual = 0;
+
+                } else if( $Usuario->eavisual > 39 ){
+
+                    $Usuario->eaauditivo  = 0;
+                    $Usuario->eacinestesico = 2;
+                    $Usuario->eavisual = 1;
+
+                } else {
+
+                    $Usuario->eaauditivo = 0;
+                    $Usuario->eacinestesico = 1;
+                    $Usuario->eavisual = 0; 
+
+                    $mayoritario = true;
+
+                }
+
+            } else if ( $Usuario->eacinestesico> 36 ) $Usuario->eacinestesico = 2;
+            else $Usuario->eacinestesico = 1;
+        } else $Usuario->eacinestesico = 0;
+
+        if( $Usuario->eavisual > 28 && $mayoritario == false){
+
+            if( $Usuario->eavisual > 49 ){
+
+                if( $Usuario->eacinestesico > 39 ){
+                    
+                    $Usuario->eaauditivo = 0;
+                    $Usuario->eacinestesico = 1;
+                    $Usuario->eavisual = 2;
+                
+                } else if( $Usuario->eaauditivo > 39){
+
+                    $Usuario->eaauditivo = 1;
+                    $Usuario->eacinestesico = 0;
+                    $Usuario->eavisual = 2;
+                
+                } else {
+
+                    $Usuario->eaauditivo= 0;
+                    $Usuario->eacinestesico = 0;
+                    $Usuario->eavisual = 1; 
+
+                    $mayoritario = true;
+
+                }
+
+            }else if ( $Usuario->eavisual > 36 ) $Usuario->eavisual = 2;
+            else $Usuario->eavisual = 1;
+
+        } else $Usuario->eavisual = 0;
+        
+        return $Usuario;
     }
 }

@@ -151,6 +151,7 @@
 
             return $query->result_array();
         }
+        
         public function getValoracionMaterial($aTipo,$idMaterial){
             $this->db->select('sum(valoracion) as valoracion, valoracion.idmaterial');
             $this->db->from('valoracion');
