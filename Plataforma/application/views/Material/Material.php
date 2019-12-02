@@ -629,7 +629,7 @@ input:checked + .slider:before {
                 success:function(resp)
                 {   
                     temario = resp;
-                    
+                    console.log(resp);
                     temas(temario);
                 }
             });
