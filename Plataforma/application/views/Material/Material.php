@@ -720,7 +720,13 @@ input:checked + .slider:before {
 				        		break;
 				        }
                         let recon = '';
-                        if(p===0) recon = 'border-left: 3px solid green; background-color:#f0f0f0;';
+                        let recomendado = '';
+                        if( tema.recomendado == null ){
+                            if(p===0) recon = 'border-left: 3px solid green; background-color:#f0f0f0;';
+                        } else if( tema.recomendado == material.id) {
+                            recomendado = 'Recomendado';
+                            recon = 'border-left: 3px solid green; background-color:#f0f0f0;';
+                        }
                         let avanceMaterial = material.avance || 0;
                         let nombre = material.descripcion_material.split(' ').join('_');
                         let ruta = '&quot Material/'+material.clave_curso+'/'+leccion.clave+'/'+material.id_temas+'/'+nombre+'&quot';
@@ -729,7 +735,7 @@ input:checked + .slider:before {
                         $('#content'+tema.id+'').append('<button style="width: 100%; '+recon+' border-radius: 0px;" class="btn btn-link" onclick="mostrar('+ruta+','+tipo+','+material.id+','+avanceMaterial+');"><p class="h6 pull-left">'+ 
                                                         '<span class="'+icono+'"></span> &nbsp;'+
                                                         ''+material.descripcion_material+''+
-                                                        `<br><small class="pull-left text-dark">${ (((material.avance || 0)/60).toFixed()) } | ${ (((material.duracion || 0)/60).toFixed())} min</small>`+
+                                                        `<br><small class="pull-left text-dark">${ (((material.avance || 0)/60).toFixed()) } | ${ (((material.duracion || 0)/60).toFixed())} min &nbsp; &nbsp; &nbsp; <small> ${ recomendado }  </small> </small>`+
                                                         '</p>'+
                                                         // '<div class="progress" style="height:3px; width: 100%;">'+
                                                         // '<div class="progress-bar bg-info" role="progressbar" style="width: '+porcentaje+'%; height:5px;" aria-valuenow="'+porcentaje+'" aria-valuemin="0" aria-valuemax="100"></div>'+
