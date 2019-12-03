@@ -1,5 +1,8 @@
 <?php
 
+require 'vendor/autoload.php';
+use Phpml\Classification\KNearestNeighbors;
+
 class TemarioController extends CI_Controller {
 
 	public function __construct() {
@@ -13,6 +16,41 @@ class TemarioController extends CI_Controller {
 		$this->load->model('Material_Model');
 		$this->load->model('Preguntas_Model');
 		$this->load->model('Respuesta_modal');
+		$this->load->model('valoracion_Model');
+    }
+
+    // ===================================================================================================================================
+    //   Utiliza un algoritmo de regresión lineal (KNN) el cual recibe como parametro los materiales mejor valorados por los usuarios
+    //   En un determinado tema (parametro ingresado en $labels) y las caracteristicas de aprendizaje de los usuarios que valoraron este 
+    //   Material ( parametro ingresado en $samples ) y mediante las caracteristicas de aprendizaje del usuario actual predice cual 
+    //   podria ser el material del agrado de dicho usuario
+    // ===================================================================================================================================
+
+    public function RecomendacionesTema( $idAlumno, $idTema ){
+        
+        $alumno = $this->Inscrito_modal->obtenerAlumno( $idAlumno );
+        $MejorValorados = $this->valoracion_Model->gerMejorValorado( $idTema );
+        
+
+        $Usuario = $this->AjustarParametrosUsuario($alumno);
+
+        $samples = array();
+
+        $labels = array();
+
+        foreach ($MejorValorados as $Mv ) {
+
+            array_push( $samples, [ $Mv['eaauditivo'], $Mv['eacinestesico'], $Mv['eavisual'] ]);
+
+            array_push( $labels, $Mv['idmaterial'] );
+        }
+
+        $classifier = new KNearestNeighbors(); 
+
+        $classifier->train($samples, $labels);
+
+        return  $classifier->predict([ $Usuario->eaauditivo, $Usuario->eacinestesico, $Usuario->eavisual ]);
+        
     }
 
 	public function load_Temario()
@@ -22,6 +60,7 @@ class TemarioController extends CI_Controller {
 	//Optiene las lecciones por curso con sus respectivos temas y materiales
 	//para la ventana de temario 
     public function Temario(){
+        
         $id = $this ->  input -> get( 'IdCurso' );
         $idUsuario = $this -> input -> post( 'Usuario' );
         $duracion = $this->Avance_modal->ConsultarDuracion(  $id, $idUsuario);
@@ -56,6 +95,8 @@ class TemarioController extends CI_Controller {
             $topics = $this->Temas_modal->ConsultarTemasCursos($lec -> clave);
             foreach ( $topics as $topic ) {
 
+                $recomendacion = $this->RecomendacionesTema($idUsuario ,$topic['id']);
+
 				$total = $this->Preguntas_Model->getTotalPreguntasPorTema($topic['id']);
 
 				$porcentResp = $this->Respuesta_modal->getRespuestasUsuarioTema($idUsuario,$topic['id']);
@@ -66,6 +107,7 @@ class TemarioController extends CI_Controller {
 					$tema->evaluado = array('total' => $total[0]->total, 'porcentaje' => $porcentResp[0]->porc);
 				}
 
+                $tema -> recomendado = $recomendacion;
                 $tema -> id = $topic['id'];
                 $tema -> nombre = $topic['nombre'];
                 $tema -> secuencia = $topic['secuencia'];
@@ -245,25 +287,6 @@ class TemarioController extends CI_Controller {
 			</div>';
 		}
 		
-		// foreach ($Tema as $item) {
-
-		// 	echo $nose ='<div class="card rounded-0">
-        //         <h5 class="card-header">
-        //             <a data-toggle="collapse" href="#contenido'. $item['secuencia'] .'" aria-expanded="true"
-        //                 aria-controls="contenido'. $item['id'] .'" id="leccion'. $item['id'] .'" class="d-block">
-        //                 <i class="fa fa-chevron-down pull-right"></i>
-        //                 Tema #'. $item['secuencia'] .'
-        //             </a>
-        //         </h5>
-        //         <div id="contenido'. $item['secuencia'] .'" class="collapse" aria-labelledby="leccion'. $item['id_leccion'] .'">
-        //             <div class="card-body">
-        //                 <h6>Este es el contenido del Tema: '. $item['nombre'] .'</h6>
-        //                 <p>'. $item['descripcionTema'] .'</p>
-        //             </div>
-        //         </div>
-        //     </div>';
-			
-		// }
 	}
 
 	public function cargarMaterial($id){
@@ -271,4 +294,107 @@ class TemarioController extends CI_Controller {
 		$material = $this->Avance_modal->getavanceMaterialTema($id);
 		return $material;
     }
+
+    // ==================================================================================================================================
+    //   Regresa los parametros de aprendizaje ajustados a a la siguiente estructura [ auditivo, cinestesico, visual ] = [ 0, 0, 1]
+    // ==================================================================================================================================
+
+    function AjustarParametrosUsuario( $Usuario ){
+
+        $mayoritario = false;
+
+        if( $Usuario->eaauditivo > 28 ){
+
+            if( $Usuario->eaauditivo > 49 ){
+
+                if( $Usuario->eacinestesico > 39 ){
+                    
+                    $Usuario->eaauditivo = 2;
+                    $Usuario->eacinestesico = 1;
+                    $Usuario->eavisual = 0;
+                
+                } else if( $Usuario->eavisual > 39){
+
+                    $Usuario->eaauditivo = 2;
+                    $Usuario->eacinestesico = 0;
+                    $Usuario->eavisual = 1;
+                
+                } else {
+
+                    $Usuario->eaauditivo = 1;
+                    $Usuario->eacinestesico = 0;
+                    $Usuario->eavisual = 0; 
+
+                    $mayoritario = true;
+
+                }
+            } else if( $Usuario->eaauditivo > 36)  $Usuario->eaauditivo = 2;
+                else $Usuario->eaauditivo = 1;
+
+        } else $Usuario->eaauditivo = 0;
+
+        if( $Usuario->eacinestesico > 28 && $mayoritario == false ){
+
+            if( $Usuario->eacinestesico > 49 ){
+
+                if( $Usuario->eaauditivo  > 39 ){
+
+                    $Usuario->eaauditivo  = 1;
+                    $Usuario->eacinestesico = 2;
+                    $Usuario->eavisual = 0;
+
+                } else if( $Usuario->eavisual > 39 ){
+
+                    $Usuario->eaauditivo  = 0;
+                    $Usuario->eacinestesico = 2;
+                    $Usuario->eavisual = 1;
+
+                } else {
+
+                    $Usuario->eaauditivo = 0;
+                    $Usuario->eacinestesico = 1;
+                    $Usuario->eavisual = 0; 
+
+                    $mayoritario = true;
+
+                }
+
+            } else if ( $Usuario->eacinestesico> 36 ) $Usuario->eacinestesico = 2;
+            else $Usuario->eacinestesico = 1;
+        } else $Usuario->eacinestesico = 0;
+
+        if( $Usuario->eavisual > 28 && $mayoritario == false){
+
+            if( $Usuario->eavisual > 49 ){
+
+                if( $Usuario->eacinestesico > 39 ){
+                    
+                    $Usuario->eaauditivo = 0;
+                    $Usuario->eacinestesico = 1;
+                    $Usuario->eavisual = 2;
+                
+                } else if( $Usuario->eaauditivo > 39){
+
+                    $Usuario->eaauditivo = 1;
+                    $Usuario->eacinestesico = 0;
+                    $Usuario->eavisual = 2;
+                
+                } else {
+
+                    $Usuario->eaauditivo= 0;
+                    $Usuario->eacinestesico = 0;
+                    $Usuario->eavisual = 1; 
+
+                    $mayoritario = true;
+
+                }
+
+            }else if ( $Usuario->eavisual > 36 ) $Usuario->eavisual = 2;
+            else $Usuario->eavisual = 1;
+
+        } else $Usuario->eavisual = 0;
+        
+        return $Usuario;
+    }
+
 }

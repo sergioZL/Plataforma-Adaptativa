@@ -289,13 +289,13 @@ input:checked + .slider:before {
             icono = '';
 			switch (tipo) {
 				case '1':
-					icono = 'fas fa-play-circle fa-2x';
+					icono = 'fas fa-play-circle fa-sm';
 					break;
 				case '2':
-					icono = 'fas fas fa-volume-up fa-2x';
+					icono = 'fas fas fa-volume-up fa-sm';
 					break;
 				case '3':
-					icono = 'fas fa-file-pdf fa-2x';
+					icono = 'fas fa-file-pdf fa-sm';
 					break;
 				default:
 					
@@ -303,7 +303,7 @@ input:checked + .slider:before {
 			}
             
             //Los datos obtenidos se guardan en el boton que muestra el ultimo material visitado de este curso
-            $('#boton').append('<br><button type="button" style="color:#000000; text-decoration:none;" class="btn btn-link" onclick="mostrar( &quot '+uta[0]+'&quot,'+ult.tipo+','+ava+','+idmat+');"> <h2 id="bot">'+'<small><span class="'+icono+'"></span></small> &nbsp; '+name+'</h2></button>');
+            $('#boton').append('<br><button type="button" style="color:#000000; text-decoration:none;" class="btn btn-link" onclick="mostrar( &quot '+uta[0]+'&quot,'+ult.tipo+','+ava+','+idmat+');">  <h2 id="bot"> '+'<span class="'+icono+'"></span> '+name+'</h2></button>');
         }
 
         //optiene la clave de usuario actual
@@ -400,7 +400,7 @@ input:checked + .slider:before {
                                                                 '</div>'+
                                                                 '</div>');
 
-                                                                var a = tema.materials;
+                        var a = tema.materials;
                         var swapp;
                         var n = a.length-1;
                         var x=a;
@@ -439,9 +439,17 @@ input:checked + .slider:before {
 				        	default:
 				        		
 				        		break;
-				        }
+                        }
+                        
                         let recon = '';
-                        if(p===0) recon = 'border-left: 3px solid green; background-color:#f0f0f0;';
+                        let recomendado = '';
+                        if( tema.recomendado == null ){
+                            if(p===0) recon = 'border-left: 3px solid green; background-color:#f0f0f0;';
+                        } else if( tema.recomendado == material.id) {
+                            recomendado = 'Recomendado';
+                            recon = 'border-left: 3px solid green; background-color:#f0f0f0;';
+                        }
+
                         let avanceMaterial = material.avance || 0;
                         let nombre = material.descripcion_material.split(' ').join('_');
                         let ruta = '&quot Material/'+material.clave_curso+'/'+leccion.clave+'/'+material.id_temas+'/'+nombre+'&quot';
@@ -450,7 +458,7 @@ input:checked + .slider:before {
                         $('#content'+tema.id+'').append('<button style="width: 100%;'+recon+' border-radius: 0px;" class="btn btn-link" onclick="mostrar('+ruta+','+tipo+','+avanceMaterial+','+material.id+');"><p class="h6 pull-left">'+ 
                                                         '<span class="'+icono+'"></span> &nbsp; '+
                                                         ''+material.descripcion_material+''+
-                                                        `<br><small class="pull-left">${ (((material.avance || 0)/60).toFixed()) } | ${ (((material.duracion || 0)/60).toFixed())} min</small>`+
+                                                        `<br><small class="pull-left">${ (((material.avance || 0)/60).toFixed()) } | ${ (((material.duracion || 0)/60).toFixed())} min &nbsp; &nbsp; &nbsp; <small> ${ recomendado }  </small> </small>`+
                                                         '</p>'+
                                                         // '<div class="progress" style="height:3px; width: 100%;">'+
                                                         // '<div class="progress-bar bg-info" role="progressbar" style="width: '+porcentaje+'%; height:5px;" aria-valuenow="'+porcentaje+'" aria-valuemin="0" aria-valuemax="100"></div>'+
