@@ -271,6 +271,8 @@ input:checked + .slider:before {
     let Ultimo;
     let claveUsuario = '<?php echo $varsesion ?>';
     let reconmendButton = false;
+
+
     function mostrarPop() {
         $('#myPopup').removeClass('show');
         $("#Leccion").html('');
@@ -441,6 +443,7 @@ input:checked + .slider:before {
                                                                    '</div>');
 
                     }
+
  
                     let p = 0;
 
