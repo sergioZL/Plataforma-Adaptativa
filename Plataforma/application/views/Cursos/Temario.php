@@ -309,7 +309,7 @@ input:checked + .slider:before {
 			    }
                 $('#boton').html('');
                 //Los datos obtenidos se guardan en el boton que muestra el ultimo material visitado de este curso
-                $('#boton').append('<br><button type="button" style="margin: 0px; padding:0px; color:#000000; text-decoration:none;" class="btn btn-link" onclick="mostrar( &quot '+uta[0]+'&quot,'+ult.tipo+','+ava+','+idmat+');">  <h2 style="margin: 0px; padding:0px;" id="bot"> '+'<span class="'+icono+'"></span> '+name+'</h2>'+
+                $('#boton').append('<br><button type="button" style="margin: 0px; padding:0px; color:#000000; text-decoration:none;" class="btn btn-link" onclick="mostrar( &quot '+uta[0].split(' ').join('_') +'&quot,'+ult.tipo+','+ava+','+idmat+');">  <h2 style="margin: 0px; padding:0px;" id="bot"> '+'<span class="'+icono+'"></span> '+name+'</h2>'+
                                     ` &nbsp;  <small>  &nbsp; &nbsp; ${ ((( ava || 0)/60).toFixed()) } | ${ (((ult.duracion || 0)/60).toFixed())} min  &nbsp; &nbsp;   continuar </small>`+
                                     '</button>');
                 
@@ -388,6 +388,7 @@ input:checked + .slider:before {
 
                 for (const tema of leccion.temas) {
                     let ocultar = false;
+                    let rec = tema.recomendado || 'nada';
                     if ($('#check_id').is(":checked")){
                         let calificacion = 0;
                         if(tema.evaluado){
@@ -395,7 +396,7 @@ input:checked + .slider:before {
                         }
                         if(calificacion > 9) ocultar = true;
 
-                        let rec = tema.recomendado || 'nada';
+                        
                        
 
                         var a = tema.materials;
@@ -450,12 +451,12 @@ input:checked + .slider:before {
                     for (const material of tema.materials) {
 
                         if(!ocultar){
-                            if(Ultimo == null || (claveUsuario != ult.claveUsuario)  ){ //Si no habia un ultimo en local o la clave de usuario del ultimo guardado es diferente al usario actual
+                            if(Ultimo == null || (claveUsuario != ult.claveUsuario) || (ult.avance === ult.duracion ) ){ //Si no habia un ultimo en local o la clave de usuario del ultimo guardado es diferente al usario actual
                                 
                                 if(!reconmendButton ) {
                                     but = material.descripcion_material.split(".");
                                     name = but[0].replace(/_/g, ' ');
-                                    let ru = '&quot Material/'+material.clave_curso+'/'+leccion.clave+'/'+material.id_temas+'/'+name+'&quot';
+                                    let ru = 'Material/'+material.clave_curso+'/'+leccion.clave+'/'+material.id_temas+'/'+name;
                                     uta = ru.split(".");
                                     ava =  material.avance || 0;
                                     idmat = material.id;
@@ -476,11 +477,12 @@ input:checked + .slider:before {
 		                    	    		break;
 		                    	    }
                                     $('#boton').html('');
+                                    console.log(uta);
                                     //Los datos obtenidos se guardan en el boton que muestra el ultimo material visitado de este curso
-                                    $('#boton').append('<br><button type="button" style="color:#000000; text-decoration:none;" class="btn btn-link" onclick="mostrar(  '+uta[0]+' ,'+tipo+','+ava+','+idmat+');">  <h2 style="margin: 0px; padding:0px;" id="bot"> '+'<span class="'+icono+'"></span> '+name+'</h2>'+
+                                    $('#boton').append('<br><button type="button" style="color:#000000; text-decoration:none;" class="btn btn-link" onclick="mostrar( &quot '+uta[0].split(' ').join('_') +'&quot ,'+tipo+','+ava+','+idmat+');">  <h2 style="margin: 0px; padding:0px;" id="bot"> '+'<span class="'+icono+'"></span> '+name+'</h2>'+
                                                         ` &nbsp;  <small>  &nbsp; &nbsp; Recomendado  &nbsp; &nbsp; </small>`+
                                                         '</button>');
-                                    reconmendButton = true;
+                                    if(material.conpletado === "0" || ( material.conpletado == null && rec == idmat ) ) reconmendButton = true;
                                 } 
                             }
                         }
