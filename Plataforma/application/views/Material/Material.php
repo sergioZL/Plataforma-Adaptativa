@@ -344,7 +344,7 @@ input:checked + .slider:before {
             
                 <div class="ml-1">
                     <!-- switchButton -->
-                    Personalizar 
+                    Aplicar recomendaciones 
                 <label class="switch">
                     <input id="check_id" type="checkbox" onclick="mostrarPop();" checked >
                     <span class="slider round"></span>
@@ -636,8 +636,11 @@ input:checked + .slider:before {
             
         }
 
-        function temas(lecciones)
+        function temas(lecc)
         {
+            let lecciones = lecc;
+            console.log(lecciones);
+            
             for (const leccion of lecciones) {    
                 $("#Leccion").append('<div class="card leccion shadow-sm mb-3 rounded-0 ">'+
                     '<h6 class="card-header bg-white">'+
@@ -656,13 +659,40 @@ input:checked + .slider:before {
                 );
                 for (const tema of leccion.temas) {
                     let ocultar = false;
-                    if ($('#check_id').is(":checked"))
-                    {
+                    if ($('#check_id').is(":checked")){
+
                         let calificacion = 0;
                         if(tema.evaluado){
                             calificacion =( (tema.evaluado.porcentaje * 10) /  tema.evaluado.total/100);
                         }
                         if(calificacion > 9) ocultar = true;
+
+                        let rec = tema.recomendado || 'nada';
+
+                        var a = tema.materials;
+                        var swapp;
+                        var n = a.length-1;
+                        var x=a;
+                        do {
+                            swapp = false;
+                            for (var i=0; i < n; i++)
+                            {
+                                if(tema.materials[i].valoracion){
+                                    if ( x[i].valoracion.valoracion < x[i+1].valoracion.valoracion || ( rec ==  x[i+1].id) )
+                                    {
+                                        if (x[i].id != rec){                                        
+                                            var temp = x[i];
+                                            x[i] = x[i+1];
+                                            x[i+1] = temp;
+                                            swapp = true;
+                                        }
+                                    }
+                                }  
+                            }
+                            n--;
+                        } while (swapp);
+                        tema.materials = x; 
+
                     }
                     if(!ocultar) $('#contenido'+leccion.secuencia+'').append('<div class="card rounded-0"  >'+
                                                                     '<h5 class="card-header" style="height: 70px;">'+
@@ -679,27 +709,7 @@ input:checked + .slider:before {
                                                                 '</div>'+
                                                                 '</div>');  
                     
-                        var a = tema.materials;
-                        var swapp;
-                        var n = a.length-1;
-                        var x=a;
-                        do {
-                            swapp = false;
-                            for (var i=0; i < n; i++)
-                            {
-                                if(tema.materials[i].valoracion){
-                                    if (x[i].valoracion.valoracion < x[i+1].valoracion.valoracion)
-                                    {
-                                       var temp = x[i];
-                                       x[i] = x[i+1];
-                                       x[i+1] = temp;
-                                       swapp = true;
-                                    }
-                                }  
-                            }
-                            n--;
-                        } while (swapp);
-                        tema.materials = x; 
+
                         let p = 0;
                     for (const material of tema.materials) {
 
@@ -721,11 +731,13 @@ input:checked + .slider:before {
 				        }
                         let recon = '';
                         let recomendado = '';
-                        if( tema.recomendado == null ){
-                            if(p===0) recon = 'border-left: 3px solid green; background-color:#f0f0f0;';
-                        } else if( tema.recomendado == material.id) {
-                            recomendado = 'Recomendado';
-                            recon = 'border-left: 3px solid green; background-color:#f0f0f0;';
+                        if ($('#check_id').is(":checked")){
+                            if( tema.recomendado == null ){
+                                if(p===0) recon = 'border-left: 3px solid green; background-color:#f0f0f0;';
+                            } else if( tema.recomendado == material.id) {
+                                recomendado = 'Recomendado';
+                                recon = 'border-left: 3px solid green; background-color:#f0f0f0;';
+                            }
                         }
                         let avanceMaterial = material.avance || 0;
                         let nombre = material.descripcion_material.split(' ').join('_');
@@ -836,7 +848,7 @@ input:checked + .slider:before {
             var ultimo = '';
             switch (tipos) {
                 case 1:
-                    var rout = $('#vid').attr('src');
+                    var rout = $('#vid').attr('src').split(' ').join('_');
                     terial= $('#vid').attr('clave');
                     if(terial) claveMaterial = terial;
                     console.log('Clave material',claveMaterial);
@@ -870,7 +882,7 @@ input:checked + .slider:before {
 
                     break;
                 case 2:
-                    var rout = $('#aud').attr('src');
+                    var rout = $('#aud').attr('src').split(' ').join('_');
                     var terial= $('#aud').attr('clave');
                     if(terial) claveMaterial = terial;
                     console.log('Clave material',claveMaterial);
@@ -902,7 +914,7 @@ input:checked + .slider:before {
                     });
                     break;
                 case 3:
-                     var rout = $('#pdf').attr('src');
+                     var rout = $('#pdf').attr('src').split(' ').join('_');
                      var currentPageNum = $('#pdf').contents().find('#input').val();
                       var res = rout.split("/");  
                       var ultimo = {

@@ -243,7 +243,7 @@ input:checked + .slider:before {
 <div class="popup" >
     <div class="ml-5">
         <!-- switchButton -->
-        <h4>Personalizar recomendaciones
+        <h4>Aplicar recomendaciones 
         <label class="switch">
             <input id="check_id" type="checkbox" onclick="mostrarPop();" checked >
             <span class="slider round"></span>
@@ -268,6 +268,7 @@ input:checked + .slider:before {
 
     <script>
     let temario;
+
     function mostrarPop() {
         $('#myPopup').removeClass('show');
         $("#Leccion").html('');
@@ -346,15 +347,17 @@ input:checked + .slider:before {
                 {
                     temario = resp;
                     var n = resp.length;
-
                     temas(temario);
 
                 }
             });
         }
 
-        function temas(lecciones)
+        function temas(lecc)
         {
+            let lecciones = lecc;
+            console.log(lecciones);
+
             for (const leccion of lecciones) {    
                     $("#Leccion").append(
                         '<div class="card leccion shadow-sm mb-3 rounded-0" style="background-color:#07ad90;">'+
@@ -376,13 +379,42 @@ input:checked + .slider:before {
 
                 for (const tema of leccion.temas) {
                     let ocultar = false;
-                    if ($('#check_id').is(":checked"))
-                    {
+                    if ($('#check_id').is(":checked")){
                         let calificacion = 0;
                         if(tema.evaluado){
                             calificacion =( (tema.evaluado.porcentaje * 10) /  tema.evaluado.total/100);
                         }
                         if(calificacion > 9) ocultar = true;
+
+                        let rec = tema.recomendado || 'nada';
+                       
+
+                        var a = tema.materials;
+                        var swapp;
+                        var n = a.length-1;
+                        var x=a;
+                        do {
+                            swapp = false;
+                            for (var i=0; i < n; i++)
+                            {
+                                if(tema.materials[i].valoracion){
+                                    
+                                        
+                                    if ( x[i].valoracion.valoracion < x[i+1].valoracion.valoracion  || ( rec ==  x[i+1].id))
+                                    {
+                                        if (x[i].id != rec){
+                                            var temp = x[i];
+                                            x[i] = x[i+1];
+                                            x[i+1] = temp;
+                                            swapp = true;
+                                        }
+                                    }
+                                }  
+                            }
+                            n--;
+                        } while (swapp);
+                        tema.materials = x;
+
                     }
 
                     if(!ocultar) $('#contenido'+leccion.secuencia+'').append('<div class="card rounded-0"  >'+
@@ -400,28 +432,8 @@ input:checked + .slider:before {
                                                                 '</div>'+
                                                                 '</div>');
 
-                        var a = tema.materials;
-                        var swapp;
-                        var n = a.length-1;
-                        var x=a;
-                        do {
-                            swapp = false;
-                            for (var i=0; i < n; i++)
-                            {
-                                if(tema.materials[i].valoracion){
-                                    if (x[i].valoracion.valoracion < x[i+1].valoracion.valoracion)
-                                    {
-                                       var temp = x[i];
-                                       x[i] = x[i+1];
-                                       x[i+1] = temp;
-                                       swapp = true;
-                                    }
-                                }  
-                            }
-                            n--;
-                        } while (swapp);
-                        tema.materials = x; 
-                        let p = 0;
+ 
+                    let p = 0;
 
                     for (const material of tema.materials) {
                         tipo = material.tipo_material;
@@ -443,13 +455,14 @@ input:checked + .slider:before {
                         
                         let recon = '';
                         let recomendado = '';
-                        if( tema.recomendado == null ){
-                            if(p===0) recon = 'border-left: 3px solid green; background-color:#f0f0f0;';
-                        } else if( tema.recomendado == material.id) {
-                            recomendado = 'Recomendado';
-                            recon = 'border-left: 3px solid green; background-color:#f0f0f0;';
+                        if ($('#check_id').is(":checked")){
+                            if( tema.recomendado == null ){
+                                if(p===0) recon = 'border-left: 3px solid green; background-color:#f0f0f0;';
+                            } else if( tema.recomendado == material.id) {
+                                recomendado = 'Recomendado';
+                                recon = 'border-left: 3px solid green; background-color:#f0f0f0;';
+                            }
                         }
-
                         let avanceMaterial = material.avance || 0;
                         let nombre = material.descripcion_material.split(' ').join('_');
                         let ruta = '&quot Material/'+material.clave_curso+'/'+leccion.clave+'/'+material.id_temas+'/'+nombre+'&quot';
