@@ -243,7 +243,7 @@ input:checked + .slider:before {
 <div class="popup" >
     <div class="ml-5">
         <!-- switchButton -->
-        <h4>Personalizar recomendaciones
+        <h4>Aplicar recomendaciones 
         <label class="switch">
             <input id="check_id" type="checkbox" onclick="mostrarPop();" checked >
             <span class="slider round"></span>
@@ -268,6 +268,9 @@ input:checked + .slider:before {
 
     <script>
     let temario;
+    let Ultimo;
+    let claveUsuario = '<?php echo $varsesion ?>';
+    let reconmendButton = false;
     function mostrarPop() {
         $('#myPopup').removeClass('show');
         $("#Leccion").html('');
@@ -276,34 +279,39 @@ input:checked + .slider:before {
     var but = 'Comenzar desde el principio'; //Este mensaje se mostrara al usuario por default si este no ha revisado algun material antes
     $(document).ready(function () {
         var clave = '<?php echo $_GET['curso'];?>'; //Almacena la clave de curso al que pertenece los temas
-        var Ultimo = window.localStorage.getItem(clave); //Se optiene el ultimo material visitado por medio del local storage
+        Ultimo = window.localStorage.getItem(clave); //Se optiene el ultimo material visitado por medio del local storage
         if(Ultimo != null){ //Si ya se tenia guardado el ultimo material visitdo en el localstorage  se obtienen los datos de este objeto
             ult = JSON.parse(Ultimo);
-            but = ult.nombre.split(".");
-            ruta = ult.url.substring(50);
-            uta = ruta.split(".");
-            ava = ult.avance;
-            idmat = ult.material;
-            name = but[0].replace(/_/g, ' ');
-            tipo = ''+ult.tipo+'';
-            icono = '';
-			switch (tipo) {
-				case '1':
-					icono = 'fas fa-play-circle fa-sm';
-					break;
-				case '2':
-					icono = 'fas fas fa-volume-up fa-sm';
-					break;
-				case '3':
-					icono = 'fas fa-file-pdf fa-sm';
-					break;
-				default:
-					
-					break;
-			}
-            
-            //Los datos obtenidos se guardan en el boton que muestra el ultimo material visitado de este curso
-            $('#boton').append('<br><button type="button" style="color:#000000; text-decoration:none;" class="btn btn-link" onclick="mostrar( &quot '+uta[0]+'&quot,'+ult.tipo+','+ava+','+idmat+');">  <h2 id="bot"> '+'<span class="'+icono+'"></span> '+name+'</h2></button>');
+            if(claveUsuario == ult.claveUsuario) {
+                but = ult.nombre.split(".");
+                ruta = ult.url.substring(50);
+                uta = ruta.split(".");
+                ava = ult.avance;
+                idmat = ult.material;
+                name = but[0].replace(/_/g, ' ');
+                tipo = ''+ult.tipo+'';
+                icono = '';
+			    switch (tipo) {
+			    	case '1':
+			    		icono = 'fas fa-play-circle fa-sm';
+			    		break;
+			    	case '2':
+			    		icono = 'fas fas fa-volume-up fa-sm';
+			    		break;
+			    	case '3':
+			    		icono = 'fas fa-file-pdf fa-sm';
+			    		break;
+			    	default:
+                    
+			    		break;
+			    }
+                $('#boton').html('');
+                //Los datos obtenidos se guardan en el boton que muestra el ultimo material visitado de este curso
+                $('#boton').append('<br><button type="button" style="margin: 0px; padding:0px; color:#000000; text-decoration:none;" class="btn btn-link" onclick="mostrar( &quot '+uta[0]+'&quot,'+ult.tipo+','+ava+','+idmat+');">  <h2 style="margin: 0px; padding:0px;" id="bot"> '+'<span class="'+icono+'"></span> '+name+'</h2>'+
+                                    ` &nbsp;  <small>  &nbsp; &nbsp; ${ ((( ava || 0)/60).toFixed()) } | ${ (((ult.duracion || 0)/60).toFixed())} min  &nbsp; &nbsp;   continuar </small>`+
+                                    '</button>');
+                
+            } 
         }
 
         //optiene la clave de usuario actual
@@ -346,21 +354,23 @@ input:checked + .slider:before {
                 {
                     temario = resp;
                     var n = resp.length;
-
                     temas(temario);
 
                 }
             });
         }
 
-        function temas(lecciones)
+        function temas(lecc)
         {
+            let lecciones = lecc;
+            console.log(lecciones);
+
             for (const leccion of lecciones) {    
                     $("#Leccion").append(
                         '<div class="card leccion shadow-sm mb-3 rounded-0" style="background-color:#07ad90;">'+
                             '<h5 class="card-header">'+
                                 '<!--Cabecera del menu desplegable-->'+
-                                '<a data-toggle="collapse" href="#contenido' + leccion.secuencia+ '" aria-expanded="true" aria-controls="contenidoUno"'+
+                                '<a data-toggle="collapse" href="#contenido' + leccion.secuencia+ '" aria-expanded="true" aria-controls="contenido' + leccion.secuencia+ '"'+
                                     'id="leccion' + leccion.secuencia+ '" class="d-block">'+
                                     '<i class="fa fa-chevron-down pull-right"></i>'
                                     + leccion.secuencia +'. '+ leccion.nombre +
@@ -376,29 +386,15 @@ input:checked + .slider:before {
 
                 for (const tema of leccion.temas) {
                     let ocultar = false;
-                    if ($('#check_id').is(":checked"))
-                    {
+                    if ($('#check_id').is(":checked")){
                         let calificacion = 0;
                         if(tema.evaluado){
                             calificacion =( (tema.evaluado.porcentaje * 10) /  tema.evaluado.total/100);
                         }
                         if(calificacion > 9) ocultar = true;
-                    }
 
-                    if(!ocultar) $('#contenido'+leccion.secuencia+'').append('<div class="card rounded-0"  >'+
-                                                                    '<h5 class="card-header" style="height: 70px;">'+
-                                                                        '<a data-toggle="collapse" href="#content'+tema.id+'" aria-expanded="true"'+
-                                                                            'aria-controls="content'+tema.id+'" id="Tema'+tema.id+'" class="d-block">'+
-                                                                            '<i class="fa fa-chevron-down pull-right"></i>'+
-                                                                            '<p class="font-weight-bold temas"><small> <span class=" badge badge-primary badge-pill pull-right">'+tema.avance+'%</span>Tema '+tema.secuencia+': '+tema.nombre+'</small><p>'+
-                                                                        '</a>'+
-                                                                    '</h5>'+
-                                                                '<div id="content'+tema.id+'" class="collapse carta-body" aria-labelledby="Tema'+tema.id+'">'+
-                                                                '<!--<div class="card-body carta-body" style="width: 100%;">'+
-                
-                                                                '</div>-->'+
-                                                                '</div>'+
-                                                                '</div>');
+                        let rec = tema.recomendado || 'nada';
+                       
 
                         var a = tema.materials;
                         var swapp;
@@ -409,21 +405,85 @@ input:checked + .slider:before {
                             for (var i=0; i < n; i++)
                             {
                                 if(tema.materials[i].valoracion){
-                                    if (x[i].valoracion.valoracion < x[i+1].valoracion.valoracion)
+                                    
+                                        
+                                    if ( x[i].valoracion.valoracion < x[i+1].valoracion.valoracion  || ( rec ==  x[i+1].id))
                                     {
-                                       var temp = x[i];
-                                       x[i] = x[i+1];
-                                       x[i+1] = temp;
-                                       swapp = true;
+                                        if (x[i].id != rec){
+                                            var temp = x[i];
+                                            x[i] = x[i+1];
+                                            x[i+1] = temp;
+                                            swapp = true;
+                                        }
                                     }
                                 }  
                             }
                             n--;
                         } while (swapp);
-                        tema.materials = x; 
-                        let p = 0;
+                        tema.materials = x;
+
+                    }
+
+                    if(!ocultar){
+                        $('#contenido'+leccion.secuencia+'').append('<div class="card rounded-0"  >'+
+                                                                       '<h5 class="card-header" style="height: 70px;">'+
+                                                                           '<a data-toggle="collapse" href="#content'+tema.id+'" aria-expanded="true"'+
+                                                                               'aria-controls="content'+tema.id+'" id="Tema'+tema.id+'" class="d-block">'+
+                                                                               '<i class="fa fa-chevron-down pull-right"></i>'+
+                                                                               '<p class="font-weight-bold temas"><small> <span class=" badge badge-primary badge-pill pull-right">'+tema.avance+'%</span>Tema '+tema.secuencia+': '+tema.nombre+'</small><p>'+
+                                                                           '</a>'+
+                                                                       '</h5>'+
+                                                                   '<div id="content'+tema.id+'" class="collapse carta-body" aria-labelledby="Tema'+tema.id+'">'+
+                                                                   '<!--<div class="card-body carta-body" style="width: 100%;">'+
+                        
+                                                                   '</div>-->'+
+                                                                   '</div>'+
+                                                                   '</div>');
+
+                    }
+ 
+                    let p = 0;
 
                     for (const material of tema.materials) {
+
+                        if(!ocultar){
+                            if(Ultimo == null || (claveUsuario != ult.claveUsuario)  ){ //Si no habia un ultimo en local o la clave de usuario del ultimo guardado es diferente al usario actual
+                                
+                                if(!reconmendButton ) {
+                                    but = material.descripcion_material.split(".");
+                                    name = but[0].replace(/_/g, ' ');
+                                    let ru = '&quot Material/'+material.clave_curso+'/'+leccion.clave+'/'+material.id_temas+'/'+name+'&quot';
+                                    uta = ru.split(".");
+                                    ava =  material.avance || 0;
+                                    idmat = material.id;
+                                    tipo = ''+material.tipo_material+'';
+                                    icono = '';
+		                    	    switch (tipo) {
+		                    	    	case '1':
+		                    	    		icono = 'fas fa-play-circle fa-sm';
+		                    	    		break;
+		                    	    	case '2':
+		                    	    		icono = 'fas fas fa-volume-up fa-sm';
+		                    	    		break;
+		                    	    	case '3':
+		                    	    		icono = 'fas fa-file-pdf fa-sm';
+		                    	    		break;
+		                    	    	default:
+                                        
+		                    	    		break;
+		                    	    }
+                                    $('#boton').html('');
+                                    //Los datos obtenidos se guardan en el boton que muestra el ultimo material visitado de este curso
+                                    $('#boton').append('<br><button type="button" style="color:#000000; text-decoration:none;" class="btn btn-link" onclick="mostrar(  '+uta[0]+' ,'+tipo+','+ava+','+idmat+');">  <h2 style="margin: 0px; padding:0px;" id="bot"> '+'<span class="'+icono+'"></span> '+name+'</h2>'+
+                                                        ` &nbsp;  <small>  &nbsp; &nbsp; Recomendado  &nbsp; &nbsp; </small>`+
+                                                        '</button>');
+                                    reconmendButton = true;
+                                } 
+                            }
+                        }
+
+
+
                         tipo = material.tipo_material;
                         icono = '';
 				        switch (tipo) {
@@ -443,13 +503,14 @@ input:checked + .slider:before {
                         
                         let recon = '';
                         let recomendado = '';
-                        if( tema.recomendado == null ){
-                            if(p===0) recon = 'border-left: 3px solid green; background-color:#f0f0f0;';
-                        } else if( tema.recomendado == material.id) {
-                            recomendado = 'Recomendado';
-                            recon = 'border-left: 3px solid green; background-color:#f0f0f0;';
+                        if ($('#check_id').is(":checked")){
+                            if( tema.recomendado == null ){
+                                if(p===0) recon = 'border-left: 3px solid green; background-color:#f0f0f0;';
+                            } else if( tema.recomendado == material.id) {
+                                recomendado = 'Recomendado';
+                                recon = 'border-left: 3px solid green; background-color:#f0f0f0;';
+                            }
                         }
-
                         let avanceMaterial = material.avance || 0;
                         let nombre = material.descripcion_material.split(' ').join('_');
                         let ruta = '&quot Material/'+material.clave_curso+'/'+leccion.clave+'/'+material.id_temas+'/'+nombre+'&quot';
@@ -460,9 +521,6 @@ input:checked + .slider:before {
                                                         ''+material.descripcion_material+''+
                                                         `<br><small class="pull-left">${ (((material.avance || 0)/60).toFixed()) } | ${ (((material.duracion || 0)/60).toFixed())} min &nbsp; &nbsp; &nbsp; <small> ${ recomendado }  </small> </small>`+
                                                         '</p>'+
-                                                        // '<div class="progress" style="height:3px; width: 100%;">'+
-                                                        // '<div class="progress-bar bg-info" role="progressbar" style="width: '+porcentaje+'%; height:5px;" aria-valuenow="'+porcentaje+'" aria-valuemin="0" aria-valuemax="100"></div>'+
-                                                        // '</div>'+
                                                         '</button><br>');
                                                         p++;
                     }

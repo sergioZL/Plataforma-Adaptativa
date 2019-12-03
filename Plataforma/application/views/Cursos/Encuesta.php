@@ -138,8 +138,8 @@
                         break;
                 }
             });
-            visual = (visual * 100)/40;
-            auditivo = (auditivo * 100)/40;
+            visual      = (visual * 100)/40;
+            auditivo    = (auditivo * 100)/40;
             cinestesico = (cinestesico * 100)/40;
             console.log(totalPreguntas);
             if(totalPreguntas == 40){
@@ -152,7 +152,14 @@
                     window.location.replace("<?php echo site_url('alumno/MisCursos'); ?>");
                 }
             });
-            }else alert('¡ups dejaste algunas preguntas sin contestar!');
+            }else{
+                alert('¡ups dejaste algunas preguntas sin contestar!');
+
+                visual      = 0;
+                auditivo    = 0; 
+                cinestesico = 0; 
+
+            }
             totalPreguntas = 0;
             console.log("visual "+visual+'%');
             console.log("auditivo "+auditivo+'%');

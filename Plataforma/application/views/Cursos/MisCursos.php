@@ -270,15 +270,17 @@
 
             if(Ultimo != null){ //si existe se carga en un objeto y se accede a los datos de la variable
                 ult  = JSON.parse(Ultimo); //Se convierte el JsonString a objeto para poder disponer de sus datos
-                if(claveUsuario === ult.claveUsuario) esSession = true;
-                ruta = ult.url.substring(50);//contiene la ruta del material
-                uta  = ruta.split(".");//se divide en un vector para eliminar la extencion del archivo
-                ava  = ult.avance;//contiene el avance del material visitado
-                tipo = ult.tipo;//contiene el tipo de material que se esta bisitando existen solo 3 tipos
-                claveMat = ult.material;
+                if(claveUsuario === ult.claveUsuario) {
+                    esSession = true;
+                    ruta = ult.url.substring(50);//contiene la ruta del material
+                    uta  = ruta.split(".");//se divide en un vector para eliminar la extencion del archivo
+                    ava  = ult.avance;//contiene el avance del material visitado
+                    tipo = ult.tipo;//contiene el tipo de material que se esta bisitando existen solo 3 tipos
+                    claveMat = ult.material;
+                }
             }
             console.log(esSession);
-            
+            console.log('Ultimo guardado en local',ult);
             if(Ultimo == null || !esSession){/**Si no existe un ultimo material visitado de este curso se consulta a la base de datos
                       Cual es el ultimo material visto del curso para que este pueda ser mostrado
                        */
@@ -289,7 +291,7 @@
                      async:false,
                      success: function (response) {
                         if(response != 'null'){
-                         console.log(response );
+                         console.log('Utimo guardado en base de datos', response );
                     
                          obj = JSON.parse(response);
                          claveMat = obj.id;
@@ -308,6 +310,7 @@
                                 data: {claveCurso:id},
                                 async:false,
                                 success: function (response) {
+                                    console.log( 'Primero en base', JSON.parse(response));
                                     obj = JSON.parse(response);
                                     claveMat = obj.id;
                                     ruta = "Material/"+obj.clave_curso+"/"+obj.leccion+"/"+obj.tema+"/"+obj.Descripcion+".mpg";
@@ -322,8 +325,8 @@
             }
             var url = '<?php echo site_url();?>/Material?curso='+id+'';
             
-            var form = $('<form action="' + url + '" method="post">' +
-              '<input type="text" name="materialSend" value="' + uta[0] + '" />' +
+            var form = $('<form class="d-none" action="' + url + '" method="post">' +
+              '<input type="text" name="materialSend" value="' + uta[0].split(' ').join('_') + '" />' +
               '<input type="text" name="tipo" value="' + tipo + '" />'+
               '<input type="text" name="avance" value="'+ava+'" />'+
               '<input type="text" name="claveMat" value="'+claveMat+'" />'+
