@@ -44,5 +44,7 @@ class Preguntas_Model extends CI_Model{
         $this->db->insert('opciones',$data);
         return $this->db->insert_id();
     }
+
+
 }
 ?>

@@ -19,7 +19,9 @@ class ConfiguracionController extends CI_Controller {
 		parent::__construct();
 			$this->load->helper('url_helper');
 			$this->load->model('configuracion_model');
+			$this->load->model('Configuracion_modal');
 			$this->load->model('Preguntas_Model');
+			$this->load->model('BancoPreguntas_modal');
 			$this->load->helper('form');
 			$this->load->library('form_validation');
 			$this->load->library('user_agent');
@@ -343,7 +345,7 @@ class ConfiguracionController extends CI_Controller {
 			echo 'clave: '.$items[$item].'     secuencia: '.$itemplus;
 		}
 	}
-	/**	Apartir de aqui son los controladores para la parte de preguntas por tema */
+	/**	Apartir de aqui son los controladores para la parte de preguntas por tema */ 
 	public function Preguntas(){
 
 		$id_tema = $this->input->get('id_tema');
@@ -406,6 +408,47 @@ class ConfiguracionController extends CI_Controller {
 
 		$this->load->view('Configuracion/Preguntas',$datos);
 	}
+
+	public function actualizarPreguntas(){
+
+		$id_pregunta = $this->input->post('idpregunta');
+		$enunciado = $this->input->post('enunciado');
+		$foto = base64_encode(file_get_contents($_FILES['userImage']['tmp_name']));
+		
+		$datos = array(
+			'id' => $id_pregunta,
+			'enunciado' => $enunciado,
+			'imagen' => $foto
+		);
+
+		$this->BancoPreguntas_modal->updatePreguntas( $id_pregunta, $datos);
+	}
+
+	public function actualizarOpciones(){
+
+		$id_pregunta = $this->input->post('idpregunta');
+		$enunciado = $this->input->post('enunciado');
+		$foto = base64_encode(file_get_contents($_FILES['userImage']['tmp_name']));
+		$porcentaje = $this->input->post('porcentaje');
+		
+		$datos = array(
+			'id_opciones' => $id_pregunta,
+			'porcentaje' => $porcentaje,
+			'enunciado' => $enunciado,
+			'imagen' => $foto
+		);
+
+		$this->BancoPreguntas_modal->updateOpcion( $id_pregunta, $datos);
+
+		echo $porcentaje;
+	}
+
+	public function EliminarPreguntas(){
+		$id_pregunta = $this->input->post('idpregunta');
+		$this->BancoPreguntas_modal->deletePregunta( $id_pregunta );
+		echo $id_pregunta;
+	}
+
 	public function agregarOpciones(){
 		$id_tema = $this->input->post('id_tema');
 		$id_leccion = $this->configuracion_model->getLeccion($id_tema);
@@ -430,6 +473,29 @@ class ConfiguracionController extends CI_Controller {
 		$this->Preguntas_Model->insertarOpciones($data);
 
 		$this->load->view('Configuracion/Preguntas',$datos);
+	}
+
+	// ===============================================================================================================
+	//		Actualiza el numero de preguntas que se mostraran en el examen diagnostico
+	// ===============================================================================================================
+
+	public function ActualizarNumPreguntas(){
+		$numPreguntas = $this->input->post('numpreguntas');
+
+		$this->Configuracion_modal->ActualizarNumPreguntas($numPreguntas);
+
+		echo $numPreguntas;
+	}
+
+	// ===============================================================================================================
+	//		Regresa el numero de preguntas que esta guardado en configuración
+	// ===============================================================================================================
+
+	public function CargarNumPreguntas(){
+
+		$numPreguntas = $this->Configuracion_modal->Limite();
+
+		echo json_encode($numPreguntas);
 	}
 }
  

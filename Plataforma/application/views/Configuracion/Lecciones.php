@@ -104,11 +104,13 @@
                             </span>
                         </a>
                     </li>
-                    <!-- <li>
-                        <a href=""><button class="btn btn-light col-12 text-left"><span class="fas  fa-info-circle  pull-left" style="color: #07ad90;"></span><pre>  Ayuda</pre>  </button></a>
-                    </li> -->
+
                     <li>
-                        <a href="../../../CerrarSesion.php"><button class="btn btn-light col-12 text-left"> <span class=" fas fa-sign-out-alt  pull-left" style="color: #07ad90;"></span><pre> Cerrar sesión</pre></button> </a>
+                        <a  data-toggle="modal" data-target="#modalConfiguracion"><button class="btn btn-light col-12 text-left" ><span class="fas fa-cog pull-left" style="color: #07ad90;"></span> &nbsp; Configuración  </button></a>
+                    </li>
+                    
+                    <li>
+                        <a href="../../../CerrarSesion.php"><button class="btn btn-light col-12 text-left"> <span class=" fas fa-sign-out-alt  pull-left" style="color: #07ad90;"></span> &nbsp; Cerrar sesión</button> </a>
                     </li>
                 </ul>
             </li>
@@ -118,11 +120,16 @@
   </div>
 </nav>
 
-    <div class="row" style="margin-top: 10px;">
+    <nav aria-label="breadcrumb" >
+        <ol class="breadcrumb" id="contenedorNombres">
+        </ol>
+    </nav>
+
+    <!-- <div class="row" style="margin-top: 10px;">
         <div class="col-md-4"> 
             <h2><b><?php echo $_GET['nombre'];?></b></h2>
         </div>
-    </div>
+    </div> -->
     <div id="botones">
         <div class="col-md-7 text-right">
             <a class="btn btn-primary mb-4" data-toggle="modal" data-target="#modalNuevaLeccion">Agregar lección</a>
@@ -212,17 +219,91 @@
                 </div>
     </div>
 
+        <!-- Aquí va el modal para cofiguracion -->
+    <div class="modal fade" id="modalConfiguracion" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header text-center">
+                    <h4 class="modal-title w-200 font-weight-bold">Congiruación</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <br/>
+                <div id="formulario" class="container">
+                    <form id="formularito" action="<?php echo site_url('ConfiguracionController/ActualizarNumPreguntas')?>" method="post" role="form">
+                        <div class="modal-body mx-3">                 
+                            <div class="md-form mb-3">
+                                <select class="browser-default custom-select " id="select_tipo" name="tipo_materia"  disabled>
+                                    <option id="tipo_material" value="0">Evaluación diagnóstica</option>
+                                </select>
+                                <!-- <input type="text" id="nombre_leccion" name="nombre_leccion" class="form-control"> -->
+                            </div>
+                            <div class="md-form mb-3">
+                                <input type="number" class="form-control" id="cantidadPreguntas" name="cantidad_preguntas" placeholder="Numero de preguntas"> 
+                            </div>
+
+                            <div id="AlertaNum" class="alert alert-warning d-none" role="alert">
+                              Necesitas agregar un numero de preguntas.
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <div style="margin-bottom: 10px; color:white;">
+                                
+                                <input id="botonModificarNumpreguntas" type="submit" class="btn btn-primary" value="Aplicar cambios"  data-dismiss="modal" aria-label="Close">
+                                
+                            </div>
+                        </div>
+                    </form>      
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         
         var totalLecciones = 0;
 
         $(function() {
 
+        
+
         var clave = '<?php echo $_GET['clave_curso']; ?>';
         var clave_curso = clave;
-
+        getNombres(null, null, clave_curso);
         showLecciones();
         getTotalLecciones();
+
+        $.get( '<?php echo site_url();?>/ConfiguracionController/CargarNumPreguntas', function( data ) {
+            if ( data != null){
+                numpreguntas = JSON.parse(data);
+                $('#cantidadPreguntas').val( numpreguntas.numpregunta );
+            }
+            
+        });
+
+        function getNombres(id_tema, id_leccion, clave_curso) {
+
+            $.ajax({
+                type: 'POST',
+                url: '<?php echo site_url();?>/ConfiguracionController/getNombres?id_tema='+id_tema+'&id_leccion='+id_leccion+'&clave_curso='+clave_curso,
+                dataType: 'json',
+                async: false,
+                success: function(data) {
+                    // console.log(data);
+                    var titulos = '';
+                
+                    titulos += '<li class="breadcrumb-item"><a  href="<?php echo site_url();?>/cursos/todos">'+data.nombre_curso+'</a></li>';
+                
+                    $('#contenedorNombres').html(titulos);
+                },
+                error: function() {
+                    console.log('hubo un pedo en el getNombres');
+                }
+            });
+        }
+        
 
         function showLecciones() {
 
@@ -282,7 +363,7 @@
                     }
                     else {
                         for(var j = 0; j < data.length; j++) {
-                            console.log(data);
+                            // console.log(data);
                             
                             temas +=  '<a href="<?php echo site_url()?>/ConfiguracionController/getArbolData?id_tema='+data[j].id+'" class="list-group-item list-group-item-action">' +
                                         '<h5>'+data[j].nombre+'</h5>'+
@@ -342,6 +423,30 @@
 
             return valor_retornado;
         }        
+    });
+
+    $('#botonModificarNumpreguntas').click(function (e) { 
+            e.preventDefault();
+            
+            let cantidad =  $('#cantidadPreguntas').val() || 0;
+
+            if( cantidad > 0 ){
+
+                $('#botonModificarNumpreguntas').attr('data-dismiss', 'modal');
+                $('#botonModificarNumpreguntas').attr('aria-label', 'Close');
+                $('#AlertaNum').addClass('d-none');
+                
+                $.post( '<?php echo site_url();?>/ConfiguracionController/ActualizarNumPreguntas', {numpreguntas: cantidad},
+                    function (data) {
+                     console.log(data);   
+                    }
+                );
+            } else {
+                $('#AlertaNum').removeClass('d-none');
+                $('#botonModificarNumpreguntas').removeAttr('data-dismiss');
+                $('#botonModificarNumpreguntas').removeAttr('aria-label');
+            }
+
     });
 
     function putData(id_leccion, totalTemas) {

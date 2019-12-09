@@ -58,7 +58,7 @@
   </button>
   <form class="form-inline my-2 my-lg-0">
         <div class="input-group">
-           <input id="textBuscar" type="text" class="buscar form-control" placeholder="Buscar">
+           <input id="textBuscar" type="text" class="buscar  form-control" placeholder="Buscar">
            <div class="input-group-append">
                 <button id="buscar" class="bustcar btn btn-outline-info" type="button">
                     <span class="fa fa-search form-control-feedback"></span>
@@ -103,9 +103,11 @@
                             </span>
                         </a>
                     </li>
-                    <!-- <li>
-                        <a href=""><button class="btn btn-light col-12 text-left"><span class="fas  fa-info-circle  pull-left" style="color: #07ad90;"></span><pre>  Ayuda</pre>  </button></a>
-                    </li> -->
+
+                    <li>
+                        <a  data-toggle="modal" data-target="#modalConfiguracion"><button class="btn btn-light col-12 text-left" ><span class="fas fa-cog pull-left" style="color: #07ad90;"></span> &nbsp; Configuración  </button></a>
+                    </li>
+                    
                     <li>
                         <a href="../../../CerrarSesion.php"><button class="btn btn-light col-12 text-left"> <span class=" fas fa-sign-out-alt  pull-left" style="color: #07ad90;"></span><pre> Cerrar sesión</pre></button> </a>
                     </li>
@@ -116,6 +118,56 @@
   </div>
   </div>
 </nav>
+
+        <!-- Aquí va el modal para cofiguracion -->
+    <div class="modal fade" id="modalConfiguracion" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header text-center">
+                    <h4 class="modal-title w-200 font-weight-bold">Congiruación</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <br/>
+                <div id="formulario" class="container">
+                    <form id="formularito" action="<?php echo site_url('ConfiguracionController/ActualizarNumPreguntas')?>" method="post" role="form">
+                        <div class="modal-body mx-3">                 
+                            <div class="md-form mb-3">
+                                <select class="browser-default custom-select " id="select_tipo" name="tipo_materia"  disabled>
+                                    <option id="tipo_material" value="0">Evaluación diagnóstica</option>
+                                </select>
+                                <!-- <input type="text" id="nombre_leccion" name="nombre_leccion" class="form-control"> -->
+                            </div>
+                            <div class="md-form mb-3">
+                                <input type="number" class="form-control" id="cantidadPreguntas" name="cantidad_preguntas" placeholder="Numero de preguntas"> 
+                            </div>
+
+                            <div id="AlertaNum" class="alert alert-warning d-none" role="alert">
+                              Necesitas agregar un numero de preguntas.
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <div style="margin-bottom: 10px; color:white;">
+                                
+                                <input id="botonModificarNumpreguntas" type="submit" class="btn btn-primary" value="Aplicar cambios"  data-dismiss="modal" aria-label="Close">
+                                
+                            </div>
+                        </div>
+                    </form>      
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <nav aria-label="breadcrumb" >
+        <ol class="breadcrumb" id="contenedorNombres">
+          <li class="breadcrumb-item"><a href="#">Home</a></li>
+          <li class="breadcrumb-item"><a href="#">Library</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Data</li>
+        </ol>
+    </nav>
 
     <div class="row" style="margin-top: 20px;">
         <div id="contenedorNombres" class="col-md-4"> 
@@ -142,6 +194,7 @@
                 <div class="modal-header text-center">
                     <h4 class="modal-title w-200 font-weight-bold">Nuevo material</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <i class="fas fa-times"></i>
                     </button>
                 </div>
                 <br/>
@@ -152,7 +205,7 @@
                         echo '<div class="md-form mb-5">';
                             echo '<label data-error="wrong" data-success="right" for="tipo_material">Tipo de material</label></br>';
                             echo form_input(array('type' => 'hide', 'name' => 'tipo_material', 'id' => 'tipo_material', 'class' => 'escondido form_control', 'size' => 40));
-                            echo '<select class="form_control" id="select_material" name="tipo_materia" onchange="cambiarValor()">';
+                            echo '<select class=" custom-select" id="select_material" name="tipo_materia" onchange="cambiarValor()">';
                             echo '<option id="tipo_material" value="0">Selecciona un tipo de material...</option>';
                             echo '<option id="tipo_material" value="1">Video</option>';
                             echo '<option id="tipo_material" value="2">Audio</option>';
@@ -184,6 +237,8 @@
         </div>
     </div>
 
+
+
     <script>
 
         var id_tema = '<?php echo $_GET['id_tema'];?>';
@@ -192,8 +247,44 @@
 
         getNombres(id_tema, id_leccion, clave_curso);
 
-        function getNombres(id_tema, id_leccion, clave_curso) {
+        $(function(){
 
+            $.get( '<?php echo site_url();?>/ConfiguracionController/CargarNumPreguntas', function( data ) {
+                if ( data != null){
+                    numpreguntas = JSON.parse(data);
+                    $('#cantidadPreguntas').val( numpreguntas.numpregunta );
+                }
+            
+            });
+
+        });
+
+        $('#botonModificarNumpreguntas').click(function (e) { 
+            e.preventDefault();
+            
+            let cantidad =  $('#cantidadPreguntas').val() || 0;
+
+            if( cantidad > 0 ){
+
+                $('#botonModificarNumpreguntas').attr('data-dismiss', 'modal');
+                $('#botonModificarNumpreguntas').attr('aria-label', 'Close');
+                $('#AlertaNum').addClass('d-none');
+                
+                $.post( '<?php echo site_url();?>/ConfiguracionController/ActualizarNumPreguntas', {numpreguntas: cantidad},
+                    function (data) {
+                     console.log(data);   
+                    }
+                );
+            } else {
+                $('#AlertaNum').removeClass('d-none');
+                $('#botonModificarNumpreguntas').removeAttr('data-dismiss');
+                $('#botonModificarNumpreguntas').removeAttr('aria-label');
+            }
+
+        });
+
+        function getNombres(id_tema, id_leccion, clave_curso) {
+ 
             $.ajax({
                 type: 'POST',
                 url: '<?php echo site_url();?>/ConfiguracionController/getNombres?id_tema='+id_tema+'&id_leccion='+id_leccion+'&clave_curso='+clave_curso,
@@ -203,9 +294,9 @@
                     // console.log(data);
                     var titulos = '';
 
-                    titulos += '<h6>Curso: '+data.nombre_curso+'</h6>';
-                    titulos += '<h6>Lección: '+data.nombre_leccion+'</h6>';
-                    titulos += '<h6>Tema: '+data.nombre_tema+'</h6>';
+                    titulos += '<li class="breadcrumb-item"><a  href="<?php echo site_url();?>/cursos/todos">'+data.nombre_curso+'</a></li>'
+                    titulos += `<li class="breadcrumb-item"><a href="<?php echo site_url();?>/cursos/nuevo_curso/lecciones?nombre=${data.nombre_curso}&clave_curso=${clave_curso}">${data.nombre_leccion}</a></li>`
+                    titulos += `<li class="breadcrumb-item active" aria-current="page">${data.nombre_tema}</li>`;
 
                     $('#contenedorNombres').html(titulos);
                 },

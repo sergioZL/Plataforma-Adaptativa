@@ -18,5 +18,15 @@ class Configuracion_modal extends CI_Model{
         $query = $this->db->get();
 
         return $query->row();
-    } 
+    }
+    
+    // ===========================================================================================================
+    //      Actualiza el numero de preguntas que se mostararan en el usuario en el examen diagnostico
+    // ===========================================================================================================
+
+    public function ActualizarNumPreguntas($numPreguntas) {
+        $this->db->set('numpregunta',$numPreguntas);
+        $this->db->update($this->table);
+    }
+
 }
