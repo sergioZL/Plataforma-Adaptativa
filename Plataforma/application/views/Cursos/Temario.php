@@ -142,78 +142,54 @@ input:checked + .slider:before {
   from {opacity: 0;}
   to {opacity:1 ;}
 }
+
+.pregresp 
+{
+    border: 1px solid #7DA5E0;
+    padding: 10px;
+    margin: 10px;
+    font-family: Arial, Verdana, Helvetica, sans-serif;
+    font-size: 15px;
+    font-weight: bold;
+}
+.pregunta 
+{
+    color: #7DA5E0;
+}
+.respuestas 
+{
+    color: #000000;
+}
+.fa-times
+{
+    color: red;
+}
+.fa-check
+{
+    color: greenyellow;
+}
+.imgresp
+{
+    height: 100px;
+    width:100px;
+}
+
+.zoom {
+  padding: 01px;
+  transition: transform .2s; /* Animation */
+  margin: 1 auto;
+}
+
+.zoom:active {
+  transform: scale(1.5); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+}
+
 </style>
 </head> 
 <body>  
 <?php
         $this->load->view('Cursos/Nav');
 ?>
-
-<!-- nav -->
-
-<!-- <nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand text-left" href="<?php echo site_url();?>/alumno/MisCursos">
-    <img class="login-img text-left" src="<?php echo base_url();?>app-assets/imagenes/logo.png" style="width: 50%; margin: 0;">
-  </a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-    <div class="navbar-nav">
-
-    <form class="form-inline my-2 my-lg-0">
-        <div class="input-group">
-           <input id="textBuscar" type="text" class="buscar form-control" placeholder="Buscar">
-           <div class="input-group-append">
-                <button id="buscar" class="bustcar btn btn-outline-info" type="button">
-                    <span class="fa fa-search form-control-feedback"></span>
-                </button>
-           </div>
-        </div>    
-    </form>
-        <ul class="navbar-nav offset-lg-1 offset-xl-3">
-            <!--<li class="nav-item">
-                <a class="nav-link" style="color: #07ad90;" href="<?php echo site_url();?>/Cursos/NuevosCursos">Nuevos cursos</a>
-            </li>--><!--
-               <li class="dropdown">
-                <a href="" class="btn" data-toggle="dropdown" >
-                    <span class="far fa-bell fa-2x" style="color: #07ad90;" title="Notificaciones"></span>
-                </a>
-                <ul class="dropdown-menu">
-
-                </ul>
-            </li>
-            <li class="dropdown">
-                <a href="" class="btn" data-toggle="dropdown" >
-                    <span class="far fa-user fa-2x" style="color: #07ad90;"  title="Perfil"></span>
-                </a>
-                <ul class="dropdown-menu">
-                    <li>
-                        <a href="#">
-                            <span class="fas fa-user-circle fa-2x" style="color: #07ad90;" title="Perfil"></span>
-                            <?php 
-                                echo $varsesion;
-                            ?>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="<?php echo site_url();?>/alumno/MisCursos"> <button class="btn btn-light col-12 text-left"> <span class="far fa-folder pull-left " style="color: #07ad90;font-size: 16px;"></span><pre>  Mis cursos</pre></button></a>
-                    </li>
-                    <li>
-                        <a href="<?php echo site_url();?>/Cursos/NuevosCursos"><button class="btn btn-light col-12 text-left"><span class="fas fa-folder-plus pull-left " style="color: #07ad90;"></span> <pre>  Nuevo curso</pre></button></a>
-                    </li>
-                    <li>
-                        <a href=""><button class="btn btn-light col-12 text-left"><span class="fas  fa-info-circle  pull-left" style="color: #07ad90;"></span><pre>  Ayuda</pre>  </button></a>
-                    </li>
-                    <li>
-                        <a href="../../../CerrarSesion.php"><button class="btn btn-light col-12 text-left"> <span class=" fas fa-sign-out-alt  pull-left" style="color: #07ad90;"></span><pre>  Salir</pre></button> </a>
-                    </li>
-                </ul>
-            </li>
-        </ul>
-    </div>
-  </div>
-</nav> -->
 
 <?php //echo $curso =$_GET['curso']; ?>
 
@@ -247,10 +223,11 @@ input:checked + .slider:before {
         <label class="switch">
             <input id="check_id" type="checkbox" onclick="mostrarPop();" checked >
             <span class="slider round"></span>
-        </label></h4>
+        </label> &nbsp; &nbsp; &nbsp; &nbsp; <button type="button" id="EvaluarFinal" class="btn btn-primary">Evaluación de curso</button> </h4> 
     </div>
   <span class=" popuptext" id="myPopup">Contenido adaptado al examen diagnostico!</span>
 </div>
+
     <div id="main" class="row">
         <!--Menu desplegable-->
         <div id="accordion" role="tablist" aria-multiselectable="true" class="container t-1 pt-5 col-md-11">
@@ -266,12 +243,41 @@ input:checked + .slider:before {
     </div>
 </div>
 
+        <!-- Aquí va el modal para Evaluacion de temas -->
+    <div class="modal fade" id="modalEvaluacion" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header text-center">
+                    <h4 class="modal-title w-200 font-weight-bold">Evaluacion tema <span id="NumTema"></span></h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <br/>
+                <div id="EvaluacionTema" class="container">  
+                </div>
+                <div id="BotonEvaluar">
+                    <center><button type="button" id="Evaluar" class="btn btn-primary">Evaluar</button></center>
+                    <center><button type="button" id="Terminar" class="btn btn-primary d-none"  data-dismiss="modal" aria-label="Close" >Terminar</button></center>
+                </div>
+                <br>
+            </div>
+        </div>
+    </div>
+
     <script>
     let temario;
     let Ultimo;
     let claveUsuario = '<?php echo $varsesion ?>';
     let reconmendButton = false;
+    let preguntas;
 
+    $('#EvaluarFinal').click(function (e) { 
+        e.preventDefault();
+        
+        window.location.href="Evaluacion?curso=<?php echo $_GET['curso']; ?>&&tipo=Evaluacion_curso";
+
+    });
 
     function mostrarPop() {
         $('#myPopup').removeClass('show');
@@ -426,14 +432,15 @@ input:checked + .slider:before {
                         tema.materials = x;
 
                     }
-
+                    let iconExam = '';
+                    if( tema.avance == '100' && (tema.evaluadoF.porcentaje > 0) ) iconExam = '<i class="fa fa-check" aria-hidden="true"></i>';
                     if(!ocultar){
                         $('#contenido'+leccion.secuencia+'').append('<div class="card rounded-0"  >'+
                                                                        '<h5 class="card-header" style="height: 70px;">'+
                                                                            '<a data-toggle="collapse" href="#content'+tema.id+'" aria-expanded="true"'+
                                                                                'aria-controls="content'+tema.id+'" id="Tema'+tema.id+'" class="d-block">'+
                                                                                '<i class="fa fa-chevron-down pull-right"></i>'+
-                                                                               '<p class="font-weight-bold temas"><small> <span class=" badge badge-primary badge-pill pull-right">'+tema.avance+'%</span>Tema '+tema.secuencia+': '+tema.nombre+'</small><p>'+
+                                                                               '<p class="font-weight-bold temas"><small> <span class=" badge badge-primary badge-pill pull-right">'+tema.avance+'%</span><span class="pull-right"> '+iconExam+'</span>  Tema '+tema.secuencia+': '+tema.nombre+'</small><p>'+
                                                                            '</a>'+
                                                                        '</h5>'+
                                                                    '<div id="content'+tema.id+'" class="collapse carta-body" aria-labelledby="Tema'+tema.id+'">'+
@@ -529,11 +536,127 @@ input:checked + .slider:before {
                                                         '</button><br>');
                                                         p++;
                     }
+
+                    if( tema.evaluadoEn == "1" ) $('#content'+tema.id+'').append(`<center id="Eboton${tema.id}"> <button type="button" class="btn btn-primary"  data-toggle="modal" data-target="#modalEvaluacion" style="background-color:#07ad90;" onclick="ProvarConocimiento( ${tema.id}, 'Eboton${tema.id}' )" >Probar conocimiento </button> </center>`);
+
                 }
+
+               
 
             }
         }
 
+        function ProvarConocimiento( idTema, idEboton ){
+            
+            $.get("<?php echo site_url();?>/Cursos/TemarioController/cargarEvaluacionTema", {IdTema: idTema},
+                function (data) {
+                    preguntas = JSON.parse(data);
+
+                    $('#Evaluar').removeClass('d-none');
+                    $('#Terminar').addClass('d-none');
+                    
+                    $('#NumTema').html( idTema );
+
+                    $('#EvaluacionTema').html('');
+
+                    let i = 0;
+
+                    for ( const pregunta of preguntas ) {
+                        let imagen = '';
+                            if (pregunta.imagen != null) {
+                                let imagen = '<a data-toggle="modal" data-target="#modalPregunta"><img class="zoom" style="width: 200px; height:200px;" src="data:image/jpg;base64,'+pregunta.imagen+'"/></a>';
+                            }
+                        i++;
+                      $('#EvaluacionTema').append('<div id="pregresp" class="pregresp">'+
+                                        '<div id="pregunta" class="pregunta">'+i+'. '+pregunta.enunciado+'<br/></div>'+
+                                        ''+imagen+''+
+                                        '<input id="Npregunta" type="hidden" value="'+pregunta.id+'">'+
+                                        '<div id="respuestas'+pregunta.id+'" class="respuestas row">');
+                        let tipo = 'checkbox';
+                        for (const opcion of pregunta.opciones) {
+                            if(opcion.porcentaje === '100') tipo = 'radio';
+                        }
+                        let eschecado = '';
+                        let j = 0;
+
+                        for ( const opcion of pregunta.opciones ) {
+                            if(opcion.checked) eschecado = 'checked';
+                            if(opcion.imagen) $('#respuestas'+pregunta.id+'').append( '<div class="col-5">'+
+                                                                                      `<input id="resp" type="${ tipo }" name="preg${pregunta.id}" value="${opcion.id_opciones}" onclick="checado( ${i-1}, ${j}, '${ tipo }' );">`+
+                                                                                      `<label data-toggle="modal" data-target="#modalPregunta"><img class="imgresp zoom" src="data:image/jpg;base64,${opcion.imagen}" /></label></div><br>`);
+                            else $('#respuestas'+pregunta.id+'').append(`<div class="col-12"><input id="resp" type="${ tipo }" name="preg${pregunta.id}" value="${opcion.id_opciones}" onclick="checado( ${i-1}, ${j}, '${ tipo }' ); ${ eschecado }"/> ${opcion.enunciado}</div>`);
+                         j++;
+                        }
+                    
+                    }
+                    $(`#${idEboton}`).html('');
+                }
+            );
+        }
+
+        let checado = ( idxPregunta, idxOpcion , tipo ) => {
+            for (let index = 0; index < preguntas[idxPregunta].opciones.length; index++) {
+                if(index === idxOpcion || ( preguntas[idxPregunta].opciones[index].checked === true && tipo === 'checkbox' )) preguntas[idxPregunta].opciones[index].checked = true;
+                    else preguntas[idxPregunta].opciones[index].checked = false;
+            }
+        }
+
+        $('#Evaluar').click(function (e) { 
+            e.preventDefault();
+            $('#EvaluacionTema').html('');
+            let respuestas = [];  
+            let total = 0;
+            let aciertos = 0;          
+            preguntas.forEach( ( pregunta, index) =>{
+                
+                let porcentaje = 0;                
+                pregunta.opciones.forEach( ( opcion, j) => { 
+                                       
+                    if((opcion.checked || false)){
+                        eschecado = 'checked';
+                        respuestas.push({
+                            tema: pregunta.id_tema,
+                            idPregunta: pregunta.id,
+                            opcion: opcion.id_opciones,
+                            porcentaje: opcion.porcentaje
+                        });
+                        if( opcion.porcentaje != '0' ) {
+                            porcentaje += parseInt( opcion.porcentaje, 10);
+                        }
+                    }  
+                });
+                aciertos += (porcentaje / 100);
+                total = index;
+            });
+            total++;
+            console.log( total, aciertos);
+            $('#EvaluacionTema').html(`<div class="jumbotron jumbotron-fluid">
+                        <div class="container">
+                            <center>
+                            <p class="lead">Usted a obtenido.</p>
+                            <h1 class="display-3"> ${aciertos} / ${total} </h1>
+                            </center>
+                        </div>
+                    </div>`);
+            
+            $('#Terminar').removeClass('d-none');
+            $('#Evaluar').addClass('d-none');
+
+            let tema = $('#NumTema').html();
+
+            console.log(tema);
+
+            $.ajax({
+                type: "post",
+                url: "<?php echo site_url();?>/Cursos/TemarioController/EvaluarTema",
+                data: { IdTema: tema , IdCurso:'<?php echo $_GET['curso']; ?>', id_alumno: '<?php echo $varsesion; ?>', TipoEvaluacion: 'evaluacionTema', Respuestas:respuestas},
+                success: function (response) {
+                    console.log(response); 
+                    
+                }
+            });
+                
+        });
 
         function CargarInfoCursos()
         {
@@ -544,7 +667,7 @@ input:checked + .slider:before {
                 dataType:"json",
                 success:function(resp)
                 {
-                    
+                    console.log(resp);
                     $("#imagen").append(
                         '<img class="card-img-top h-75 w-75" src="data:image/jpg;base64,'+ resp[0].foto+'" alt="Proyecto 1">'
                     );
@@ -552,7 +675,7 @@ input:checked + .slider:before {
                     $("#info").append(
 
                         '<h2 class="text-white">' + resp[0].nombre +'</h2>'+
-                        '<h4 class="text-white">has completado: 1 leccion de 5</h4>'+
+                        `<h4 class="text-white"> ${ resp[0].descripcion} </h4>`+
                             '<div class="progress">'+
                                 '<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40"'+
                                 'aria-valuemin="0" aria-valuemax="100" style="width:' + resp[0].avance +'%">'+

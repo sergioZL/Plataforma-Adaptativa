@@ -278,9 +278,10 @@
                     tipo = ult.tipo;//contiene el tipo de material que se esta bisitando existen solo 3 tipos
                     claveMat = ult.material;
                 }
+                console.log(esSession);
+                console.log('Ultimo guardado en local',ult);
             }
-            console.log(esSession);
-            console.log('Ultimo guardado en local',ult);
+
             if(Ultimo == null || !esSession){/**Si no existe un ultimo material visitado de este curso se consulta a la base de datos
                       Cual es el ultimo material visto del curso para que este pueda ser mostrado
                        */

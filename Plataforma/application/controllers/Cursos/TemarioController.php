@@ -16,7 +16,8 @@ class TemarioController extends CI_Controller {
 		$this->load->model('Material_Model');
 		$this->load->model('Preguntas_Model');
 		$this->load->model('Respuesta_modal');
-		$this->load->model('valoracion_Model');
+        $this->load->model('valoracion_Model');
+        $this->load->model('Evaluacion_modal');
     }
 
     // ===================================================================================================================================
@@ -100,11 +101,13 @@ class TemarioController extends CI_Controller {
 				$total = $this->Preguntas_Model->getTotalPreguntasPorTema($topic['id']);
 
 				$porcentResp = $this->Respuesta_modal->getRespuestasUsuarioTema($idUsuario,$topic['id']);
+				$porcentRespF = $this->Respuesta_modal->getRespuestasUsuarioTemaF($idUsuario,$topic['id']);
 
 				$tema = new stdClass;
 				
 				if($total != null){ 
 					$tema->evaluado = array('total' => $total[0]->total, 'porcentaje' => $porcentResp[0]->porc);
+					$tema->evaluadoF = array('total' => $total[0]->total, 'porcentaje' => $porcentRespF[0]->porc);
 				}
 
                 $tema -> recomendado = $recomendacion;
@@ -178,6 +181,7 @@ class TemarioController extends CI_Controller {
 
                     }
                     $tema -> avance = $avance -> avance;
+                    $tema -> evaluadoEn = $avance -> evaluadoEn;
                 }
                 $tema -> materials = $materiales;
                 $temas[] = $tema;
@@ -190,6 +194,54 @@ class TemarioController extends CI_Controller {
 
         echo json_encode(  $vec );
     }
+
+    public function EvaluarTema(){
+
+        $clave_curso =$this->input->post('IdCurso');
+        $id_alumno   =$this->input->post('id_alumno');
+        $TipoEvaluacion =$this->input->post('TipoEvaluacion');
+        $respuestas = $this->input->post('Respuestas');
+        $tema       = $this->input->post('IdTema');
+        $respuestas = json_encode($respuestas);
+        $respuestas = json_decode($respuestas);
+
+        $idEvaluacion = $this->Evaluacion_modal->InsertEvaluacion( $TipoEvaluacion, $id_alumno, $clave_curso);
+
+        $duracion = $this->Avance_modal->ConsultarDuracion($clave_curso,$id_alumno );
+
+        $avance = $this->Avance_modal->ConsultarAvance( $duracion->id, $tema );
+
+        foreach ($respuestas as $respuesta) {
+            $this->Respuesta_modal->InsertRespuestas( $respuesta -> opcion, $respuesta -> idPregunta, $idEvaluacion);
+        }
+
+        $avance = json_encode($avance);
+        $avance = json_decode($avance);
+        $avance->evaluadoEn = 2;
+
+        $this->Avance_modal->ActualizaAvance( $avance->id , $avance);
+
+        echo json_encode($avance);
+    }
+
+    public function cargarEvaluacionTema(){
+        $tema =$this->input->get('IdTema');
+        
+        $preguntas = $this->Preguntas_Model->getPreguntasPorTema($tema);
+        
+        $Questions = array();
+
+        foreach ($preguntas as $pregunta) {
+            $Question = new stdClass();
+            $Question = $pregunta;
+            $opciones =  $this->Preguntas_Model->getOpcionesPorPregunta($pregunta->id);
+            $Question->opciones = $opciones;
+            array_push( $Questions, $Question);
+        }
+
+        echo json_encode($Questions);
+    }
+
 	public function ConsultarPorIDCursos()
 	{	
 		session_start();

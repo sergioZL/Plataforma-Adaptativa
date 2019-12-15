@@ -23,6 +23,16 @@
             $this->db->insert($this->table,$data);
             return $this->db->insert_id();
         }
+
+        // =================================================================================================
+        //          Actualiza el avance por tema
+        // =================================================================================================
+
+        public function ActualizaAvance( $id, $data){
+            $this->db->where('id', $id);
+            $this->db->update( $this->table, $data);
+        }
+
         /**
          * Actualiza la tabla avance modificando el porcentaje del avance que se tiene en el tema 
          * y el numero de reviciones que tiene el tema 

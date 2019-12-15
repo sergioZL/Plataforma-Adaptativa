@@ -12,7 +12,9 @@ class EvaluacionDController extends CI_Controller {
 		$this->load->model('Lecciones_modal');
 		$this->load->model('Evaluacion_modal');
 		$this->load->model('Respuesta_modal');
-		$this->load->model('Preguntas_modal');
+        $this->load->model('Preguntas_modal');
+        $this->load->model('Avance_modal');
+        $this->load->model('Inscrito_modal');
 	}
 
 
@@ -27,11 +29,13 @@ class EvaluacionDController extends CI_Controller {
         $Curso = $this->input->get('Curso');
 
         $limit = $this->Configuracion_modal->Limite();
+        $limit = json_encode($limit);
+        $limit = json_decode($limit);
 
         $TemasLecciones = $this->Lecciones_modal->ConsultarLeccionesPorCurso($Curso);
         $let = 0;
         foreach ($TemasLecciones as $tema) {
-            $Preguntas = $this->BancoPreguntas_modal->ConsultarPreguntas($tema['id'],10);
+            $Preguntas = $this->BancoPreguntas_modal->ConsultarPreguntas($tema['id'],$limit->numpregunta);
             foreach ($Preguntas as $pregunta) {
                 $let = $let+1;
                 $Question = new stdClass;
@@ -62,13 +66,156 @@ class EvaluacionDController extends CI_Controller {
         $respuestas = json_decode($respuestas);
 
         $idEvaluacion = $this->Evaluacion_modal->InsertEvaluacion( $TipoEvaluacion, $id_alumno, $clave_curso);
-
+        
+        $duracion = $this->Avance_modal->ConsultarDuracion($clave_curso,$id_alumno );
+        
+        $cantidadTema = 1;
+        $totalPorcentajeTema = 0;
+        $tema = '';
         foreach ($respuestas as $respuesta) {
             //$this->Preguntas_modal->InsertPreguntas( $respuesta -> idPregunta, $idEvaluacion, $id_alumno);
+
+            if($tema != $respuesta -> tema){
+                $tema = $respuesta -> tema;
+                $totalPorcentajeTema = 0;
+                $cantidadTema = 1;
+            }
+            else {
+               $cantidadTema = $cantidadTema + 1;
+            }
             
+            $totalPorcentajeTema = $totalPorcentajeTema + $respuesta -> porcentaje;
+
+            $avance = $this->Avance_modal->ConsultarAvance( $duracion->id, $respuesta -> tema );
+
+            if($avance == null){
+
+                if($totalPorcentajeTema > 0 )$prcAvance = $totalPorcentajeTema /  $cantidadTema;
+                    else $prcAvance = 0;
+
+                    if( $prcAvance < 100 ) $prcAvance = 0;
+
+                $data = array( //Estos datos son para insertarse en la tabla avance
+                    'avance'      => $prcAvance,
+                    'revisado'    => 0,
+                    'id_duracion' => $duracion->id,
+                    'id_tema'     => $respuesta -> tema,
+                    'evaluadoEn'  => 1
+                );
+
+                $this->Avance_modal->InsertarAvance($data);
+
+            } else {
+
+                if($totalPorcentajeTema > 0 )$prcAvance = $totalPorcentajeTema /  $cantidadTema;
+                else $prcAvance = 0;
+
+                if( $prcAvance < 100 ) $prcAvance = 0;
+
+                $data = array( //Estos datos son para insertarse en la tabla avance
+                    'avance'      => $prcAvance,
+                    'revisado'    => 0,
+                    'id_duracion' => $duracion->id,
+                    'id_tema'     => $respuesta -> tema,
+                    'evaluadoEn'  => 1
+                );
+
+                $this->Avance_modal->ActualizaAvance( $avance->id , $data);
+
+            }
+
             $this->Respuesta_modal->InsertRespuestas( $respuesta -> opcion, $respuesta -> idPregunta, $idEvaluacion);
         }
-        echo json_encode($idEvaluacion);
+            $avancePromedio = $this->actualizarInscripcion( $id_alumno, $clave_curso, null, $duracion);
+        echo $avancePromedio;
     }
+
+    public function EvaluarF(){
+        
+        $clave_curso =$this->input->post('IdCurso');
+        $id_alumno   =$this->input->post('id_alumno');
+        $TipoEvaluacion =$this->input->post('TipoEvaluacion');
+        $respuestas = $this->input->post('Respuestas');
+        $respuestas = json_encode($respuestas);
+        $respuestas = json_decode($respuestas);
+
+        $idEvaluacion = $this->Evaluacion_modal->InsertEvaluacion( $TipoEvaluacion, $id_alumno, $clave_curso);
+        
+        $duracion = $this->Avance_modal->ConsultarDuracion($clave_curso,$id_alumno );
+        
+        $cantidadTema = 1;
+        $totalPorcentajeTema = 0;
+        $tema = '';
+        foreach ($respuestas as $respuesta) {
+            //$this->Preguntas_modal->InsertPreguntas( $respuesta -> idPregunta, $idEvaluacion, $id_alumno);
+
+            if($tema != $respuesta -> tema){
+                $tema = $respuesta -> tema;
+                $totalPorcentajeTema = 0;
+                $cantidadTema = 1;
+            }
+            else {
+               $cantidadTema = $cantidadTema + 1;
+            }
+            
+            $totalPorcentajeTema = $totalPorcentajeTema + $respuesta -> porcentaje;
+
+            $avance = $this->Avance_modal->ConsultarAvance( $duracion->id, $respuesta -> tema );
+
+            if($avance == null){
+
+                if($totalPorcentajeTema > 0 )$prcAvance = $totalPorcentajeTema /  $cantidadTema;
+                    else $prcAvance = 0;
+
+                    if( $prcAvance < 100 ) $prcAvance = 0;
+
+                $data = array( //Estos datos son para insertarse en la tabla avance
+                    'avance'      => $prcAvance,
+                    'revisado'    => 0,
+                    'id_duracion' => $duracion->id,
+                    'id_tema'     => $respuesta -> tema
+                );
+
+                $this->Avance_modal->InsertarAvance($data);
+
+            } else {
+
+                if($totalPorcentajeTema > 0 )$prcAvance = $totalPorcentajeTema /  $cantidadTema;
+                else $prcAvance = 0;
+
+                if( $prcAvance < 100 ) $prcAvance = 0;
+
+                $data = array( //Estos datos son para insertarse en la tabla avance
+                    'avance'      => $prcAvance,
+                    'revisado'    => 0,
+                    'id_duracion' => $duracion->id,
+                    'id_tema'     => $respuesta -> tema
+                );
+
+                $this->Avance_modal->ActualizaAvance( $avance->id , $data);
+
+            }
+
+            $this->Respuesta_modal->InsertRespuestas( $respuesta -> opcion, $respuesta -> idPregunta, $idEvaluacion);
+        }
+            $avancePromedio = $this->actualizarInscripcion( $id_alumno, $clave_curso, null, $duracion);
+        echo $avancePromedio;
+    }
+
+    public function actualizarInscripcion($idUsuario,$idCurso,$ultimo,$Idduracion){
+        $dur = $this->Avance_modal->getDuracion($Idduracion->id);
+        $avances = $this->Avance_modal->ConsultarAvances($Idduracion->id);
+        $ava = 0;
+        foreach ($avances as $amt) {
+            $obj = json_encode($amt);
+            $jbo = json_decode($obj);
+            $ava = $ava+$jbo->avance;
+        }
+        $avancePromedio = $ava/$dur->duracion;
+        $this->Inscrito_modal->updateInscripcion($idUsuario,$idCurso,$ultimo,$avancePromedio);
+
+        return $avancePromedio;
+    }
+
 }
 ?>

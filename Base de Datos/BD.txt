@@ -214,6 +214,57 @@ CREATE TABLE IF NOT EXISTS `ti`.`avance_material` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+/* =====================================================================
+		Categorias Valoracion
+   =====================================================================*/
+
+CREATE TABLE IF NOT EXISTS `ti`.`categoria-valoracion` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `categoria` VARCHAR(45) NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB;
+
+/* =====================================================================
+		Categorias preguntas-Valoracion
+   =====================================================================*/
+   
+   CREATE TABLE IF NOT EXISTS `ti`.`preguntas-Valoracion` (
+  `idpv` INT NOT NULL AUTO_INCREMENT,
+  `idcategoriavaloracion` INT NULL,
+  `enunciado` VARCHAR(45) NULL,
+  PRIMARY KEY (`idpv`),
+  INDEX `categoria_idx` (`idcategoriavaloracion` ASC) VISIBLE,
+  CONSTRAINT `categoria`
+    FOREIGN KEY (`idcategoriavaloracion`)
+    REFERENCES `ti`.`categoria-valoracion` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+/* =====================================================================
+		Categorias valoracion
+   =====================================================================*/
+   
+   CREATE TABLE IF NOT EXISTS `ti`.`valoracion` (
+  `idvaloracion` INT NOT NULL AUTO_INCREMENT,
+  `idinscrito` VARCHAR(45) NULL,
+  `idpv` INT NULL,
+  `valoracion` INT NULL,
+  PRIMARY KEY (`idvaloracion`),
+  INDEX `idinscrito_idx` (`idinscrito` ASC) VISIBLE,
+  INDEX `pregunta-valoracion_idx` (`idpv` ASC) VISIBLE,
+  CONSTRAINT `idinscrito`
+    FOREIGN KEY (`idinscrito`)
+    REFERENCES `ti`.`inscrito` (`clave_alumno`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `pregunta-valoracion`
+    FOREIGN KEY (`idpv`)
+    REFERENCES `ti`.`preguntas-Valoracion` (`idpv`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
 -- Se realizará un alter table a la tabla inscrito para que 
 -- se pueda visualizar el ultimo material revisado por el alumno 
 -- el campo que se agrega puede ser null ya que al recien inscribirse no abra ultimo material revisado
@@ -227,3 +278,21 @@ alter table `ti`.`avance_material` add duracion DECIMAL(45);
 alter table `ti`.`alumnos` add eavisual DECIMAL(45) NULL;
 alter table `ti`.`alumnos` add eaauditivo DECIMAL(45) NULL;
 alter table `ti`.`alumnos` add eacinestesico DECIMAL(45) NULL;
+
+-- ===================================================================
+-- 	Alter table para agregar llave foranea a la tabla valoracion 
+-- 	que hace referencia al id del material
+-- ====================================================================
+
+ ALTER TABLE `ti`.`valoracion` ADD idmaterial INT;
+ ALTER TABLE `ti`.`valoracion` 
+ ADD CONSTRAINT `fk_idmaterial` 
+ FOREIGN KEY (idmaterial)
+ REFERENCES material (id);
+ 
+ -- =========================================================================
+ -- 	Se agrega el campo de evaluadoEn en la tabla avance
+ -- =========================================================================
+
+	ALTER TABLE `ti`.`avance` ADD evaluadoEn INT;
+

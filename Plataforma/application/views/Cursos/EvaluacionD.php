@@ -106,6 +106,7 @@ if($curso =$_GET['curso'] == "")
 
     <script>
         let preguntas;
+        let tipo = '<?php echo $tipo; ?>';
         $(document).ready(function () {
             //optiene la clave de usuario actual
             let usuario = '<?php echo $varsesion; ?>';
@@ -132,7 +133,8 @@ if($curso =$_GET['curso'] == "")
         }
         let cargarPreguntas = () => {
             $.get("<?php echo site_url();?>/Cursos/EvaluacionDController/CargarPreguntas", {Curso: '<?php echo $_GET['curso'];?>'}, (data) => {
-                
+
+                    
                     preguntas = JSON.parse(data);
                     
                     mostrarPreguntas(preguntas);
@@ -208,8 +210,10 @@ if($curso =$_GET['curso'] == "")
                     if((opcion.checked || false)){
                         eschecado = 'checked';
                         respuestas.push({
+                            tema: pregunta.id_tema,
                             idPregunta: pregunta.id,
-                            opcion: opcion.id_opciones
+                            opcion: opcion.id_opciones,
+                            porcentaje: opcion.porcentaje
                         });
                         if( opcion.porcentaje != '0' ) {
                             porcentaje += parseInt( opcion.porcentaje, 10);
@@ -239,16 +243,30 @@ if($curso =$_GET['curso'] == "")
                                  </tr>`);
             $('#Evaluar').addClass('d-none');
             $('#botonIr').html(`<button type="button" onclick="Terminar()" class="btn btn-primary">Terminar</button>`);
-            $.ajax({
-                type: "post",
-                url: "<?php echo site_url();?>/Cursos/EvaluacionDController/Evaluar",
-                data: { IdCurso:'<?php echo $_GET['curso']; ?>', id_alumno: '<?php echo $varsesion; ?>', TipoEvaluacion: '<?php echo $tipo; ?>', Respuestas:respuestas},
-                success: function (response) {
-                    console.log(response); 
-                    
-                }
-            });
+            
+            if( tipo == 'diagnostico'){
+                $.ajax({
+                    type: "post",
+                    url: "<?php echo site_url();?>/Cursos/EvaluacionDController/Evaluar",
+                    data: { IdCurso:'<?php echo $_GET['curso']; ?>', id_alumno: '<?php echo $varsesion; ?>', TipoEvaluacion: '<?php echo $tipo; ?>', Respuestas:respuestas},
+                    success: function (response) {
+                        console.log(response); 
 
+                    }
+                });
+            } else {
+                $.ajax({
+                    type: "post",
+                    url: "<?php echo site_url();?>/Cursos/EvaluacionDController/EvaluarF",
+                    data: { IdCurso:'<?php echo $_GET['curso']; ?>', id_alumno: '<?php echo $varsesion; ?>', TipoEvaluacion: '<?php echo $tipo; ?>', Respuestas:respuestas},
+                    success: function (response) {
+                        console.log(response); 
+                        
+                    }
+                });
+
+            }
+                console.log(respuestas);
         });
         function Terminar() { 
             console.log('que pedo');
