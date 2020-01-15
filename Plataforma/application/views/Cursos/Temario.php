@@ -223,7 +223,7 @@ input:checked + .slider:before {
         <label class="switch">
             <input id="check_id" type="checkbox" onclick="mostrarPop();" checked >
             <span class="slider round"></span>
-        </label> &nbsp; &nbsp; &nbsp; &nbsp; <button type="button" id="EvaluarFinal" class="btn btn-primary">Evaluación de curso</button> </h4> 
+        </label> &nbsp; &nbsp; &nbsp; &nbsp; <button type="button" id="EvaluarFinal" class="btn btn-primary">Evaluación gloval</button> </h4> 
     </div>
   <span class=" popuptext" id="myPopup">Contenido adaptado al examen diagnostico!</span>
 </div>
