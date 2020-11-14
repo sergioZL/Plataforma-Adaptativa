@@ -174,7 +174,7 @@
 
 
         <!-- Aquí va el modal para cofiguracion -->
-    <div class="modal fade" id="modalConfiguracion" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal fade" id="modalConfiguracion" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header text-center">
@@ -186,10 +186,15 @@
                 <br/>
                 <div id="formulario" class="container">
                     <form id="formularito" action="<?php echo site_url('ConfiguracionController/ActualizarNumPreguntas')?>" method="post" role="form">
-                        <div class="modal-body mx-3">                 
+                        <div class="modal-body mx-3">   
                             <div class="md-form mb-3">
-                                <select class="browser-default custom-select " id="select_tipo" name="tipo_materia"  disabled>
+                                <input type="text" class="form-control" id="rutaSubida" name="ruta"  disabled> 
+                            </div>                   
+                            <div class="md-form mb-3">
+                                <select class="browser-default custom-select " id="select_tipo" name="tipo_materia" >
                                     <option id="tipo_material" value="0">Evaluación diagnóstica</option>
+                                    <option id="tipo_material" value="1">Evaluación por tema</option>
+                                    <option id="tipo_material" value="2">Evaluación global</option>
                                 </select>
                                 <!-- <input type="text" id="nombre_leccion" name="nombre_leccion" class="form-control"> -->
                             </div>
@@ -240,7 +245,6 @@
                 }
             });
         }
-
         
         $('#buscar').click(function() {
             if( $("#textBuscar").val() != "")
@@ -255,31 +259,113 @@
 
         });
 
+        $.get( '<?php echo site_url();?>/ConfiguracionController/CargarRuta',
+                    function ( data ) {
+                        if( data != null ) {
+                            Subida = JSON.parse( data );
+                            $('#rutaSubida').val( Subida.ruta );
+                        }
+                    }
+                );
+
     });
-    
+
+    $('#select_tipo').change(function (e) { 
+        
+        let tipoEvaluacion = parseInt($('#select_tipo').val());
+
+        switch (tipoEvaluacion) {
+            case 0:
+                
+                $.get( '<?php echo site_url();?>/ConfiguracionController/CargarNumPreguntas', function( data ) {
+                    if ( data != null){
+                        numpreguntas = JSON.parse(data);
+                        $('#cantidadPreguntas').val( numpreguntas.numpregunta );
+                    }
+
+                });
+
+                break;
+        
+            case 1:
+
+                $.get( '<?php echo site_url();?>/ConfiguracionController/CargarNumPreguntasTema', function( data ) {
+                    if ( data != null){
+                        let numpreguntas = JSON.parse(data);
+                        $('#cantidadPreguntas').val( numpreguntas.numpreguntaTema );
+                    }
+                    
+                });
+
+                break;
+            case 2: 
+
+                $.get( '<?php echo site_url();?>/ConfiguracionController/CargarNumPreguntasGlobal', function( data ) {
+                    if ( data != null){
+                        let numpreguntas = JSON.parse(data);
+                        $('#cantidadPreguntas').val( numpreguntas.numpreguntaGlobal );
+                    }
+                    
+                });
+
+                break;
+        }
+        
+    });
+
+
     $('#botonModificarNumpreguntas').click(function (e) { 
-                    e.preventDefault();
-                    
-                    let cantidad =  $('#cantidadPreguntas').val() || 0;
-                    
-                    if( cantidad > 0 ){
-                    
-                        $('#botonModificarNumpreguntas').attr('data-dismiss', 'modal');
-                        $('#botonModificarNumpreguntas').attr('aria-label', 'Close');
-                        $('#AlertaNum').addClass('d-none');
+            e.preventDefault();
+            
+            let cantidad =  $('#cantidadPreguntas').val() || 0;
+
+            if( cantidad > 0 ){
+
+                $('#botonModificarNumpreguntas').attr('data-dismiss', 'modal');
+                $('#botonModificarNumpreguntas').attr('aria-label', 'Close');
+                $('#AlertaNum').addClass('d-none');
+                let seleccionado = parseInt($('#select_tipo').val());
+
+                switch (seleccionado) {
+                    case 0:
                         
                         $.post( '<?php echo site_url();?>/ConfiguracionController/ActualizarNumPreguntas', {numpreguntas: cantidad},
                             function (data) {
                              console.log(data);   
                             }
                         );
-                    } else {
-                        $('#AlertaNum').removeClass('d-none');
-                        $('#botonModificarNumpreguntas').removeAttr('data-dismiss');
-                        $('#botonModificarNumpreguntas').removeAttr('aria-label');
-                    }
+
+                        break;
+                    case 1:
+                        
+                        $.post( '<?php echo site_url();?>/ConfiguracionController/ActualizarNumPreguntasTema', {numpreguntas: cantidad},
+                            function (data) {
+                             console.log(data);   
+                            }
+                        );
+
+                        break;
+                    case 2:
+                        
+                        $.post( '<?php echo site_url();?>/ConfiguracionController/ActualizarNumPreguntasGlobal', {numpreguntas: cantidad},
+                            function (data) {
+                             console.log(data);   
+                            }
+                        );
+                        
+                        break;
                 
-    });
+                    default:
+                        console.log('Algo salio mal');
+                        break;
+                }
+            } else {
+                $('#AlertaNum').removeClass('d-none');
+                $('#botonModificarNumpreguntas').removeAttr('data-dismiss');
+                $('#botonModificarNumpreguntas').removeAttr('aria-label');
+            }
+
+        });
 
     $('#carrera').change(function() {
         var carreraSeleccionada = document.getElementById('carrera');

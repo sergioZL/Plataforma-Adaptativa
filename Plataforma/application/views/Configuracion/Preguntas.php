@@ -24,7 +24,7 @@
         <script src="<?php echo base_url();?>app-assets/js/popper.min.js"></script>
         <script src="<?php echo base_url();?>app-assets/js/bootstrap.min.js"></script>
         <script src="<?php echo base_url();?>app-assets/js/myjs.js"></script>  
-        <script src="<?php echo base_url();?>app-assets/js/ckeditor/ckeditor.js"></script>  
+        <!-- <script src="<?php echo base_url();?>app-assets/js/ckeditor/ckeditor.js"></script> -->
         <script defer src="https://use.fontawesome.com/releases/v5.11.2/js/all.js"></script> <!-- nuevo font awesome -->
 
         <style>
@@ -144,94 +144,55 @@
             </div>
         </div>
 
+
         <!-- Aquí va el modal para cofiguracion -->
-    <div class="modal fade" id="modalConfiguracion" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header text-center">
-                    <h4 class="modal-title w-200 font-weight-bold">Congiruación</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <div class="modal fade" id="modalConfiguracion" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header text-center">
+                        <h4 class="modal-title w-200 font-weight-bold">Congiruación</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <i class="fas fa-times"></i>
-                    </button>
-                </div>
-                <br/>
-                <div id="formulario" class="container">
-                    <form id="formularito" action="<?php echo site_url('ConfiguracionController/ActualizarNumPreguntas')?>" method="post" role="form">
-                        <div class="modal-body mx-3">                 
-                            <div class="md-form mb-3">
-                                <select class="browser-default custom-select " id="select_tipo" name="tipo_materia"  disabled>
-                                    <option id="tipo_material" value="0">Evaluación diagnóstica</option>
-                                </select>
-                                <!-- <input type="text" id="nombre_leccion" name="nombre_leccion" class="form-control"> -->
-                            </div>
-                            <div class="md-form mb-3">
-                                <input type="number" class="form-control" id="cantidadPreguntas" name="cantidad_preguntas" placeholder="Numero de preguntas"> 
-                            </div>
-
-                            <div id="AlertaNum" class="alert alert-warning d-none" role="alert">
-                              Necesitas agregar un numero de preguntas.
-                            </div>
-
-                        </div>
-                        <div class="modal-footer">
-                            <div style="margin-bottom: 10px; color:white;">
+                        </button>
+                    </div>
+                    <br/>
+                    <div id="formulario" class="container">
+                        <form id="formularito" action="<?php echo site_url('ConfiguracionController/ActualizarNumPreguntas')?>" method="post" role="form">
+                            <div class="modal-body mx-3"> 
                                 
-                                <input id="botonModificarNumpreguntas" type="submit" class="btn btn-primary" value="Aplicar cambios"  data-dismiss="modal" aria-label="Close">
-                                
+                                <div class="md-form mb-3">
+                                    <input type="text" class="form-control" id="rutaSubida" name="ruta"  disabled> 
+                                </div>
+                            
+                                <div class="md-form mb-3">
+                                    <select class="browser-default custom-select " id="select_tipo" name="tipo_materia" >
+                                        <option id="tipo_material" value="0">Evaluación diagnóstica</option>
+                                        <option id="tipo_material" value="1">Evaluación por tema</option>
+                                        <option id="tipo_material" value="2">Evaluación global</option>
+                                    </select>
+                                    <!-- <input type="text" id="nombre_leccion" name="nombre_leccion" class="form-control"> -->
+                                </div>
+                                <div class="md-form mb-3">
+                                    <input type="number" class="form-control" id="cantidadPreguntas" name="cantidad_preguntas" placeholder="Numero de preguntas"> 
+                                </div>
+
+                                <div id="AlertaNum" class="alert alert-warning d-none" role="alert">
+                                  Necesitas agregar un numero de preguntas.
+                                </div>
+
                             </div>
-                        </div>
-                    </form>      
+                            <div class="modal-footer">
+                                <div style="margin-bottom: 10px; color:white;">
+
+                                    <input id="botonModificarNumpreguntas" type="submit" class="btn btn-primary" value="Aplicar cambios"  data-dismiss="modal" aria-label="Close">
+
+                                </div>
+                            </div>
+                        </form>      
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-
-
-        <!-- Aquí va el modal para eidtar preguntas -->
-    <div class="modal fade" id="modalEditar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header text-center">
-                    <h4 class="modal-title w-200 font-weight-bold" id='TituloModal' >Editar pregunta <span  id='idPregunta'> </span> </h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
-                <br/>
-                <div id="formularioEditar" class="container">
-
-                    <form id="formularitoEditar" action="<?php echo site_url('ConfiguracionController/actualizarPreguntas')?>" enctype="multipart/form-data" method="post" role="form">
-                        <div class="modal-body mx-3">                 
-                            <div class="md-form mb-5 from-group">
-                                <label data-error="wrong" data-success="right" for="enunciado">Enunciado</label>
-                                <textarea id="Enunciado" rows = "6" class="form-control text-left"  name = "enunciado" placeholder="Ingrese el enunciado de la pregunta">
-
-                                </textarea>                
-                                <label data-error="wrong" data-success="right" for="userImage">Imagen</label>
-                                <div id="ImagenAct"></div>
-                                <input type="file" class="form-control" id="userImage" name="userImage"> 
-
-                            </div>
-                            <div id="contenedorPorcentage">
-
-                            </div>
-                            <div class="escondido">
-                                <input type="text" class="form-control" id="idpregunta" name="idpregunta"> 
-                                <input type="text" class="form-control" id="tipo" name="tipo"> 
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <div style="margin-bottom: 10px; color:white;">
-                                <input id="botonEditar" type="submit" class="btn btn-primary" value="Editar Pregunta"  data-dismiss="modal" aria-label="Close">
-                                <input id="botonEliminar" type="submit" class="btn btn-primary" value="Eliminar"  data-dismiss="modal" aria-label="Close">
-                            </div>
-                        </div>
-                    </form>  
-
-                </div>
-            </div>
-        </div>
-    </div>
             
         <script>
             
@@ -251,32 +212,111 @@
                     }
 
                 });
+                $.get( '<?php echo site_url();?>/ConfiguracionController/CargarRuta',
+                    function ( data ) {
+                        if( data != null ) {
+                            Subida = JSON.parse( data );
+                            $('#rutaSubida').val( Subida.ruta );
+                        }
+                    }
+                );
+            });
+
+            $('#select_tipo').change(function (e) { 
+        
+                let tipoEvaluacion = parseInt($('#select_tipo').val());
+
+                switch (tipoEvaluacion) {
+                    case 0:
+
+                        $.get( '<?php echo site_url();?>/ConfiguracionController/CargarNumPreguntas', function( data ) {
+                            if ( data != null){
+                                numpreguntas = JSON.parse(data);
+                                $('#cantidadPreguntas').val( numpreguntas.numpregunta );
+                            }
+                        
+                        });
+                    
+                        break;
+                    
+                    case 1:
+                    
+                        $.get( '<?php echo site_url();?>/ConfiguracionController/CargarNumPreguntasTema', function( data ) {
+                            if ( data != null){
+                                let numpreguntas = JSON.parse(data);
+                                $('#cantidadPreguntas').val( numpreguntas.numpreguntaTema );
+                            }
+
+                        });
+                    
+                        break;
+                    case 2: 
+                    
+                        $.get( '<?php echo site_url();?>/ConfiguracionController/CargarNumPreguntasGlobal', function( data ) {
+                            if ( data != null){
+                                let numpreguntas = JSON.parse(data);
+                                $('#cantidadPreguntas').val( numpreguntas.numpreguntaGlobal );
+                            }
+
+                        });
+                    
+                        break;
+                }
 
             });
 
-            $('#botonModificarNumpreguntas').click(function (e) { 
-                    e.preventDefault();
-                    
-                    let cantidad =  $('#cantidadPreguntas').val() || 0;
-                    
-                    if( cantidad > 0 ){
-                    
-                        $('#botonModificarNumpreguntas').attr('data-dismiss', 'modal');
-                        $('#botonModificarNumpreguntas').attr('aria-label', 'Close');
-                        $('#AlertaNum').addClass('d-none');
+    $('#botonModificarNumpreguntas').click(function (e) { 
+            e.preventDefault();
+            
+            let cantidad =  $('#cantidadPreguntas').val() || 0;
+
+            if( cantidad > 0 ){
+
+                $('#botonModificarNumpreguntas').attr('data-dismiss', 'modal');
+                $('#botonModificarNumpreguntas').attr('aria-label', 'Close');
+                $('#AlertaNum').addClass('d-none');
+                let seleccionado = parseInt($('#select_tipo').val());
+
+                switch (seleccionado) {
+                    case 0:
                         
                         $.post( '<?php echo site_url();?>/ConfiguracionController/ActualizarNumPreguntas', {numpreguntas: cantidad},
                             function (data) {
                              console.log(data);   
                             }
                         );
-                    } else {
-                        $('#AlertaNum').removeClass('d-none');
-                        $('#botonModificarNumpreguntas').removeAttr('data-dismiss');
-                        $('#botonModificarNumpreguntas').removeAttr('aria-label');
-                    }
+
+                        break;
+                    case 1:
+                        
+                        $.post( '<?php echo site_url();?>/ConfiguracionController/ActualizarNumPreguntasTema', {numpreguntas: cantidad},
+                            function (data) {
+                             console.log(data);   
+                            }
+                        );
+
+                        break;
+                    case 2:
+                        
+                        $.post( '<?php echo site_url();?>/ConfiguracionController/ActualizarNumPreguntasGlobal', {numpreguntas: cantidad},
+                            function (data) {
+                             console.log(data);   
+                            }
+                        );
+                        
+                        break;
                 
-            });
+                    default:
+                        console.log('Algo salio mal');
+                        break;
+                }
+            } else {
+                $('#AlertaNum').removeClass('d-none');
+                $('#botonModificarNumpreguntas').removeAttr('data-dismiss');
+                $('#botonModificarNumpreguntas').removeAttr('aria-label');
+            }
+
+        });
 
             function getNombres(id_tema, id_leccion, clave_curso) {
 

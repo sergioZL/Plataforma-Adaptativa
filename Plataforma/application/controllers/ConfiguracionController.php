@@ -488,7 +488,31 @@ class ConfiguracionController extends CI_Controller {
 	}
 
 	// ===============================================================================================================
-	//		Regresa el numero de preguntas que esta guardado en configuración
+	//		Actualiza el numero de preguntas que se mostraran en el examen por tema
+	// ===============================================================================================================
+
+	public function ActualizarNumPreguntasTema(){
+		$numPreguntas = $this->input->post('numpreguntas');
+
+		$this->Configuracion_modal->ActualizarNumPreguntasTema($numPreguntas);
+
+		echo $numPreguntas;
+	}
+
+	// ===============================================================================================================
+	//		Actualiza el numero de preguntas que se mostraran en el examen global
+	// ===============================================================================================================
+
+	public function ActualizarNumPreguntasGlobal(){
+		$numPreguntas = $this->input->post('numpreguntas');
+
+		$this->Configuracion_modal->ActualizarNumPreguntasGlobal($numPreguntas);
+
+		echo $numPreguntas;
+	}
+
+	// ===============================================================================================================
+	//		Regresa el numero de preguntas del examen diagnostico que esta guardado en configuración
 	// ===============================================================================================================
 
 	public function CargarNumPreguntas(){
@@ -497,5 +521,41 @@ class ConfiguracionController extends CI_Controller {
 
 		echo json_encode($numPreguntas);
 	}
+
+	// ===============================================================================================================
+	//		Regresa el numero de preguntas del examen por tema que esta guardado en configuración
+	// ===============================================================================================================
+
+	public function CargarNumPreguntasTema(){
+
+		$numPreguntas = $this->Configuracion_modal->LimiteTema();
+
+		echo json_encode($numPreguntas);
+	}
+
+
+	// ===============================================================================================================
+	//		Regresa el numero de preguntas del examen global que esta guardado en configuración
+	// ===============================================================================================================
+
+	public function CargarNumPreguntasGlobal(){
+
+		$numPreguntas = $this->Configuracion_modal->LimiteGlobal();
+
+		echo json_encode($numPreguntas);
+	}
+
+	// ===============================================================================================================
+	//		Carga la ruta en la que se estan subiendo los archivos 
+	// ===============================================================================================================
+
+	public function CargarRuta() {
+
+		$ruta = $this->Configuracion_modal->Ruta();
+
+		echo json_encode($ruta);
+
+	}
+
 }
  
